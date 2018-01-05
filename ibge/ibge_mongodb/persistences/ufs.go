@@ -3,8 +3,8 @@ package persistences
 import (
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/models"
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/models"
+	"github.com/italiviocorrea/golang/commons"
 	"strconv"
 )
 
