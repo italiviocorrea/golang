@@ -1,11 +1,11 @@
 package main
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/ibge_mssql/routers"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/routers"
 	"log"
 	"net/http"
-	"com/ItalivioCorrea/ibge/ibge_mssql/Mssql"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
 )
 
 func main() {
