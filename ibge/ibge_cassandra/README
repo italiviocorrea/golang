@@ -1,0 +1,26 @@
+CREATE KEYSPACE ibgeapi WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 3};
+
+USE ibgeapi;
+
+CREATE TABLE ufs (
+    codigo int PRIMARY KEY,
+    nome text,
+    sigla text
+);
+
+CREATE TYPE uf (
+      codigo int,
+      nome text,
+      sigla text
+);
+
+CREATE TABLE municipios (
+   codigo int PRIMARY KEY,
+   nome text,
+   uf frozen<uf>
+);
+
+CREATE INDEX uf_index ON municipios(uf);
+
+INSERT INTO municipios(codigo, nome, uf) values(5000807,'ANAURILANDIA',{codigo: 50, nome: 'MATO GROSSO DO SUL', 'MS'});
+

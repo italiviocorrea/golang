@@ -1,0 +1,46 @@
+version: '3.2'
+
+
+services:
+
+    msssql:
+        image: microsoft/mssql-server-linux:latest
+        container_name: "dbibgeapims"
+        networks:
+          - ibgeapigo_net
+        environment:
+          - ACCEPT_EULA=Y
+          - SA_PASSWORD=senha#123
+          - MSSQL_PID=Express
+        volumes:
+          - /home/icorrea/srv/mssql/ibgedb:/var/opt/mssql
+        expose:
+          - 1433
+        ports:
+            - 1433:1433
+
+    ibge_mssql:
+        depends_on:
+            - msssql
+        image: ibge_mssql:1.1
+        expose:
+          - 8080
+        ports:
+            - 8080:8080
+        networks:
+          - ibgeapigo_net
+        environment:
+          - MSSQL_API_SERVER=0.0.0.0:8080
+          - MSSQL_API_DBHOST=dbibgeapims
+          - MSSQL_API_DBUSER=sa
+          - MSSQL_API_DBPWD=senha#123
+          - MSSQL_API_DBPort=1433
+          - MSSQL_API_DATABASE=dbibgeapi
+          - MSSQL_API_CONTEXT=/ibge/v3
+          - MSSQL_API_LOGLEVEL=4
+
+networks:
+  ibgeapigo_net:
+    external: true
+
+

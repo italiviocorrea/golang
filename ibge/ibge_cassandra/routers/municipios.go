@@ -1,0 +1,22 @@
+package routers
+
+import (
+	"com/ItalivioCorrea/commons"
+	"com/ItalivioCorrea/ibge/ibge_cassandra/resources"
+	"github.com/gorilla/mux"
+	"log"
+)
+
+// Define as rotas para UF
+func SetMunicipioRoutes(router *mux.Router) *mux.Router {
+
+	router.HandleFunc(commons.AppConfig.Context+"/municipios", resources.CreateMunicipio).Methods("POST")
+	router.HandleFunc(commons.AppConfig.Context+"/municipios/{codigo}", resources.UpdateMunicipio).Methods("PUT")
+	router.HandleFunc(commons.AppConfig.Context+"/municipios", resources.GetMunicipios).Methods("GET")
+	router.HandleFunc(commons.AppConfig.Context+"/municipios/{codigo}", resources.GetMunicipioByCode).Methods("GET")
+	router.HandleFunc(commons.AppConfig.Context+"/municipios/{codigo}", resources.DeleteMunicipio).Methods("DELETE")
+	log.Println("Criando as rotas ...")
+
+	return router
+
+}

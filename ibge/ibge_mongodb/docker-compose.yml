@@ -1,0 +1,56 @@
+version: '3.2'
+
+
+services:
+
+    mongodb:
+        image: mongo:latest
+        container_name: "ibgeapidb"
+        networks:
+          - ibge_mongodb_net
+        environment:
+          - MONGO_DATA_DIR=/data/db
+          - MONGO_LOG_DIR=/dev/null
+        volumes:
+          - /home/icorrea/srv/docker/mongodb/:/data/db
+        ports:
+            - 27017:27017
+        command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+    ibge_mongodb:
+        build: .
+        container_name: "ibge_mongodb"
+        image: ibge_mongodb:1.0
+        ports:
+            - 8080:8080
+        networks:
+          - ibge_mongodb_net
+        environment:
+          - MONGODB_API_SERVER="0.0.0.0:8080"
+          - MONGODB_API_DBHOST="ibgeapidb"
+          - MONGODB_API_DBUSER=""
+          - MONGODB_API_DBPWD=""
+          - MONGODB_API_DATABASE="ibgeapi"
+          - MONGODB_API_CONTEXT="/ibge/v3"
+          - MONGODB_API_LOGLEVEL=4
+        depends_on:
+            - mongodb
+
+    # A web based interface for managing your docker containers.
+    portainer:
+        image: portainer/portainer
+        command: --templates http://templates/templates.json
+        networks:
+            - ibge_mongodb_net
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ~/srv/cassandra/portainer-data:/data
+        # Enable you to access potainers web interface from your host machine
+        # using http://localhost:10001
+        ports:
+            - "10001:9000"
+
+networks:
+  ibge_mongodb_net:
+    external: true
+

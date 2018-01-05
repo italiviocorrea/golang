@@ -1,0 +1,435 @@
+{
+    "swagger": "3.4",
+    "info": {
+        "description": "IBGE API v4 - Esta API disponibiliza os seguintes recursos :\n - ufs : Tabela de Unidade da Federacao segundo o IBGE\n - municipios : Tabela de Municipio segundo o IBGE",
+        "version": "3",
+        "title": "IBGE API v3",
+        "termsOfService": "http://www.italiviocorrea.eti/terms/",
+        "contact": {
+            "name": "italiviocorrea@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/ibge/v3",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/ufs": {
+            "post": {
+                "tags": [
+                    "UF"
+                ],
+                "summary": "Adicionar uma nova UF ao catalogo.",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Dados necessario para a nova UF ser adicionado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Uf"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Recurso incluido com sucesso"
+                    },
+                    "500": {
+                        "description": "Entrada invalida"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "UF"
+                ],
+                "summary": "Listar todas UFs cadastradas",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page_num",
+                        "description": "Numero da pagina exibida atualmente",
+                        "type": "int",
+                        "minimum": 1,
+                        "default": 1,
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "page_size",
+                        "description": "Quantidade maxima de UFs exibidas por pagina.",
+                        "type": "int",
+                        "minimum": 10,
+                        "maximum": 100,
+                        "default": 20,
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recursos encontrados com sucesso"
+                    },
+                    "204": {
+                        "description": "Recursos nao encontrados!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            }
+
+        },
+        "/ufs/{codigo}": {
+            "put": {
+                "tags": [
+                    "UF"
+                ],
+                "summary": "Atualiza uma UF existente",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo da UF deve ser informado",
+                        "required": false,
+                        "type": "int"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Dados da UF para atualizacao",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Uf"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recurso atualizado com sucesso."
+                    },
+                    "404": {
+                        "description": "Recurso nao encontrado"
+                    },
+                    "405": {
+                        "description": "Erro de validacao"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "UF"
+                ],
+                "summary": "Pesquisa UF por codigo",
+                "description": "Retorna a UF  com codigo igual ao informado",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo da UF deve ser informado",
+                        "required": false,
+                        "type": "int"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recurso encontrado com sucesso"
+                    },
+                    "204": {
+                        "description": "Recurso nao encontrado!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "UF"
+                ],
+                "summary": "Exclui a UF com o codigo informado",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo da UF a ser excluida",
+                        "required": false,
+                        "type": "int"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recurso excluido com sucesso!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            }
+        },
+        "/municipios": {
+            "post": {
+                "tags": [
+                    "Municipio"
+                ],
+                "summary": "Adicionar um novo Muncipio ao catalogo.",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Dados necessario para o novo Municipio ser adicionado",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Municipio"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Recurso incluido com sucesso"
+                    },
+                    "500": {
+                        "description": "Entrada invalida"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Municipio"
+                ],
+                "summary": "Listar todos Municipios cadastrados",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page_num",
+                        "description": "Numero da pagina exibida atualmente",
+                        "type": "int",
+                        "minimum": 1,
+                        "default": 1,
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "page_size",
+                        "description": "Quantidade maxima de Municipios exibidos por pagina.",
+                        "type": "int",
+                        "minimum": 10,
+                        "maximum": 100,
+                        "default": 20,
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recursos encontrados com sucesso"
+                    },
+                    "204": {
+                        "description": "Recursos nao encontrados!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            }
+
+        },
+        "/municipios/{codigo}": {
+            "put": {
+                "tags": [
+                    "Municipio"
+                ],
+                "summary": "Atualiza um Municipio existente.",
+                "description": "",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo do Municipio deve ser informado",
+                        "required": false,
+                        "type": "int"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Dados do Municipio para atualizacao",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Municipio"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recurso atualizado com sucesso."
+                    },
+                    "404": {
+                        "description": "Recurso nao encontrado"
+                    },
+                    "405": {
+                        "description": "Erro de validacao"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Municipio"
+                ],
+                "summary": "Pesquisa Municipio por codigo",
+                "description": "Retorna o Municipio com codigo igual ao informado",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo do Municipio deve ser informado",
+                        "required": false,
+                        "type": "int"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recurso encontrado com sucesso"
+                    },
+                    "204": {
+                        "description": "Recurso nao encontrado!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Municipio"
+                ],
+                "summary": "Exclui o Municipio com o ID informado",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "codigo",
+                        "description": "Codigo do Municipio a ser excluido",
+                        "required": false,
+                        "type": "int"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Recurso excluido com sucesso!"
+                    },
+                    "500": {
+                        "description": "Erro inesperado"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Uf": {
+            "required": [
+                "codigo",
+                "nome",
+                "sigla"
+            ],
+            "properties": {
+                "codigo": {
+                    "type": "integer",
+                    "format": "int",
+                    "description": "Codigo IBGE da UF"
+                },
+                "nome": {
+                    "type": "string",
+                    "description": "Nome da UF"
+                },
+                "sigla": {
+                    "type": "string",
+                    "description": "Sigla da UF"
+                }
+            }
+        },
+        "Municipio": {
+            "required": [
+                "codigo",
+                "nome"
+            ],
+            "properties": {
+                "codigo": {
+                    "type": "integer",
+                    "format": "int",
+                    "description": "Codigo IBGE do Municipio"
+                },
+                "nome": {
+                    "type": "string",
+                    "description": "Nome do Municipio"
+                },
+                "uf": {
+                    "$ref": "#/definitions/Uf"
+                }
+
+            }
+        }
+    }
+}

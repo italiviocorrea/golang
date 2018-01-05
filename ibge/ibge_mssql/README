@@ -1,0 +1,23 @@
+# CREATE DATABASE AND TABLES
+CREATE DATABASE dbibgeapi;
+GO
+CREATE TABLE ufs ( codigo INT NOT NULL PRIMARY KEY, nome NVARCHAR(64), sigla VARCHAR(2) );
+GO
+CREATE TABLE Municipios ( codigo INT NOT NULL PRIMARY KEY, nome NVARCHAR(64), uf_codigo INT );
+GO
+ALTER TABLE Municipios ADD CONSTRAINT FK_UFS FOREIGN KEY (uf_codigo) REFERENCES ufs (codigo) ON DELETE CASCADE  ON UPDATE CASCADE ;
+GO
+
+# executa o container do mssql
+docker run --name 'dbibgeapims' -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=senha#123' -e 'MSSQL_PID=Express' -p 1433:1433 -v /home/icorrea/srv/mssql/ibgedb:/var/opt/mssql -d microsoft/mssql-server-linux:latest
+
+# Acessando o modo interativo do sqlcmd
+docker exec -it dbibgeapims /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P senha#123
+
+# Criando um banco de dados interativamente
+docker exec -it dbibgeapims /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P senha#123 -Q "CREATE DATABASE dbibgeapi;"
+
+# Executando um script para criar banco de dados e tabelas
+docker exec -it dbibgeapims /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P senha#123 -d dbibgeapi -i ./CreateTables.sql
+
+

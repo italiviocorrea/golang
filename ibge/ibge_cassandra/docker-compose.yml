@@ -1,0 +1,192 @@
+# Please note we are using Docker Compose version 3
+version: '3.2'
+services:
+    # Configuration for our seed cassandra node. The node is call cassandra-1
+    # .i.e Node 1 in Data center 1.
+    cassandra-1:
+        # Cassandra image for Cassandra version 3.1.0. This is pulled
+        # from the docker store.
+        image: cassandra:3.10
+        hostname: "cassandra-1"
+        # In case this is the first time starting up cassandra we need to ensure
+        # that all nodes do not start up at the same time. Cassandra has a
+        # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
+        # nodes simultaneously is a mistake. This only needs to happen the firt
+        # time we bootup. Configuration below assumes if the Cassandra data
+        # directory is empty it means that we are starting up for the first
+        # time.
+        command: bash -c 'if [ -z "$$(ls -A /var/lib/cassandra/)" ] ; then sleep 0; fi && /docker-entrypoint.sh cassandra -f'
+        # Network for the nodes to communicate
+        networks:
+            - ibge_cassandra_net
+        # Maps cassandra data to a local folder. This preserves data across
+        # container restarts. Note a folder n1data get created locally
+        volumes:
+            - ~/srv/cassandra/n1data:/var/lib/cassandra
+        # Docker constainer environment variable. We are using the
+        # CASSANDRA_CLUSTER_NAME to name the cluster. This needs to be the same
+        # across clusters. We are also declaring that cassandra-1 is a seed node.
+        environment:
+            - CASSANDRA_CLUSTER_NAME=ibge_cluster
+            - CASSANDRA_SEEDS=cassandra-1
+            - CASSANDRA_RPC_ADDRESS="0.0.0.0"
+            - CASSANDRA_BROADCAST_ADDRESS=cassandra-1
+            - CASSANDRA_LISTEN_ADDRESS=cassandra-1
+        # Exposing ports for inter cluste communication
+        expose:
+            - 7000
+            - 7001
+            - 7199
+            - "9042"
+            - 9160
+        ports:
+            - "19042:9042"
+        # Cassandra ulimt recommended settings
+        ulimits:
+            memlock: -1
+            nproc: 32768
+            nofile: 100000
+    # This is configuration for our non seed cassandra node. The node is call
+    # cassandra-1 .i.e Node 2 in Data center 1.
+    cassandra-2:
+        # Cassandra image for Cassandra version 3.1.0. This is pulled
+        # from the docker store.
+        image: cassandra:3.10
+        hostname: "cassandra-2"
+        # In case this is the first time starting up cassandra we need to ensure
+        # that all nodes do not start up at the same time. Cassandra has a
+        # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
+        # nodes simultaneously is a mistake. This only needs to happen the firt
+        # time we bootup. Configuration below assumes if the Cassandra data
+        # directory is empty it means that we are starting up for the first
+        # time.
+        command: bash -c 'if [ -z "$$(ls -A /var/lib/cassandra/)" ] ; then sleep 60; fi && /docker-entrypoint.sh cassandra -f'
+        # Network for the nodes to communicate
+        networks:
+            - ibge_cassandra_net
+        # Maps cassandra data to a local folder. This preserves data across
+        # container restarts. Note a folder n1data get created locally
+        volumes:
+            - ~/srv/cassandra/n2data:/var/lib/cassandra
+        # Docker constainer environment variable. We are using the
+        # CASSANDRA_CLUSTER_NAME to name the cluster. This needs to be the same
+        # across clusters. We are also declaring that cassandra-1 is a seed node.
+        environment:
+            - CASSANDRA_CLUSTER_NAME=ibge_cluster
+            - CASSANDRA_SEEDS=cassandra-1
+            - CASSANDRA_RPC_ADDRESS="0.0.0.0"
+            - CASSANDRA_BROADCAST_ADDRESS=cassandra-2
+            - CASSANDRA_LISTEN_ADDRESS=cassandra-2
+        # Since cassandra-1 is the seed node
+        depends_on:
+              - cassandra-1
+        # Exposing ports for inter cluste communication. Note this is already
+        # done by the docker file. Just being explict about it.
+        expose:
+            # Intra-node communication
+            - 7000
+            # TLS intra-node communication
+            - 7001
+            # JMX
+            - 7199
+            # CQL
+            - "9042"
+            # Thrift service
+            - 9160
+        ports:
+            - "29042:9042"
+        # Cassandra ulimt recommended settings
+        ulimits:
+            memlock: -1
+            nproc: 32768
+            nofile: 100000
+
+    # This is configuration for our non seed cassandra node. The node is call
+    # cassandra-3 .i.e Node 3 in Data center 1.
+    cassandra-3:
+        image: cassandra:3.10
+        hostname: "cassandra-3"
+        # In case this is the first time starting up cassandra we need to ensure
+        # that all nodes do not start up at the same time. Cassandra has a
+        # 2 minute rule i.e. 2 minutes between each node boot up. Booting up
+        # nodes simultaneously is a mistake. This only needs to happen the firt
+        # time we bootup. Configuration below assumes if the Cassandra data
+        # directory is empty it means that we are starting up for the first
+        # time.
+        command: bash -c 'if [ -z "$$(ls -A /var/lib/cassandra/)" ] ; then sleep 120; fi && /docker-entrypoint.sh cassandra -f'
+        # Network for the nodes to communicate. This is pulled from docker hub.
+        networks:
+            - ibge_cassandra_net
+        # Maps cassandra data to a local folder. This preserves data across
+        # container restarts. Note a folder n1data get created locally
+        volumes:
+            - ~/srv/cassandra/n3data:/var/lib/cassandra
+        # Docker constainer environment variable. We are using the
+        # CASSANDRA_CLUSTER_NAME to name the cluster. This needs to be the same
+        # across clusters. We are also declaring that cassandra-1 is a seed node.
+        environment:
+            - CASSANDRA_CLUSTER_NAME= ibge_cluster
+            - CASSANDRA_SEEDS=cassandra-1
+            - CASSANDRA_RPC_ADDRESS="0.0.0.0"
+            - CASSANDRA_BROADCAST_ADDRESS=cassandra-3
+            - CASSANDRA_LISTEN_ADDRESS=cassandra-3
+        # Since cassandra-1 is the seed node
+        depends_on:
+              - cassandra-2
+        # Exposing ports for inter cluste communication. Note this is already
+        # done by the docker file. Just being explict about it.
+        expose:
+            # Intra-node communication
+            - 7000
+            # TLS intra-node communication
+            - 7001
+            # JMX
+            - 7199
+            # CQL
+            - "9042"
+            # Thrift service
+            - 9160
+        ports:
+            - "39042:9042"
+        # Cassandra ulimt recommended settings
+        ulimits:
+            memlock: -1
+            nproc: 32768
+            nofile: 100000
+            
+    ibge_cassandra:
+        build: .
+        container_name: "ibge_cassandra"
+        image: ibge_cassandra:1.0
+        ports:
+            - 8080:8080
+        networks:
+          - ibge_cassandra_net
+        environment:
+          - CASSANDRA_API_SERVER=0.0.0.0:8080
+          - CASSANDRA_API_DBHOST=cassandra-1:9042,cassandra-2:9042,cassandra-3:9042
+          - CASSANDRA_API_DBUSER=admin
+          - CASSANDRA_API_DBPWD=senha#123
+          - CASSANDRA_API_DATABASE=ibgeapi
+          - CASSANDRA_API_CONTEXT=/ibge/v3
+          - CASSANDRA_API_LOGLEVEL=4
+        depends_on:
+            - cassandra-3
+
+    # A web based interface for managing your docker containers.
+    portainer:
+        image: portainer/portainer
+        command: --templates http://templates/templates.json
+        networks:
+            - ibge_cassandra_net
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ~/srv/cassandra/portainer-data:/data
+        # Enable you to access potainers web interface from your host machine
+        # using http://localhost:10001
+        ports:
+            - "10001:9000"
+networks:
+  ibge_cassandra_net:
+    external: true
+
