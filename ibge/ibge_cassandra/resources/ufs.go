@@ -1,14 +1,14 @@
 package resources
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/models"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"strconv"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/persistences"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/persistences"
 )
 
 func CreateUf(w http.ResponseWriter, r *http.Request) {
