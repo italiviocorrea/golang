@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
-	"com/ItalivioCorrea/routers"
+	"github.com/italiviocorrea/golang/routers"
 )
 
 // InitRoutes registra todas as rotas da aplicacao.

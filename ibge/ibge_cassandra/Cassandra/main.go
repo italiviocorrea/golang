@@ -3,7 +3,7 @@ package Cassandra
 import (
 	"github.com/gocql/gocql"
 	"fmt"
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"strings"
 	"log"
 	"os"

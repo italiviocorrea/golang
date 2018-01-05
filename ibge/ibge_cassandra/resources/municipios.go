@@ -1,14 +1,14 @@
 package resources
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/models"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"github.com/gorilla/mux"
 	"strconv"
 	"net/http"
 	"log"
 	"encoding/json"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/persistences"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/persistences"
 )
 
 func CreateMunicipio(w http.ResponseWriter, r *http.Request) {

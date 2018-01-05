@@ -1,9 +1,9 @@
 package resources
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/models"
-	"com/ItalivioCorrea/ibge/ibge_mssql/persistences"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/models"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/persistences"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"

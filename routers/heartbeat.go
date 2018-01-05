@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
-	"com/ItalivioCorrea/resources"
+	"github.com/italiviocorrea/golang/resources"
 )
 
 func SetHeartBeatsRoutes(router *mux.Router) *mux.Router {

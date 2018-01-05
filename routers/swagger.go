@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"net/http"
 	"flag"
 )

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"gopkg.in/mgo.v2/bson"
 )
 

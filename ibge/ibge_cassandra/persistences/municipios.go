@@ -1,12 +1,12 @@
 package persistences
 
 import (
-"com/ItalivioCorrea/commons"
+        "github.com/italiviocorrea/golang/commons"
 	"log"
 	"strconv"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/Cassandra"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/Cassandra"
 	"fmt"
-	"com/ItalivioCorrea/ibge/models"
+	"github.com/italiviocorrea/golang/ibge/models"
 )
 
 

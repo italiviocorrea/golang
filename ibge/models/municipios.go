@@ -1,6 +1,6 @@
 package models
 
-import "com/ItalivioCorrea/commons"
+import "github.com/italiviocorrea/golang/commons"
 
 type (
 

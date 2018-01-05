@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/resources"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/resources"
 	"github.com/gorilla/mux"
 	"log"
 )

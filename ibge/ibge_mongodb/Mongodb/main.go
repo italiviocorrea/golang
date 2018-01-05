@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2"
 	"time"
 	"log"
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"os"
 	"fmt"
 )

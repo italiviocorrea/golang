@@ -1,10 +1,10 @@
 package main
 
 import (
-	"com/ItalivioCorrea/ibge/ibge_cassandra/Cassandra"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/Cassandra"
 	"log"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/routers"
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/routers"
+	"github.com/italiviocorrea/golang/commons"
 )
 
 func main()  {
