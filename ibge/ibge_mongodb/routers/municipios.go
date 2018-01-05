@@ -1,10 +1,10 @@
 package routers
 
 import (
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"github.com/gorilla/mux"
 	"log"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/resources"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/resources"
 )
 
 // Define as rotas para UF
