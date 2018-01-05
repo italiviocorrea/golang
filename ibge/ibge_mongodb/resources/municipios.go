@@ -1,14 +1,14 @@
 package resources
 
 import (
-	"com/ItalivioCorrea/commons"
+	"github.com/italiviocorrea/golang/commons"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/Mongodb"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/persistences"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/models"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/Mongodb"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/persistences"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/models"
 	"strconv"
 )
 
