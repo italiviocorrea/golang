@@ -1,46 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9a65627b-e000-4c90-a64d-377f82efc7f0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Cassandra/main.go" afterPath="$PROJECT_DIR$/Cassandra/main.go" />
-      <change beforePath="$PROJECT_DIR$/main.go" afterPath="$PROJECT_DIR$/main.go" />
-      <change beforePath="$PROJECT_DIR$/persistences/municipios.go" afterPath="$PROJECT_DIR$/persistences/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/persistences/ufs.go" afterPath="$PROJECT_DIR$/persistences/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/resources/municipios.go" afterPath="$PROJECT_DIR$/resources/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/resources/ufs.go" afterPath="$PROJECT_DIR$/resources/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/routers/municipios.go" afterPath="$PROJECT_DIR$/routers/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/routers/routers.go" afterPath="$PROJECT_DIR$/routers/routers.go" />
-      <change beforePath="$PROJECT_DIR$/routers/ufs.go" afterPath="$PROJECT_DIR$/routers/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/Mongodb/main.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/Mongodb/main.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/main.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/main.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/models/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/models/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/models/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/models/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/persistences/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/persistences/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/persistences/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/persistences/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/resources/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/resources/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/resources/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/resources/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/routers/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/routers/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/routers/routers.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/routers/routers.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mongodb/routers/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mongodb/routers/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/Mssql/main.go" afterPath="$PROJECT_DIR$/../ibge_mssql/Mssql/main.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/main.go" afterPath="$PROJECT_DIR$/../ibge_mssql/main.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/persistences/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mssql/persistences/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/persistences/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mssql/persistences/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/resources/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mssql/resources/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/resources/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mssql/resources/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/routers/municipios.go" afterPath="$PROJECT_DIR$/../ibge_mssql/routers/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/routers/routers.go" afterPath="$PROJECT_DIR$/../ibge_mssql/routers/routers.go" />
-      <change beforePath="$PROJECT_DIR$/../ibge_mssql/routers/ufs.go" afterPath="$PROJECT_DIR$/../ibge_mssql/routers/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../models/heartbeat.go" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/../models/municipios.go" afterPath="$PROJECT_DIR$/../models/municipios.go" />
-      <change beforePath="$PROJECT_DIR$/../models/ufs.go" afterPath="$PROJECT_DIR$/../models/ufs.go" />
-      <change beforePath="$PROJECT_DIR$/../../resources/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../resources/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/../../resources/heartbeats.go" afterPath="$PROJECT_DIR$/../../resources/heartbeats.go" />
-      <change beforePath="$PROJECT_DIR$/../../routers/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../../routers/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/../../routers/heartbeat.go" afterPath="$PROJECT_DIR$/../../routers/heartbeat.go" />
-      <change beforePath="$PROJECT_DIR$/../../routers/swagger.go" afterPath="$PROJECT_DIR$/../../routers/swagger.go" />
-    </list>
+    <list default="true" id="9a65627b-e000-4c90-a64d-377f82efc7f0" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
