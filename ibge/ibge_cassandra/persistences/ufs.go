@@ -1,12 +1,12 @@
 package persistences
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/ibge_cassandra/Cassandra"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_cassandra/Cassandra"
 	"log"
 	"fmt"
 	"strconv"
-	"com/ItalivioCorrea/ibge/models"
+	"github.com/italiviocorrea/golang/ibge/models"
 )
 
 func CreateUF(uf models.Uf)  (int64, error) {
