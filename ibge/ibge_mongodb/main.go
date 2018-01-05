@@ -9,7 +9,7 @@ import (
 
 func main()  {
 
-    // Pegando um sessao do cassandra
+    // Pegando um sessao do mongodb
 	log.Println("Criando uma sessao mongodb.")
 	MongoDBSession := Mongodb.Session
 	defer MongoDBSession.Close()
