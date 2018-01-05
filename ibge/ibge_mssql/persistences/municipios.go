@@ -1,14 +1,14 @@
 package persistences
 
 import (
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/models"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"context"
 	"database/sql"
 	"fmt"
 	"log"
 	"strconv"
-	"com/ItalivioCorrea/ibge/ibge_mssql/Mssql"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
 )
 
 
