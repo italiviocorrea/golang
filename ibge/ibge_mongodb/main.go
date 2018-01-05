@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"com/ItalivioCorrea/commons"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/Mongodb"
-	"com/ItalivioCorrea/ibge/ibge_mongodb/routers"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/Mongodb"
+	"github.com/italiviocorrea/golang/ibge/ibge_mongodb/routers"
 )
 
 func main()  {
