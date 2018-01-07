@@ -31,6 +31,19 @@ func CreateUf(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
 	uf := &dataResource
 	// Cria um novo DatStore para manipular o MongoDB.
 	dataStore := Mongodb.NewDataStore()
