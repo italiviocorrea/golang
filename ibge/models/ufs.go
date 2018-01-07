@@ -2,6 +2,8 @@ package models
 
 import (
 	"github.com/italiviocorrea/golang/commons"
+	"errors"
+	"regexp"
 )
 
 type (
@@ -37,3 +39,27 @@ type (
 	}
 
 )
+
+var (
+	ErrInvalidCodigoUF = errors.New("Codigo da UF invalido!")
+	ErrInvalidNomeUF = errors.New("Nome da UF invalido")
+	ErrInvalidSiglaUF = errors.New("Sigla da UF invalida")
+)
+
+
+// Validate - implementation of the RequestValidation interface
+func (t Uf) Validate() error {
+
+	var validID = regexp.MustCompile(`[A-Z]{2}`)
+
+	if t.Codigo <= 0  {
+		return ErrInvalidCodigoUF
+	}
+	if t.Nome == "" {
+		return ErrInvalidNomeUF
+	}
+	if t.Sigla == "" || !validID.MatchString(t.Sigla) {
+		return ErrInvalidSiglaUF
+	}
+	return nil
+}

@@ -1,6 +1,10 @@
 package models
 
-import "github.com/italiviocorrea/golang/commons"
+import (
+	"github.com/italiviocorrea/golang/commons"
+	"errors"
+	"regexp"
+)
 
 type (
 
@@ -44,3 +48,37 @@ type (
 
 
 )
+
+var (
+	ErrInvalidCodigoMunicipio = errors.New("Codigo do Municipio invalido!")
+	ErrInvalidNomeMunicipio = errors.New("Nome do Municipio invalido")
+	ErrInvalidCodigoUFMunicipio = errors.New("Codigo da UF do Municipio invalido!")
+	ErrInvalidNomeUFMunicipio = errors.New("Nome da UF do Municipio invalido")
+	ErrInvalidSiglaUFMunicipio = errors.New("Sigla da UF do Municipio invalido")
+)
+
+
+// Validate - implementation of the RequestValidation interface
+func (t Municipio) Validate() error {
+
+	var validID = regexp.MustCompile(`[A-Z]{2}`)
+
+	if t.Codigo <= 0  {
+		return ErrInvalidCodigoMunicipio
+	}
+	if t.Nome == "" {
+		return ErrInvalidNomeMunicipio
+	}
+	if t.Uf.Codigo <= 0  {
+		return ErrInvalidCodigoUFMunicipio
+	}
+	if t.Uf.Nome == "" {
+		return ErrInvalidNomeUFMunicipio
+	}
+	if t.Uf.Sigla == "" || !validID.MatchString(t.Uf.Sigla){
+		return ErrInvalidSiglaUFMunicipio
+	}
+	return nil
+}
+
+

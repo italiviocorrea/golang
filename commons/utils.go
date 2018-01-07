@@ -9,6 +9,11 @@ import (
 )
 
 type (
+
+ 	RequestValidation interface {
+		Validate() error
+	}
+
 	notFound struct {
 		Message    string `json:"message"`
 		HTTPStatus int    `json:"status"`
@@ -62,6 +67,7 @@ type (
 		Limit  int
 	}
 )
+
 
 // DisplayAppError provides app specific error in JSON
 func DisplayAppError(w http.ResponseWriter, handlerError error, message string, code int) {
