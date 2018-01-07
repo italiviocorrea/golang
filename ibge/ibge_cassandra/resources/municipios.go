@@ -30,6 +30,19 @@ func CreateMunicipio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
 	// Cria o municipio
 	_, err = persistences.CreateMunicipio(dataResource)
 
@@ -81,7 +94,20 @@ func UpdateMunicipio(w http.ResponseWriter, r *http.Request) {
 		commons.DisplayAppError(
 			w,
 			err,
-			"Invalido dados do Municipio!",
+			"Erro na decodificacao!",
+			500,
+		)
+		return
+	}
+
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
 			500,
 		)
 		return
@@ -96,6 +122,7 @@ func UpdateMunicipio(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
+
 
 	// Atualiza os dados do municipio
 	_, err = persistences.UpdateMunicipio(dataResource)
