@@ -29,6 +29,19 @@ func CreateMunicipio(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
 	_, err = persistences.CreateMunicipio(dataResource)
 
 	if err != nil {
@@ -63,6 +76,11 @@ func CreateMunicipio(w http.ResponseWriter, r *http.Request) {
 
 func UpdateMunicipio(w http.ResponseWriter, r *http.Request) {
 
+	// Get codigo from the incoming url
+	vars := mux.Vars(r)
+
+	codigo, _ := strconv.ParseInt(vars["codigo"],10,0)
+
 	var dataResource models.Municipio
 
 	// Decodifica a entrada JSON da MUNICIPIO
@@ -73,6 +91,29 @@ func UpdateMunicipio(w http.ResponseWriter, r *http.Request) {
 			w,
 			err,
 			"Invalido dados do Municipio!",
+			500,
+		)
+		return
+	}
+
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
+	if codigo != dataResource.Codigo {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Codigo do municipio informado e invalido!",
 			500,
 		)
 		return

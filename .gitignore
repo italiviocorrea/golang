@@ -76,5 +76,12 @@ models/.idea/workspace.xml
 resources/.idea/workspace.xml
 ibge/ibge_cassandra/.idea/vcs.xml
 routers/.idea/workspace.xml
+commons/.idea/
+ibge/models/.idea/
+ibge/ibge_mongodb/.idea/workspace.xml
+ibge/ibge_mssql/.idea/workspace.xml
+ibge/ibge_mongodb/.idea/workspace.xml
+ibge/ibge_mssql/.idea/workspace.xml
+
 
 # End of https://www.gitignore.io/api/intellij

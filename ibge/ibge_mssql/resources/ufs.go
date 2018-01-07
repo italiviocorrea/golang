@@ -29,6 +29,19 @@ func CreateUf(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
 	// Insere um UF
 	_, err = persistences.CreateUF(dataResource)
 
@@ -64,6 +77,11 @@ func CreateUf(w http.ResponseWriter, r *http.Request) {
 
 func UpdateUf(w http.ResponseWriter, r *http.Request) {
 
+	// Get codigo from the incoming url
+	vars := mux.Vars(r)
+
+	codigo, _ := strconv.Atoi(vars["codigo"])
+
 	var dataResource models.Uf
 	// Decodifica a entrada JSON da UF
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
@@ -76,6 +94,30 @@ func UpdateUf(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
+
+	// valida os dados
+	err = dataResource.Validate()
+
+	if err != nil {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Erro na validação dos dados!",
+			500,
+		)
+		return
+	}
+
+	if codigo != dataResource.Codigo {
+		commons.DisplayAppError(
+			w,
+			err,
+			"Codigo do municipio informado e invalido!",
+			500,
+		)
+		return
+	}
+
 	// Atualiza a UF
 	_, err = persistences.UpdateUF(dataResource)
 
