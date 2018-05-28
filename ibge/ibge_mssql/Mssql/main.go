@@ -1,17 +1,17 @@
 package Mssql
 
 import (
-	_ "github.com/denisenkom/go-mssqldb"
 	"database/sql"
 	"fmt"
-	"log"
+	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/italiviocorrea/golang/commons"
+	"log"
 	"os"
 )
 
 var Database *sql.DB
 
-func init()  {
+func init() {
 
 	log.Println("Inicializa variaveis de ambiente, caso nao exista")
 	setVarEnv()
@@ -20,11 +20,11 @@ func init()  {
 	commons.StartUp("MSSQL_API")
 
 	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
-			commons.AppConfig.DBHost,
-			commons.AppConfig.DBUser,
-			commons.AppConfig.DBPwd,
-			commons.AppConfig.DBPort,
-			commons.AppConfig.Database)
+		commons.AppConfig.DBHost,
+		commons.AppConfig.DBUser,
+		commons.AppConfig.DBPwd,
+		commons.AppConfig.DBPort,
+		commons.AppConfig.Database)
 
 	var err error
 
@@ -35,7 +35,7 @@ func init()  {
 		log.Fatal("Error creating connection pool:", err.Error())
 	}
 
-	log.Println("Connectado : "+connString)
+	log.Println("Connectado : " + connString)
 
 }
 

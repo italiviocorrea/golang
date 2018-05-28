@@ -45,8 +45,10 @@ type (
 	}
 
 	Pagination struct {
+		Has_first string `json:"has_first,omitempty"`
 		Has_next string `json:"has_next,omitempty"`
 		Has_prev string `json:"has_prev,omitempty"`
+		Has_last string `json:"has_last,omitempty"`
 		Total    int    `json:"total,omitempty"`
 	}
 
@@ -152,10 +154,18 @@ func GetPagination(r *http.Request) PageOpts {
 func GetLinkPagination(pageOpts PageOpts, countPage int, resources string) Pagination {
 	page := Pagination{}
 	if countPage > 1 {
-		page.Has_next = "GET /"+resources+"?page_num=" + strconv.Itoa(pageOpts.Offset+1) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
+		page.Has_next = "GET "+resources+"?page_num=" + strconv.Itoa(pageOpts.Offset+1) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
 	}
 	if pageOpts.Offset > 1 {
-		page.Has_prev = "GET /"+resources+"?page_num=" + strconv.Itoa(pageOpts.Offset-1) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
+		page.Has_prev = "GET "+resources+"?page_num=" + strconv.Itoa(pageOpts.Offset-1) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
 	}
+
+	if pageOpts.Offset > 2 {
+		page.Has_first = "GET "+resources+"?page_num=" + strconv.Itoa(1) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
+	}
+	if countPage > 2 {
+		page.Has_last = "GET "+resources+"?page_num=" + strconv.Itoa(countPage) + "&page_size=" + strconv.Itoa(pageOpts.Limit)
+	}
+
 	return page
 }

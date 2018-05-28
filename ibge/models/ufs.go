@@ -25,7 +25,7 @@ type (
 
 	// Representacao da resposta do endpoint (ModelView)
 	UfResource struct {
-		Data    UFResponse      `json:"data"`
+		Data    []UFResponse      `json:"data"`
 		Status  commons.StatusResponse `json:"status"`
 		Version string                 `json:"version"`
 	}

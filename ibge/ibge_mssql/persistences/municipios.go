@@ -1,16 +1,15 @@
 package persistences
 
 import (
-	"github.com/italiviocorrea/golang/commons"
-	"github.com/italiviocorrea/golang/ibge/models"
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"log"
 	"strconv"
-	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
 )
-
 
 func CreateMunicipio(municipio models.Municipio) (int64, error) {
 
@@ -103,8 +102,8 @@ func GetAllMunicipio(page_num int, page_size int) []models.MunicipiosResponse {
 		log.Printf("Error pinging Municipio: " + err.Error())
 	}
 
-	tsql := fmt.Sprintf("SELECT mnc.codigo, mnc.nome, uf.sigla" +
-		" FROM municipios mnc INNER JOIN ufs uf ON mnc.uf_codigo = uf.codigo" +
+	tsql := fmt.Sprintf("SELECT mnc.codigo, mnc.nome, uf.sigla"+
+		" FROM municipios mnc INNER JOIN ufs uf ON mnc.uf_codigo = uf.codigo"+
 		" ORDER BY mnc.codigo OFFSET %d ROWS FETCH NEXT %d ROWS ONLY;", skips, page_size)
 
 	// Execute query
@@ -130,7 +129,7 @@ func GetAllMunicipio(page_num int, page_size int) []models.MunicipiosResponse {
 		}
 
 		// adiciona os links
-		links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context+"/municipios/" + strconv.FormatInt(municipio.Codigo,10)}}
+		links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context + "/municipios/" + strconv.FormatInt(municipio.Codigo, 10)}}
 		municipio.Links = links
 
 		municipios = append(municipios, municipio)
@@ -152,7 +151,7 @@ func GetMunicipioByCode(codigo int64) (models.MunicipioResponse, error) {
 
 	tsql := fmt.Sprintf("SELECT mnc.codigo, mnc.nome, mnc.uf_codigo, uf.nome, uf.sigla" +
 		" FROM municipios mnc INNER JOIN ufs uf ON mnc.uf_codigo = uf.codigo" +
-			" WHERE mnc.codigo=@Codigo;")
+		" WHERE mnc.codigo=@Codigo;")
 
 	// Execute query
 	var b models.MunicipioResponse
@@ -165,9 +164,9 @@ func GetMunicipioByCode(codigo int64) (models.MunicipioResponse, error) {
 	}
 
 	// adiciona os links
-	links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context+"/municipios/" + strconv.FormatInt(b.Codigo,10)},
-		commons.Link{Name: "update", Method: "PUT", Href: commons.AppConfig.Context+"/municipios/" + strconv.FormatInt(b.Codigo,10)},
-		commons.Link{Name: "remove", Method: "DELETE", Href: commons.AppConfig.Context+"/municipios/" + strconv.FormatInt(b.Codigo,10)}}
+	links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context + "/municipios/" + strconv.FormatInt(b.Codigo, 10)},
+		commons.Link{Name: "update", Method: "PUT", Href: commons.AppConfig.Context + "/municipios/" + strconv.FormatInt(b.Codigo, 10)},
+		commons.Link{Name: "remove", Method: "DELETE", Href: commons.AppConfig.Context + "/municipios/" + strconv.FormatInt(b.Codigo, 10)}}
 	b.Links = links
 	// retorna a resposta
 	return b, err

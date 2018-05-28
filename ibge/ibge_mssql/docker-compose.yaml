@@ -39,6 +39,21 @@ services:
           - MSSQL_API_CONTEXT=/ibge/v3
           - MSSQL_API_LOGLEVEL=4
 
+    # A web based interface for managing your docker containers.
+    portainer:
+        image: portainer/portainer
+        command: --templates http://templates/templates.json
+        networks:
+            - ibgeapigo_net
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ~/srv/cassandra/portainer-data:/data
+        # Enable you to access potainers web interface from your host machine
+        # using http://localhost:10001
+        ports:
+            - "10001:9000"
+
+
 networks:
   ibgeapigo_net:
     external: true

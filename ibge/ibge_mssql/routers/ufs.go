@@ -1,9 +1,9 @@
 package routers
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/italiviocorrea/golang/commons"
 	"github.com/italiviocorrea/golang/ibge/ibge_mssql/resources"
-	"github.com/gorilla/mux"
 	"log"
 )
 

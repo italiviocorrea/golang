@@ -1,11 +1,11 @@
 package resources
 
 import (
-	"github.com/italiviocorrea/golang/commons"
-	"github.com/italiviocorrea/golang/ibge/models"
-	"github.com/italiviocorrea/golang/ibge/ibge_mssql/persistences"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/persistences"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"log"
 	"net/http"
 	"strconv"
@@ -79,7 +79,7 @@ func UpdateMunicipio(w http.ResponseWriter, r *http.Request) {
 	// Get codigo from the incoming url
 	vars := mux.Vars(r)
 
-	codigo, _ := strconv.ParseInt(vars["codigo"],10,0)
+	codigo, _ := strconv.ParseInt(vars["codigo"], 10, 0)
 
 	var dataResource models.Municipio
 
@@ -147,10 +147,10 @@ func GetMunicipios(w http.ResponseWriter, r *http.Request) {
 
 	// gera a resposta
 	j, err := json.Marshal(models.MunicipiosResource{Data: municipios,
-		Pagination: commons.GetLinkPagination(pageOpts, persistences.GetMunicipioCountPage(pageOpts.Limit),"municipios"),
+		Pagination: commons.GetLinkPagination(pageOpts, persistences.GetMunicipioCountPage(pageOpts.Limit), "municipios"),
 		Status:     commons.StatusResponse{Code: 200, Message: "Sucesso"},
 		Version:    "2.0",
-		Link:       commons.Link{Name: "create", Method: "POST", Href: commons.AppConfig.Context+"/municipios"}})
+		Link:       commons.Link{Name: "create", Method: "POST", Href: commons.AppConfig.Context + "/municipios"}})
 
 	if err != nil {
 		commons.DisplayAppError(
@@ -170,7 +170,7 @@ func GetMunicipioByCode(w http.ResponseWriter, r *http.Request) {
 
 	// Get codigo from the incoming url
 	vars := mux.Vars(r)
-	codigo, _ := strconv.ParseInt(vars["codigo"],10,0)
+	codigo, _ := strconv.ParseInt(vars["codigo"], 10, 0)
 
 	municipio, err := persistences.GetMunicipioByCode(codigo)
 
@@ -204,7 +204,7 @@ func GetMunicipioByCode(w http.ResponseWriter, r *http.Request) {
 func DeleteMunicipio(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
-	codigo, _ := strconv.ParseInt(vars["codigo"],10,0)
+	codigo, _ := strconv.ParseInt(vars["codigo"], 10, 0)
 
 	// Exclui a MUNICIPIO informada
 	_, err := persistences.DeleteMunicipio(codigo)

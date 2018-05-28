@@ -1,16 +1,15 @@
 package persistences
 
 import (
-	"github.com/italiviocorrea/golang/commons"
-	"github.com/italiviocorrea/golang/ibge/models"
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"log"
 	"strconv"
-	"github.com/italiviocorrea/golang/ibge/ibge_mssql/Mssql"
 )
-
 
 func CreateUF(uf models.Uf) (int64, error) {
 
@@ -66,7 +65,6 @@ func UpdateUF(uf models.Uf) (int64, error) {
 		log.Printf("Error updating row: " + err.Error())
 		return -1, err
 	}
-
 	return result.RowsAffected()
 }
 
@@ -134,7 +132,7 @@ func GetAllUF(page_num int, page_size int) []models.UFResponse {
 		}
 
 		// adiciona os links
-		links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context+"/ufs/" + strconv.Itoa(uf.Codigo)}}
+		links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context + "/ufs/" + strconv.Itoa(uf.Codigo)}}
 		uf.Links = links
 
 		ufs = append(ufs, uf)
@@ -143,7 +141,7 @@ func GetAllUF(page_num int, page_size int) []models.UFResponse {
 	return ufs
 }
 
-func GetUFByCode(codigo int) (models.UFResponse, error) {
+func GetUFByCode(codigo int) ([]models.UFResponse, error) {
 
 	ctx := context.Background()
 
@@ -163,18 +161,21 @@ func GetUFByCode(codigo int) (models.UFResponse, error) {
 
 	if err != nil {
 		log.Printf("Error reading rows: " + err.Error())
-		return b, err
+		return nil, err
 	}
 
 	// adiciona os links
-	links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context+"/ufs/" + strconv.Itoa(b.Codigo)},
-		commons.Link{Name: "update", Method: "PUT", Href: commons.AppConfig.Context+"/ufs/" + strconv.Itoa(b.Codigo)},
-		commons.Link{Name: "remove", Method: "DELETE", Href: commons.AppConfig.Context+"/ufs/" + strconv.Itoa(b.Codigo)}}
+	links := []commons.Link{commons.Link{Name: "self", Method: "GET", Href: commons.AppConfig.Context + "/ufs/" + strconv.Itoa(b.Codigo)},
+		commons.Link{Name: "update", Method: "PUT", Href: commons.AppConfig.Context + "/ufs/" + strconv.Itoa(b.Codigo)},
+		commons.Link{Name: "remove", Method: "DELETE", Href: commons.AppConfig.Context + "/ufs/" + strconv.Itoa(b.Codigo)}}
 
 	b.Links = links
 
+	ufs := []models.UFResponse{}
+	ufs = append(ufs, b)
+
 	// retorna a resposta
-	return b, err
+	return ufs, err
 }
 
 func GetUFCountPage(page_size int) int {
@@ -195,13 +196,21 @@ func GetUFCountPage(page_size int) int {
 	// fazer a busca no banco de dados
 	err = Mssql.Database.QueryRowContext(ctx, tsql).Scan(&total)
 
+	log.Printf("Total de UFs: " + strconv.Itoa(total))
+
 	if err != nil {
 		total = 1
 	}
 	if total > page_size {
 		total = total / page_size
+		var remainder = total % page_size
+		if(remainder > 0){
+			total += 1
+		}
 	} else {
 		total = 1
 	}
+	log.Printf("Total de Page: " + strconv.Itoa(total))
+
 	return total
 }

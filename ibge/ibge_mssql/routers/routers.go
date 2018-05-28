@@ -5,7 +5,6 @@ import (
 	"github.com/italiviocorrea/golang/routers"
 )
 
-
 func InitRoutes() *mux.Router {
 
 	router := mux.NewRouter().StrictSlash(false)

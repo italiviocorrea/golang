@@ -1,16 +1,15 @@
 package resources
 
 import (
-	"github.com/italiviocorrea/golang/commons"
-	"github.com/italiviocorrea/golang/ibge/models"
-	"github.com/italiviocorrea/golang/ibge/ibge_mssql/persistences"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/italiviocorrea/golang/commons"
+	"github.com/italiviocorrea/golang/ibge/ibge_mssql/persistences"
+	"github.com/italiviocorrea/golang/ibge/models"
 	"log"
 	"net/http"
 	"strconv"
 )
-
 
 func CreateUf(w http.ResponseWriter, r *http.Request) {
 
@@ -19,6 +18,7 @@ func CreateUf(w http.ResponseWriter, r *http.Request) {
 	var dataResource models.Uf
 	// Decodifica a entrada JSON da UF
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
+
 	if err != nil {
 		commons.DisplayAppError(
 			w,
@@ -85,11 +85,12 @@ func UpdateUf(w http.ResponseWriter, r *http.Request) {
 	var dataResource models.Uf
 	// Decodifica a entrada JSON da UF
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
+
 	if err != nil {
 		commons.DisplayAppError(
 			w,
 			err,
-			"Invalido dados da UF!",
+			"Nao foi possivel decodificar os dados da UF!",
 			500,
 		)
 		return
@@ -125,7 +126,7 @@ func UpdateUf(w http.ResponseWriter, r *http.Request) {
 		commons.DisplayAppError(
 			w,
 			err,
-			"Ocorreu um erro nao esperado",
+			"Ocorreu um erro nao esperado :"+err.Error(),
 			500,
 		)
 		return
@@ -141,14 +142,18 @@ func GetUfs(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("Consulta todas UFs ...")
 
+	log.Println("Page offset : "+ strconv.Itoa(pageOpts.Offset))
+	log.Println("Page limit  : "+ strconv.Itoa(pageOpts.Limit))
+
+
 	ufs := persistences.GetAllUF(pageOpts.Offset, pageOpts.Limit)
 
 	// gera a resposta
 	j, err := json.Marshal(models.UfsResource{Data: ufs,
-		Pagination: commons.GetLinkPagination(pageOpts, persistences.GetUFCountPage(pageOpts.Limit),"ufs"),
+		Pagination: commons.GetLinkPagination(pageOpts, persistences.GetUFCountPage(pageOpts.Limit), commons.AppConfig.Context+"/ufs"),
 		Status:     commons.StatusResponse{Code: 200, Message: "Sucesso"},
 		Version:    "2.0",
-		Link:       commons.Link{Name: "create", Method: "POST", Href: commons.AppConfig.Context+"/ufs"}})
+		Link:       commons.Link{Name: "create", Method: "POST", Href: commons.AppConfig.Context + "/ufs"}})
 
 	if err != nil {
 		commons.DisplayAppError(
