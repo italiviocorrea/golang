@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package paises;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "paisespb";
+
+// Descricao da mensagem pais
+message Pais {
+
+    int32 codigo = 1;
+    string nome = 2;
+    google.protobuf.Timestamp inicioVigencia = 3;
+    google.protobuf.Timestamp fimVigencia = 4;
+
+}
+
+message Mensagem {
+
+    int32 codigo = 1;
+    string mensagem = 2;
+
+}
+
+// Criar um pais
+message CriarPaisRequest {
+
+    Pais pais = 1;
+
+}
+
+//
+message CriarPaisResponse {
+
+    Pais pais = 1;
+    Mensagem mensagem = 2;
+
+}
+
+// Criar um pais
+message ModificarPaisRequest {
+
+    Pais pais = 1;
+
+}
+
+//
+message ModificarPaisResponse {
+
+    Pais pais = 1;
+    Mensagem mensagem = 2;
+
+}
+
+message ExcluirPaisRequest {
+
+    int32 codigo = 1;
+
+}
+
+message ExcluirPaisResponse {
+
+    Mensagem mensagem = 1;
+
+}
+
+message BuscarPaisRequest {
+
+    int32 codigo = 1;
+
+}
+
+message BuscarPaisResponse {
+
+    Pais pais = 1;
+    Mensagem mensagem = 2;
+
+}
+
+message BuscarTodosPaisesRequest {
+
+    int32 pageNumber = 1;
+    int32 pageSize = 2;
+
+}
+
+message BuscarTodosPaisesResponse {
+
+    Mensagem mensagem = 1;
+    Pais pais = 2;
+
+}
+
+service BlogService {
+    rpc CriarPais (CriarPaisRequest) returns (CriarPaisResponse);
+    rpc ModificarPais (ModificarPaisRequest) returns (ModificarPaisResponse); // return NOT_FOUND if not found
+    rpc ExcluirPais (ExcluirPaisRequest) returns (ExcluirPaisResponse); // return NOT_FOUND if not found
+    rpc BuscarPais (BuscarPaisRequest) returns (BuscarPaisResponse); // return NOT_FOUND if not found
+    rpc ListarTodosPaises (BuscarTodosPaisesRequest) returns (stream BuscarTodosPaisesResponse);
+}
