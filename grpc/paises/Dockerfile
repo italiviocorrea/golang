@@ -1,25 +1,32 @@
+FROM golang:latest AS build
+
+# Cria o diretorio da aplicacao
+RUN mkdir -p $GOPATH/src/github.com/italiviocorrea/golang/grpc/paises
+
+# Definir o diretório de trabalho atual dentro do contêiner
+WORKDIR $GOPATH/src/github.com/italiviocorrea/golang/grpc/paises
+
+# Copie tudo do diretório atual para o PWD (Diretório de Trabalho) dentro do contêiner
+COPY . .
+
+# Download das dependencias
+RUN go get -d -v ./...
+
+# Constroi a aplicacao
+RUN go build paises.go
+
+# Imagem final
 FROM icorrea/alpine:3.9
-MAINTAINER Italivio Correa <italiviocorrea@gmail.com>
 
-# variaveis de ambiente com valores default
-ENV API_SRV_ADDR=0.0.0.0:8080 \
-    API_DB_HOST=dbpaises \
-    API_DB_USER=sa \
-    API_DB_PWD=Senha123 \
-    API_DB_PORT=1433 \
-    API_DB_NAME=dbpaises \
-    API_SRV_CONTEXT=/dfe/v1 \
-    API_SRV_LOGLEVEL=4
+# Cria um diretorio para aplicacao
+RUN mkdir /app
 
-# adiciona a API
-ADD main /api_paises
+# Copia do container build o aplicativo compilado para diretorio /app
+COPY --from=build /go/src/github.com/italiviocorrea/golang/grpc/paises/paises /app
 
-# ADD security /security
+# define o diretorio de trabalho
+WORKDIR /app
 
-# adiciona o site do swagger-ui
-ADD swagger /swagger
+EXPOSE 50051
 
-# define a porta exposta pela API
-EXPOSE 8080
-
-ENTRYPOINT ["./api_paises"]
+CMD ["./paises"]

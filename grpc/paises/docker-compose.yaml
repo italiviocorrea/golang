@@ -39,6 +39,17 @@ services:
     volumes:
       - ~/srv/mssql/dbpaises:/var/opt/mssql
 
+  paises:
+    image: icorrea/api-paises-grpc:1.0
+    ports:
+      - 50051:50051
+    networks:
+      - dfe_net
+    environment:
+      - API_DB_HOST=sqlserver
+    depends_on:
+      - sqlserver
+
   # A web based interface for managing your docker containers.
   portainer:
     image: portainer/portainer

@@ -2,12 +2,12 @@ package services
 
 import (
 	"fmt"
+	"github.com/italiviocorrea/golang/grpc/paises/model"
+	"github.com/italiviocorrea/golang/grpc/paises/paisespb"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"net/http"
-	"sefaz.ms.gov.br/cotin/paises/model"
-	"sefaz.ms.gov.br/cotin/paises/paisespb"
 )
 
 type Server struct {

@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/italiviocorrea/golang/grpc/paises/paisespb"
 	"google.golang.org/grpc"
 	"io"
 	"log"
-	"sefaz.ms.gov.br/cotin/paises/paisespb"
 )
 
 func main()  {

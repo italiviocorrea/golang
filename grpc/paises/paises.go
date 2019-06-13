@@ -1,16 +1,16 @@
 package main
 
 import (
-	"sefaz.ms.gov.br/cotin/paises/model"
-	"sefaz.ms.gov.br/cotin/paises/paisespb"
 	"fmt"
+	"github.com/italiviocorrea/golang/grpc/paises/model"
+	"github.com/italiviocorrea/golang/grpc/paises/paisespb"
+	"github.com/italiviocorrea/golang/grpc/paises/services"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
 	"os"
 	"os/signal"
-	"sefaz.ms.gov.br/cotin/paises/services"
 )
 
 
