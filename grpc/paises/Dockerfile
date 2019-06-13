@@ -9,8 +9,8 @@ WORKDIR $GOPATH/src/github.com/italiviocorrea/golang/grpc/paises
 # Copie tudo do diretório atual para o PWD (Diretório de Trabalho) dentro do contêiner
 COPY . .
 
-# Download das dependencias
-RUN go get -d -v ./...
+# Ativar Go Modules
+ENV GO111MODULE=on
 
 # Constroi a aplicacao
 RUN go build paises.go
