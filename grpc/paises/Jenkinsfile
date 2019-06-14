@@ -1,5 +1,3 @@
-// Initialize a LinkedHashMap / object to share between stages
-def pipelineContext = [:]
 
 pipeline {
     agent any
@@ -19,16 +17,12 @@ pipeline {
                 echo "Build docker image"
                 script {
                     dockerImage = docker.build("${env.DOCKER_IMAGE_TAG}",  '-f ./Dockerfile .')
-                    pipelineContext.dockerImage = dockerImage
                 }
             }
         }
         stage('Run') {
             steps {
                 echo "Run docker image"
-                script {
-                    pipelineContext.dockerContainer = pipelineContext.dockerImage.run()
-                }
             }
         }
         stage('Test') {
@@ -73,9 +67,6 @@ pipeline {
         always {
             echo "Stop Docker image"
             script {
-                if (pipelineContext && pipelineContext.dockerContainer) {
-                    pipelineContext.dockerContainer.stop()
-                }
             }
         }
     }
