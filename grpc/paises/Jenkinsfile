@@ -4,25 +4,22 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_TAG = "icorrea/api-paises-grpc:${env.BUILD_ID}"
+        registryCredential = 'api-paises-grpc'
+        dockerImage = ''
     }
 
     stages {
-        stage('Configure') {
+        stage('Git Clone') {
             steps {
-                echo 'Create parameters file'
-            }
+                    git 'https://github.com/italiviocorrea/golang/tree/master/grpc/paises'
+                  }
         }
-        stage('Build') {
+        stage('Build Image') {
             steps {
                 echo "Build docker image"
                 script {
                     dockerImage = docker.build("${env.DOCKER_IMAGE_TAG}",  '-f ./Dockerfile .')
                 }
-            }
-        }
-        stage('Run') {
-            steps {
-                echo "Run docker image"
             }
         }
         stage('Test') {
@@ -32,7 +29,11 @@ pipeline {
         }
         stage('Push') {
             steps {
-                echo "Pushing the Docker image to the registry"
+                script {
+                   docker.withRegistry( '', registryCredential ) {
+                      dockerImage.push()
+                   }
+                }
             }
         }
         stage('Deploy') {
@@ -60,13 +61,6 @@ pipeline {
                         echo "Running regression test suite"
                     }
                 }
-            }
-        }
-    }
-    post {
-        always {
-            echo "Stop Docker image"
-            script {
             }
         }
     }
