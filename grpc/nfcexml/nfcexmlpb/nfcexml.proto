@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package nfcexml;
+
+option go_package = "nfcexmlpb";
+
+// Descricao da mensagem pais
+message Nfcexml {
+
+    string id = 1;
+    bytes dadosxml = 2;
+
+}
+
+message Mensagem {
+
+    int32 codigo = 1;
+    string mensagem = 2;
+
+}
+
+// Criar um pais
+message CreateRequest {
+
+    Nfcexml nfcexml = 1;
+
+}
+
+//
+message CreateResponse {
+
+    Nfcexml nfcexml = 1;
+    Mensagem mensagem = 2;
+
+}
+
+message DeleteRequest {
+
+    string id = 1;
+
+}
+
+message DeleteResponse {
+
+    Mensagem mensagem = 1;
+
+}
+
+message FindRequest {
+
+    string id = 1;
+
+}
+
+message FindResponse {
+
+    Nfcexml nfcexml = 1;
+    Mensagem mensagem = 2;
+
+}
+
+message FindAllRequest {
+
+
+}
+
+message FindAllResponse {
+
+    Mensagem mensagem = 1;
+    Nfcexml nfcexml = 2;
+
+}
+
+service Service {
+    rpc Create (CreateRequest) returns (CreateResponse);
+    rpc Delete (DeleteRequest) returns (DeleteResponse); // return NOT_FOUND if not found
+    rpc Find (FindRequest) returns (FindResponse); // return NOT_FOUND if not found
+    rpc FindAll (FindAllRequest) returns (stream FindAllResponse);
+}
