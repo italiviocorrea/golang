@@ -451,9 +451,9 @@
     "schemas": {
       "Link": {
         "properties": {
-          "name": {
+          "rel": {
             "type": "string",
-            "description": "Nome do Link",
+            "description": "Relation Link",
             "example": "self"
           },
           "method": {
@@ -465,30 +465,6 @@
             "type": "string",
             "description": "URI do Link",
             "example": "/ibge/v3/ufs/50"
-          }
-        }
-      },
-      "Pagination": {
-        "properties": {
-          "has_first": {
-            "type": "string",
-            "description": "Caminho para primeira pagina.",
-            "example": "GET /ibge/v3/ufs?page_num=1&page_size=10"
-          },
-          "has_prev": {
-              "type": "string",
-              "description": "Caminho para pagina anterior a atual",
-              "example": "GET /ibge/v3/ufs?page_num=2&page_size=10"
-          },
-          "has_next": {
-            "type": "string",
-            "description": "Caminho para proxima pagina apos a atual",
-            "example": "GET /ibge/v3/ufs?page_num=4&page_size=10"
-          },
-          "has_last": {
-            "type": "string",
-            "description": "Caminho para ultima pagina. Por exemplo, no caso de 10 pagina o decima sera a ultima.",
-            "example": "GET /ibge/v3/ufs?page_num=10&page_size=10"
           }
         }
       },
@@ -553,19 +529,22 @@
               "$ref": "#/components/schemas/UFLinks"
             }
           },
-          "pagination": {
-            "$ref": "#/components/schemas/Pagination"
-          },
-          "status": {
-            "$ref": "#/components/schemas/Message"
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
           },
           "version": {
             "type": "string",
             "description": "Versao do envelope de resposta",
-            "example": "1.0"
+            "example": "2.0"
           },
-          "link": {
-            "$ref": "#/components/schemas/Link"
+          "_links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
           }
         }
       },
@@ -577,13 +556,16 @@
               "$ref": "#/components/schemas/UFLinks"
             }
           },
-          "status": {
-            "$ref": "#/components/schemas/Message"
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
           },
           "version": {
             "type": "string",
             "description": "Versao do envelope de resposta",
-            "example": "1.0"
+            "example": "2.0"
           }
         }
       },
@@ -658,19 +640,22 @@
               "$ref": "#/components/schemas/MunicipioLinks"
             }
           },
-          "pagination": {
-            "$ref": "#/components/schemas/Pagination"
-          },
-          "status": {
-            "$ref": "#/components/schemas/Message"
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
           },
           "version": {
             "type": "string",
             "description": "Versao do envelope de resposta",
-            "example": "1.0"
+            "example": "2.0"
           },
-          "link": {
-            "$ref": "#/components/schemas/Link"
+          "_links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
           }
         }
       },
@@ -682,13 +667,16 @@
               "$ref": "#/components/schemas/MunicipioLinks"
             }
           },
-          "status": {
-            "$ref": "#/components/schemas/Message"
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
           },
           "version": {
             "type": "string",
             "description": "Versao do envelope de resposta",
-            "example": "1.0"
+            "example": "2.0"
           }
         }
       }
