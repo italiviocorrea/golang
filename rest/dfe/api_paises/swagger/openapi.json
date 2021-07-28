@@ -1,0 +1,918 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "PAÍSES API",
+    "description" : "PAÍSES API",
+    "contact" : {
+      "email" : "italiviocorrea@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Ambiente de Desenvolvimento"
+  }, {
+    "url" : "http://dfe.api.ms.gov.br",
+    "description" : "Produção",
+    "variables" : {
+      "scheme" : {
+        "description" : "A Paises API e acessivel via https ou http",
+        "default" : "http",
+        "enum" : [ "http", "https" ]
+      }
+    }
+  }, {
+    "url" : "http://hom.dfe.api.ms.gov.br",
+    "description" : "Homologacao",
+    "variables" : {
+      "scheme" : {
+        "description" : "A Paises API e acessivel via https ou http",
+        "default" : "http",
+        "enum" : [ "http", "https" ]
+      }
+    }
+  }, {
+    "url" : "http://des.dfe.api.ms.gov.br",
+    "description" : "Desenvolvimento",
+    "variables" : {
+      "scheme" : {
+        "description" : "A PAÍSES API e acessivel via https ou http",
+        "default" : "http",
+        "enum" : [ "http", "https" ]
+      }
+    }
+  } ],
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "Operações disponíveis somente para usuários administradores do sistema."
+  }, {
+    "name" : "users",
+    "description" : "Operações disponíveis para todos usuários."
+  } ],
+  "paths" : {
+    "/mon/v1/paises/status" : {
+      "get" : {
+        "tags" : [ "admins", "users" ],
+        "summary" : "Consulta o status do serviço",
+        "description" : "Retorna o Status do Serviço REST",
+        "operationId" : "statusServico",
+        "responses" : {
+          "200" : {
+            "description" : "Serviço em Operação",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 200,
+                    "mensagem" : "Serviço em Operação",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "Erro inesperado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 500,
+                    "mensagem" : "Erro inesperado",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/paises" : {
+      "get" : {
+        "tags" : [ "admins" ],
+        "summary" : "pesquisar Paises",
+        "description" : "Lista a relação de Países com paginação\n",
+        "operationId" : "findPAIS",
+        "parameters" : [ {
+          "name" : "pagina",
+          "in" : "query",
+          "description" : "número da página a ser listado.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 1
+          }
+        }, {
+          "name" : "limite",
+          "in" : "query",
+          "description" : "Número máximo de registro/linhas a ser retornado por página.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 10,
+            "type" : "integer",
+            "format" : "int32",
+            "example" : 50
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Resultado da pesquisa que atende ao critério.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "dados" : [ {
+                    "codigo" : 132,
+                    "nome" : "AFEGANISTAO",
+                    "inicioVigencia" : "2006-01-01T11:35:25.868098635-03:00",
+                    "_links" : [ {
+                      "nome" : "self",
+                      "metodo" : "GET",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Mostrar"
+                    }, {
+                      "name" : "excluir",
+                      "metodo" : "DELETE",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Excluir"
+                    } ]
+                  }, {
+                    "codigo" : 153,
+                    "nome" : "ALAND, ILHAS",
+                    "inicioVigencia" : "2017-01-01T11:35:25.868098635-03:00",
+                    "_links" : [ {
+                      "nome" : "self",
+                      "metodo" : "GET",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/153",
+                      "rel" : "Mostrar"
+                    }, {
+                      "nome" : "excluir",
+                      "metodo" : "DELETE",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/153",
+                      "rel" : "Excluir"
+                    } ]
+                  } ],
+                  "paginacao" : {
+                    "primeira" : "/dfe/v1/paises?pagina=1&limite=50",
+                    "anterior" : "/dfe/v1/paises?pagina=203&limite=50",
+                    "proxima" : "/dfe/v1/paises?pagina=205&limite=50",
+                    "ultima" : "/dfe/v1/paises?pagina=206&limite=50",
+                    "totalPaginas" : 206
+                  },
+                  "mensagens" : [ {
+                    "codigo" : 200,
+                    "mensagem" : "Consulta realizada com sucesso!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ],
+                  "links" : [ {
+                    "nome" : "Novo",
+                    "metodo" : "POST",
+                    "tipo" : "application/json",
+                    "href" : "/dfe/v1/paises",
+                    "rel" : "Novo"
+                  } ]
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Parâmetro(s) de pesquisa com problema(s).",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 404,
+                    "mensagem" : "Paises não encontrados!!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "admins" ],
+        "summary" : "Adiciona um novo Paises",
+        "description" : "Adicionar um novo Paises no banco de dados.",
+        "operationId" : "addPAIS",
+        "requestBody" : {
+          "description" : "Paises Adicionado",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Paises"
+              },
+              "example" : {
+                "codigo" : 132,
+                "nome" : "AFEGANISTAO",
+                "inicioVigencia" : "2006-01-01T00:00:00.000000000-00:00"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Paises criado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "dados" : [ {
+                    "codigo" : 132,
+                    "nome" : "AFEGANISTAO",
+                    "inicioVigencia" : "2006-01-01T11:35:25.868098635-03:00",
+                    "_links" : [ {
+                      "nome" : "self",
+                      "metodo" : "GET",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Mostrar"
+                    }, {
+                      "nome" : "modificar",
+                      "metodo" : "PUT",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Modificar"
+                    }, {
+                      "name" : "excluir",
+                      "metodo" : "DELETE",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Excluir"
+                    } ]
+                  } ],
+                  "mensagens" : [ {
+                    "codigo" : 201,
+                    "mensagem" : "Paises criado com sucesso!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ],
+                  "links" : [ {
+                    "nome" : "ListarTodos",
+                    "metodo" : "GET",
+                    "tipo" : "application/json",
+                    "href" : "/dfe/v1/paises?pagina=1&limite=50",
+                    "rel" : "Listar"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Dados de entrada inválido!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 400,
+                    "mensagem" : "Dados de entrada inválido!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Não foi possível gravar o país!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 500,
+                    "mensagem" : "Paises já existe!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/paises/{codigo}" : {
+      "get" : {
+        "tags" : [ "admins" ],
+        "summary" : "Pesquisa Paises pelo codigo",
+        "description" : "Retorna o Paises com codigo igual ao informado",
+        "parameters" : [ {
+          "name" : "codigo",
+          "in" : "path",
+          "description" : "Código do País",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 100,
+            "maximum" : 9999,
+            "example" : 132
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Recurso encontrado com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "dados" : [ {
+                    "codigo" : 132,
+                    "nome" : "AFEGANISTAO",
+                    "inicioVigencia" : "2006-01-01",
+                    "_links" : [ {
+                      "nome" : "self",
+                      "metodo" : "GET",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Mostrar"
+                    }, {
+                      "name" : "modificar",
+                      "metodo" : "PUT",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Modificar"
+                    }, {
+                      "name" : "excluir",
+                      "metodo" : "DELETE",
+                      "tipo" : "application/json",
+                      "href" : "/dfe/v1/paises/132",
+                      "rel" : "Excluir"
+                    } ]
+                  } ],
+                  "mensagens" : [ {
+                    "codigo" : 200,
+                    "mensagem" : "Consulta realizada com sucesso!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ],
+                  "links" : [ {
+                    "nome" : "ListarTodos",
+                    "metodo" : "GET",
+                    "tipo" : "application/json",
+                    "href" : "/dfe/v1/paises?pagina=1&limite=50",
+                    "rel" : "Listar"
+                  } ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "Paises não encontrado!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 204,
+                    "mensagem" : "Paises (132) não encontrado!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "412" : {
+            "description" : "Condicao nao satisfeita e pais nao encontrado!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 412,
+                    "mensagem" : "Paises 97011000 não localizado, erro inesperado!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "admins" ],
+        "summary" : "Atualiza dados do Paises",
+        "parameters" : [ {
+          "name" : "codigo",
+          "in" : "path",
+          "description" : "Codigo do Paises deve ser informado",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 100,
+            "maximum" : 9999,
+            "example" : 132
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Paises"
+              },
+              "example" : {
+                "codigo" : 9999,
+                "nome" : "AFEGANISTAO",
+                "inicioVigencia" : "2006-01-01T11:35:25.868098635-03:00"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Paises atualizado com sucesso.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 204,
+                    "mensagem" : "Paises atualizado 97011000 com sucesso!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Dados inválido!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 400,
+                    "mensagem" : "Dados do país inválido!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Erro inesperado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 500,
+                    "mensagem" : "País (132) não atualizado, erro inesperado!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admins" ],
+        "summary" : "Exclui o Paises informado",
+        "description" : "Permite excluir o Paises informado da base de dados.",
+        "parameters" : [ {
+          "name" : "codigo",
+          "in" : "path",
+          "description" : "Codigo do Paises a ser excluido",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 100,
+            "maximum" : 9999,
+            "example" : 132
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Paises excluído com sucesso!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 204,
+                    "mensagem" : "Paises 97011000 excluído com sucesso!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "412" : {
+            "description" : "Codigo inválido",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 412,
+                    "mensagem" : "Codigo do pais e inválido! (<= 100 ou >= 10000)!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Pais nao encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 404,
+                    "mensagem" : "Paises (132) não localizado para excluir!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Erro inesperado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 500,
+                    "mensagem" : "Erro interno, não foi possível excluir o pais (132)!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/evt/v1/paises/{nsu}" : {
+      "get" : {
+        "tags" : [ "users" ],
+        "summary" : "Retorna a lista de eventos inserção/atualização/remoção de Países, a partir do NSU informado",
+        "description" : "Fornece a lista de eventos inserção/atualização/remoção de Países, a partir do NSU informado.",
+        "parameters" : [ {
+          "name" : "nsu",
+          "in" : "path",
+          "description" : "Codigo do nsu inicial",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "minimum" : 1,
+            "example" : 132
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "NSU encontrado com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/EventoResposta"
+                  }
+                },
+                "example" : [ {
+                  "operacao" : "INSERT",
+                  "dataHora" : "2019-02-06T11:35:25.868098635-03:00",
+                  "nsu" : 100001,
+                  "apos" : [ {
+                    "codigo" : 132,
+                    "nome" : "AFEGANISTAO",
+                    "inicioVigencia" : "2006-01-01"
+                  } ]
+                }, {
+                  "operacao" : "INSERT",
+                  "dataHora" : "2019-02-06T11:35:25.868098635-03:00",
+                  "nsu" : 100002,
+                  "apos" : [ {
+                    "codigo" : 153,
+                    "nome" : "ALAND, ILHAS",
+                    "inicioVigencia" : "2006-01-01"
+                  } ]
+                }, {
+                  "operacao" : "UPDATE",
+                  "dataHora" : "2019-02-07T08:11:25.868098635-03:00",
+                  "nsu" : 100003,
+                  "antes" : [ {
+                    "codigo" : 153,
+                    "nome" : "ALAND, ILHAS",
+                    "inicioVigencia" : "2006-01-01"
+                  } ],
+                  "apos" : [ {
+                    "codigo" : 153,
+                    "nome" : "ALAND, ILHAS",
+                    "inicioVigencia" : "2017-01-01"
+                  } ]
+                }, {
+                  "operacao" : "DELETE",
+                  "dataHora" : "2019-02-07T11:35:25.868098635-03:00",
+                  "nsu" : 100004,
+                  "antes" : [ {
+                    "codigo" : 153,
+                    "nome" : "ALAND, ILHAS",
+                    "inicioVigencia" : "2017-01-01"
+                  } ]
+                } ]
+              }
+            }
+          },
+          "204" : {
+            "description" : "Eventos não encontrado!",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 204,
+                    "mensagem" : "Eventos não encontrado!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Erro inesperado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaisesResposta"
+                },
+                "example" : {
+                  "mensagens" : [ {
+                    "codigo" : 500,
+                    "mensagem" : "Paises 97011000 não localizado, erro inesperado!",
+                    "dataHora" : "2019-02-06T11:35:25.868098635-03:00"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Paises" : {
+        "required" : [ "codigo", "nome" ],
+        "type" : "object",
+        "properties" : {
+          "codigo" : {
+            "description" : "Codigo de 8 dígitos do Paises",
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 100,
+            "maximum" : 9999,
+            "example" : 132
+          },
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do país",
+            "example" : "Brasil"
+          },
+          "inicioVigencia" : {
+            "type" : "string",
+            "description" : "Data de início da vigência do Paises",
+            "format" : "date"
+          },
+          "fimVigencia" : {
+            "type" : "string",
+            "description" : "Data final da vigência do Paises (Opcional)",
+            "format" : "date"
+          },
+          "_links" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            },
+            "nullable" : true
+          }
+        },
+        "description" : "Esquema do Paises"
+      },
+      "PaisesResposta" : {
+        "type" : "object",
+        "properties" : {
+          "dados" : {
+            "type" : "array",
+            "description" : "Lista de Países a serem retornado ao cliente.",
+            "items" : {
+              "$ref" : "#/components/schemas/Paises"
+            }
+          },
+          "paginacao" : {
+            "type" : "array",
+            "description" : "Retorna a lista de paginação, quando a lista de Paises for muito grande.",
+            "nullable" : true,
+            "items" : {
+              "$ref" : "#/components/schemas/Paginacao"
+            }
+          },
+          "mensagens" : {
+            "type" : "array",
+            "description" : "Lista de mensagens para cliente",
+            "nullable" : true,
+            "items" : {
+              "$ref" : "#/components/schemas/Mensagem"
+            }
+          },
+          "links" : {
+            "type" : "array",
+            "description" : "Lista de links para navegação no recurso",
+            "nullable" : true,
+            "items" : {
+              "$ref" : "#/components/schemas/Link"
+            }
+          },
+          "versao" : {
+          "type" : "string",
+          "description" : "versao do esquema de resposta",
+          "example" : "v3"
+        }
+        },
+        "description" : "Schema da resposta padrão dos serviços"
+      },
+      "Link" : {
+        "required" : [ "href", "method" ],
+        "type" : "object",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do link",
+            "nullable" : true
+          },
+          "metodo" : {
+            "type" : "string",
+            "description" : "Método HTTP permitido para o link",
+            "enum" : [ "POST", "PUT", "GET", "DELETE" ]
+          },
+          "tipo" : {
+            "type" : "string",
+            "description" : "Tipo de média esperado pelo link",
+            "example" : "application/json"
+          },
+          "href" : {
+            "type" : "string",
+            "description" : "uri do link"
+          },
+          "rel" : {
+            "type" : "string",
+            "description" : "Permite informar a relação do link com o recurso."
+          }
+        }
+      },
+      "Paginacao" : {
+        "type" : "object",
+        "properties" : {
+          "primeira" : {
+            "type" : "string",
+            "description" : "Caminho para o primeira página da listagem de Paises",
+            "nullable" : true
+          },
+          "proxima" : {
+            "type" : "string",
+            "description" : "Caminho para a próxima página, em relação a atual.",
+            "nullable" : true
+          },
+          "anterior" : {
+            "type" : "string",
+            "description" : "Caminho para a página anterior, em relação a atual",
+            "nullable" : true
+          },
+          "ultima" : {
+            "type" : "string",
+            "description" : "Caminho para ir para última página da lista de Paises.",
+            "nullable" : true
+          },
+          "totalPaginas" : {
+            "type" : "integer",
+            "description" : "Total de páginas disponíveis para lista de Paises.",
+            "format" : "int32",
+            "nullable" : true
+          }
+        }
+      },
+      "Mensagem" : {
+        "type" : "object",
+        "properties" : {
+          "codigo" : {
+            "maximum" : 9999,
+            "minimum" : 1,
+            "type" : "integer",
+            "description" : "Código da mensagem.",
+            "format" : "int32",
+            "example" : 200
+          },
+          "mensagem" : {
+            "maxLength" : 255,
+            "minLength" : 1,
+            "type" : "string",
+            "description" : "Descrição da mensagem",
+            "example" : "Serviço em operação"
+          },
+          "dataHora" : {
+            "type" : "string",
+            "description" : "Data e Hora da mensagem. Formato AAAA-MM-DDTHH:MM:SS",
+            "format" : "date-time"
+          }
+        },
+        "description" : "Retorna uma mensagem do Serviço ou alerta do serviço."
+      },
+      "EventoResposta" : {
+        "type" : "object",
+        "properties" : {
+          "operacao" : {
+            "type" : "string",
+            "description" : "Operação informa o tipo de evento que gerou a modificação.",
+            "enum" : [ "INSERT", "UPDATE", "DELETE" ]
+          },
+          "dataHora" : {
+            "type" : "string",
+            "description" : "Data e Hora em que ocorreu o evento",
+            "format" : "date-time"
+          },
+          "nsu" : {
+            "type" : "integer",
+            "description" : "Número serial unico do evento",
+            "format" : "int64"
+          },
+          "antes" : {
+            "$ref" : "#/components/schemas/Paises"
+          },
+          "apos" : {
+            "$ref" : "#/components/schemas/Paises"
+          }
+        },
+        "description" : "O objetivo deste schema é permitir o retorno das mudanças na lista de Países"
+      }
+    }
+  }
+}

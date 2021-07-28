@@ -1,0 +1,72 @@
+version: '3.2'
+
+
+services:
+
+#    dfe_paises:
+#        depends_on:
+#            - msssql
+#        image: encat_paises:1.0
+#        expose:
+#          - 8080
+#        ports:
+#            - 8080:8080
+#        networks:
+#          - dfe_net
+#        environment:
+#          - API_SRV_ADDR=0.0.0.0:8080
+#          - API_DB_HOST=dbpaises
+#          - API_DB_USER=sa
+#          - API_DB_PWD=senha#123
+#          - API_DB_PORT=1433
+#          - API_DB_NAME=dbpaises
+#          - API_SRV_CONTEXT=/dfe/v1
+#          - API_SRV_LOGLEVEL=4
+
+  sqlserver:
+    image: microsoft/mssql-server-linux:latest
+    expose:
+      - 1433
+    ports:
+      - 1433:1433
+    networks:
+      - dfe_net
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Standard
+      - SA_PASSWORD=Senha123
+      - MSSQL_AGENT_ENABLED=true
+    volumes:
+      - ~/srv/mssql/dbpaises:/var/opt/mssql
+
+  paises:
+    image: icorrea/api-paises-grpc:1.0
+    ports:
+      - 50051:50051
+    networks:
+      - dfe_net
+    environment:
+      - API_DB_HOST=sqlserver
+    depends_on:
+      - sqlserver
+
+  # A web based interface for managing your docker containers.
+  portainer:
+    image: portainer/portainer
+    command: --templates http://templates/templates.json
+    networks:
+      - dfe_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/srv/cassandra/portainer-data:/data
+    # Enable you to access potainers web interface from your host machine
+    # using http://localhost:10001
+    ports:
+      - "10001:9000"
+
+
+networks:
+  dfe_net:
+    external: true
+
+
