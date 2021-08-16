@@ -1,8 +1,8 @@
 package persistence
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3esit/cmd/cons-sit/app/Cassandra"
-	"github.com/italiviocorrea/golang/rsocket/nf3esit/cmd/cons-sit/app/model"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/cmd/cons-sit/app/Cassandra"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/cmd/cons-sit/app/model"
 	"log"
 )
 
