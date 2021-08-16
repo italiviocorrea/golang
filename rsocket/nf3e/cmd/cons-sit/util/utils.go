@@ -8,7 +8,7 @@ import (
 type (
 	Configuration struct {
 		Server   string `default:"0.0.0.0:7878"`
-		DBHost   string `default:"s1602.ms"`
+		DBHost   string `default:"localhost"`
 		DBPort   int    `default:"9042"`
 		DBUser   string `default:"nf3e"`
 		DBPwd    string `default:"senha#123"`
