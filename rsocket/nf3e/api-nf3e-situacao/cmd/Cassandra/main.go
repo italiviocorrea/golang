@@ -2,7 +2,7 @@ package Cassandra
 
 import (
 	"fmt"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/cmd/cons-sit/util"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/util"
 	"github.com/yugabyte/gocql"
 	"log"
 	"os"

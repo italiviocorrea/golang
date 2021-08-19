@@ -1,4 +1,4 @@
-module github.com/italiviocorrea/golang/rsocket/nf3esit
+module github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao
 
 go 1.16
 
