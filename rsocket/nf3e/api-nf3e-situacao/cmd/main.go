@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/app"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config/Cassandra"
@@ -27,12 +25,4 @@ func main() {
 		Serve(context.Background())
 
 	log.Fatalln(err)
-}
-
-func JSONMarshal(t interface{}) ([]byte, error) {
-	buffer := &bytes.Buffer{}
-	encoder := json.NewEncoder(buffer)
-	encoder.SetEscapeHTML(false)
-	err := encoder.Encode(t)
-	return buffer.Bytes(), err
 }
