@@ -4,14 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/Cassandra"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/persistence"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/util"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/app"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config/Cassandra"
 	"github.com/rsocket/rsocket-go"
 	"github.com/rsocket/rsocket-go/payload"
-	"github.com/rsocket/rsocket-go/rx/mono"
 	"log"
-	"time"
 )
 
 func main() {
@@ -23,23 +21,12 @@ func main() {
 	err := rsocket.Receive().
 		Acceptor(func(ctx context.Context, setup payload.SetupPayload, sendingSocket rsocket.CloseableRSocket) (rsocket.RSocket, error) {
 			// bind responder
-			return rsocket.NewAbstractSocket(
-				rsocket.RequestResponse(func(msg payload.Payload) mono.Mono {
-					nf3e, err := persistence.FindByChNF3e(msg.DataUTF8())
-					if err != nil {
-						return mono.Just(payload.NewString(err.Error(), time.Now().String()))
-					}
-					j, _ := JSONMarshal(nf3e)
-					log.Println(nf3e)
-					return mono.Just(payload.New(j, []byte(time.Now().String())))
-				}),
-			), nil
+			return app.Responder(), nil
 		}).
-		Transport(rsocket.TCPServer().SetAddr(util.AppConfig.Server).Build()).
+		Transport(rsocket.TCPServer().SetAddr(config.AppConfig.Server).Build()).
 		Serve(context.Background())
 
 	log.Fatalln(err)
-
 }
 
 func JSONMarshal(t interface{}) ([]byte, error) {

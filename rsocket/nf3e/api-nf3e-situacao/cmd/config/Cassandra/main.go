@@ -2,7 +2,7 @@ package Cassandra
 
 import (
 	"fmt"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/util"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config"
 	"github.com/yugabyte/gocql"
 	"log"
 	"os"
@@ -18,16 +18,16 @@ func init() {
 	setVarEnv()
 
 	log.Println("Iniciando as configuracoes da aplicacao.")
-	util.StartUp("NF3E_API")
+	config.StartUp("NF3E_API")
 
-	hosts := strings.Split(util.AppConfig.DBHost, ",")
+	hosts := strings.Split(config.AppConfig.DBHost, ",")
 
 	log.Println(hosts)
 
 	cluster := gocql.NewCluster(hosts...)
 
 	cluster.Timeout = 12 * time.Second
-	cluster.Keyspace = util.AppConfig.Database
+	cluster.Keyspace = config.AppConfig.Database
 
 	Session, _ = cluster.CreateSession()
 	fmt.Println("Conexao com o Cassandra esta pronto.")
@@ -40,7 +40,7 @@ func setVarEnv() {
 	}
 
 	if os.Getenv("NF3E_API_DBHOST") == "" {
-		os.Setenv("NF3E_API_DBHOST", "s1602.ms:9042")
+		os.Setenv("NF3E_API_DBHOST", "10.102.61.19:9042")
 	}
 
 	if os.Getenv("NF3E_API_DBUSER") == "" {
@@ -55,12 +55,24 @@ func setVarEnv() {
 		os.Setenv("NF3E_API_DATABASE", "nf3e")
 	}
 
-	if os.Getenv("NF3E_API_CONTEXT") == "" {
-		os.Setenv("NF3E_API_CONTEXT ", "/nf3/v1")
-	}
+	//if os.Getenv("NF3E_API_CONTEXT") == "" {
+	//	os.Setenv("NF3E_API_CONTEXT ", "/nf3/v1")
+	//}
 
 	if os.Getenv("NF3E_API_LOGLEVEL") == "" {
 		os.Setenv("NF3E_API_LOGLEVEL", "4")
+	}
+
+	if os.Getenv("NF3E_API_TPAMB") == "" {
+		os.Setenv("NF3E_API_TPAMB", "2")
+	}
+
+	if os.Getenv("NF3E_API_CUF") == "" {
+		os.Setenv("NF3E_API_CUF", "50")
+	}
+
+	if os.Getenv("NF3E_API_NSITEAUTORIZ") == "" {
+		os.Setenv("NF3E_API_NSITEAUTORIZ", "0")
 	}
 
 }

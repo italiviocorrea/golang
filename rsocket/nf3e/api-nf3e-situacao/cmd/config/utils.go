@@ -1,4 +1,4 @@
-package util
+package config
 
 import (
 	"github.com/kelseyhightower/envconfig"
@@ -7,13 +7,16 @@ import (
 
 type (
 	Configuration struct {
-		Server   string `default:"0.0.0.0:7878"`
-		DBHost   string `default:"s1602.ms"`
-		DBPort   int    `default:"9042"`
-		DBUser   string `default:"nf3e"`
-		DBPwd    string `default:"senha#123"`
-		Database string `default:"nf3e"`
-		LogLevel int    `default:"4"`
+		Server       string `default:"0.0.0.0:7878"`
+		DBHost       string `default:"10.102.61.19"`
+		DBPort       int    `default:"9042"`
+		DBUser       string `default:"nf3e"`
+		DBPwd        string `default:"senha#123"`
+		Database     string `default:"nf3e"`
+		LogLevel     int    `default:"4"`
+		TpAmb        string `default:"2"`
+		CUF          string `default:"50"`
+		NSiteAutoriz int    `default:"0"`
 	}
 )
 
