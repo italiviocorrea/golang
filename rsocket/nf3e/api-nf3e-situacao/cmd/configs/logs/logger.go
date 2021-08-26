@@ -1,4 +1,4 @@
-package config
+package logs
 
 import (
 	"io"
@@ -54,7 +54,7 @@ func initLog(
 }
 
 // SetLogLevel sets the logging level preference
-func setLogLevel(level Level) {
+func SetLogLevel(level Level) {
 
 	// Creates os.*File, which has implemented io.Writer intreface
 	f, err := os.OpenFile("logs.txt", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)

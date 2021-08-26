@@ -1,28 +1,17 @@
 package main
 
 import (
-	"context"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/app"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/config/Cassandra"
-	"github.com/rsocket/rsocket-go"
-	"github.com/rsocket/rsocket-go/payload"
-	"log"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs/db"
 )
 
 func main() {
 
-	log.Println("Criando uma sessao cassandra.")
-	session := Cassandra.Session
-	defer session.Close()
+	// Pega a conexão com o banco de dados
+	cassadraDB := db.NewCassandraClient()
+	defer cassadraDB.DB().Close()
 
-	err := rsocket.Receive().
-		Acceptor(func(ctx context.Context, setup payload.SetupPayload, sendingSocket rsocket.CloseableRSocket) (rsocket.RSocket, error) {
-			// bind responder
-			return app.Responder(), nil
-		}).
-		Transport(rsocket.TCPServer().SetAddr(config.AppConfig.Server).Build()).
-		Serve(context.Background())
+	// Inicia o servidor rsocket
+	app.Server(cassadraDB)
 
-	log.Fatalln(err)
 }

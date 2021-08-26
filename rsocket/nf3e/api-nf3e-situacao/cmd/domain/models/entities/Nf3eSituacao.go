@@ -1,4 +1,4 @@
-package model
+package entities
 
 type Nf3eSituacao struct {
 	Chnf3e         string   `json:"chNF3e,omitempty"`
