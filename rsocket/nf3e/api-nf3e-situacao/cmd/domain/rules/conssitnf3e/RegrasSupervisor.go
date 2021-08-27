@@ -23,13 +23,39 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 	r.ConsSitNF3e.ChNF3eDecode = chave
 	fmt.Println(r)
 
-	resp252 := regraI01Rej252(r.ConsSitNF3e)
-	resp226 := regraI02Rej226(r.ConsSitNF3e)
-	resp478 := regraI03Rej2478(r.ConsSitNF3e)
-	resp236 := regraI04Rej236(r.ConsSitNF3e)
-	resp482 := regraI05Rej482(r.ConsSitNF3e)
+	// Cria os canais para receber as respostas
+	ch252 := make(chan dtos.RespostaValidacao)
+	ch226 := make(chan dtos.RespostaValidacao)
+	ch478 := make(chan dtos.RespostaValidacao)
+	ch236 := make(chan dtos.RespostaValidacao)
+	ch482 := make(chan dtos.RespostaValidacao)
 
-	resps = append(resps, resp252, resp226, resp478, resp236, resp482)
+	// Chamas as regras de forma concorrente usando GO rotinas
+	go func() {
+		ch252 <- regraI01Rej252(r.ConsSitNF3e)
+		close(ch252)
+	}()
+	go func() {
+		ch226 <- regraI02Rej226(r.ConsSitNF3e)
+		close(ch226)
+	}()
+	go func() {
+		ch236 <- regraI04Rej236(r.ConsSitNF3e)
+		close(ch236)
+	}()
+	go func() {
+		ch478 <- regraI03Rej478(r.ConsSitNF3e)
+		close(ch478)
+	}()
+	go func() {
+		ch482 <- regraI05Rej482(r.ConsSitNF3e)
+		close(ch482)
+	}()
+
+	// pega as respostas dos canais e anexa ao array de respostas
+	resps = append(resps, <-ch252, <-ch226, <-ch236, <-ch478, <-ch482)
+
+	fmt.Println(resps)
 
 	for _, s := range resps {
 		if s.CStat != "100" {
@@ -41,22 +67,18 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 }
 
 func regraI01Rej252(consSitNF3e dtos.ConsSitNF3e) dtos.RespostaValidacao {
-
-	rej252 := rnI01Rej252{ConsSitNF3e: consSitNF3e}
-	resp := rej252.Validate()
-
+	rej := rnI01Rej252{ConsSitNF3e: consSitNF3e}
+	resp := rej.Validate()
 	return resp
 }
 
 func regraI02Rej226(consSitNF3e dtos.ConsSitNF3e) dtos.RespostaValidacao {
-
 	rej := rnI02Rej226{ConsSitNF3e: consSitNF3e}
 	resp := rej.Validate()
-
 	return resp
 }
 
-func regraI03Rej2478(consSitNF3e dtos.ConsSitNF3e) dtos.RespostaValidacao {
+func regraI03Rej478(consSitNF3e dtos.ConsSitNF3e) dtos.RespostaValidacao {
 
 	rej := rnI03Rej478{ConsSitNF3e: consSitNF3e}
 	resp := rej.Validate()
