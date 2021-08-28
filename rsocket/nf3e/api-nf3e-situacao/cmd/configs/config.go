@@ -89,7 +89,7 @@ func setVarEnvs(envVarsPrefix string) {
 	}
 
 	if os.Getenv(envVarsPrefix+"_DBHOST") == "" {
-		os.Setenv(envVarsPrefix+"_DBHOST", "s1602.ms:9042")
+		os.Setenv(envVarsPrefix+"_DBHOST", "localhost:9042")
 	}
 
 	if os.Getenv(envVarsPrefix+"_DBUSER") == "" {

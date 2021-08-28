@@ -23,14 +23,14 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 	r.ConsSitNF3e.ChNF3eDecode = chave
 	fmt.Println(r)
 
-	// Cria os canais para receber as respostas
+	// Criar os canais para receber as respostas
 	ch252 := make(chan dtos.RespostaValidacao)
 	ch226 := make(chan dtos.RespostaValidacao)
 	ch478 := make(chan dtos.RespostaValidacao)
 	ch236 := make(chan dtos.RespostaValidacao)
 	ch482 := make(chan dtos.RespostaValidacao)
 
-	// Chamas as regras de forma concorrente usando GO rotinas
+	// Executar as regras de forma concorrente usando GO rotinas
 	go func() {
 		ch252 <- regraI01Rej252(r.ConsSitNF3e)
 		close(ch252)
@@ -52,7 +52,7 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 		close(ch482)
 	}()
 
-	// pega as respostas dos canais e anexa ao array de respostas
+	// pegar as respostas dos canais e anexa ao array de respostas
 	resps = append(resps, <-ch252, <-ch226, <-ch236, <-ch478, <-ch482)
 
 	fmt.Println(resps)
