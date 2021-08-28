@@ -27,7 +27,8 @@ func (n *nf3eSituacaoRepositoryCassandra) FindByID(chnf3e string) (entities.Nf3e
 		log.Err(err).
 			Str("service", "api-nf3e-situacao").
 			Str("component", "Nf3eSituacaoRepositoryCassandra").
-			Msgf("Erro ao pesquisar chave de acesso (%s)", chnf3e)
+			Str("chNF3e", chnf3e).
+			Msg("Erro ao pesquisar a chave de acesso ")
 		return nf3e, err
 	}
 	return nf3e, nil

@@ -27,6 +27,7 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 	log.Info().
 		Str("service", "api-nf3e-situacao").
 		Str("module", "RegrasSupervisor").
+		Str("chNF3e", r.ConsSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(r))
 
 	// Criar os canais para receber as respostas
@@ -74,6 +75,7 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 	log.Info().
 		Str("service", "api-nf3e-situacao").
 		Str("component", "RegrasSupervisor").
+		Str("chNF3e", r.ConsSitNF3e.ChNF3e).
 		Msgf("{RespostaValidacao:%s}", utils.JsonMarshal(validationResponses))
 
 	return validationResponses

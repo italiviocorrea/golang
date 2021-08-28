@@ -65,6 +65,7 @@ func JsonUnmarshal(payload string) dtos.ConsSitNF3e {
 	log.Info().
 		Str("service", "api-nf3e-situacao").
 		Str("module", "rsocket_handler").
+		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 
 	return conSitNF3e
@@ -86,6 +87,7 @@ func XmlUnmarshall(payload string) (dtos.ConsSitNF3e, error) {
 	log.Info().
 		Str("service", "api-nf3e-situacao").
 		Str("module", "rsocket_handler").
+		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 
 	return conSitNF3e, nil
