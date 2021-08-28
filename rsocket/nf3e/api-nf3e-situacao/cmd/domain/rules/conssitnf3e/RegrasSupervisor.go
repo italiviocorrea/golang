@@ -1,11 +1,11 @@
 package conssitnf3e
 
 import (
-	"fmt"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/rules/interfaces"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/utils"
+	"github.com/rs/zerolog/log"
 )
 
 type regrasSupervisor struct {
@@ -23,7 +23,11 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 	chave := vos.ChaveAcesso{}
 	chave.Decode(r.ConsSitNF3e.ChNF3e)
 	r.ConsSitNF3e.ChNF3eDecode = chave
-	fmt.Println(r)
+
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("module", "RegrasSupervisor").
+		Msg(utils.JsonMarshal(r))
 
 	// Criar os canais para receber as respostas
 	ch252 := make(chan dtos.RespostaValidacao)
@@ -67,7 +71,10 @@ func (r *regrasSupervisor) Validate() []dtos.RespostaValidacao {
 		utils.Reduce(ch478),
 		utils.Reduce(ch482))
 
-	fmt.Println(validationResponses)
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("component", "RegrasSupervisor").
+		Msgf("{RespostaValidacao:%s}", utils.JsonMarshal(validationResponses))
 
 	return validationResponses
 }

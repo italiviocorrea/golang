@@ -1,10 +1,9 @@
 package db
 
 import (
-	"fmt"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
+	"github.com/rs/zerolog/log"
 	"github.com/yugabyte/gocql"
-	"log"
 	"strings"
 	"time"
 )
@@ -32,11 +31,20 @@ func NewCassandraClient() ClientDB {
 	db, err = cluster.CreateSession()
 
 	if err != nil {
-		log.Println(fmt.Sprintf("Error to loading Database %s", err))
+		//log.Println(fmt.Sprintf("Error to loading Database %s", err))
+		log.Fatal().Err(err).
+			Str("service", "api-nf3e-situacao").
+			Str("component", "cassandra").
+			Str("hosts", configs.Get().DBHost).
+			Str("keyspace", configs.Get().Database).
+			Msg("Erro ao carregar o banco de dados cassandra.")
 		return nil
 	}
 
-	fmt.Println("Database was connected.")
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("component", "cassandra").
+		Msg("O banco de dados foi conectado.")
 
 	return &cassandraDB{
 		db: db,

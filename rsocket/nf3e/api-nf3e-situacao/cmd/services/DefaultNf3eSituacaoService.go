@@ -32,6 +32,7 @@ func (repo *defaultNf3eSituacaoService) GetNf3eSituacao(consSitNF3e dtos.ConsSit
 		resp := utils.Take(utils.FilterRejects(resps), 1)[0]
 		return dtos.RetConsSitNF3e{
 			Versao:         configs.Get().VersaoLeiaute,
+			Xmlns:          configs.Get().Xmlns,
 			TpAmb:          configs.Get().TpAmb,
 			VerAplic:       configs.Get().VerAplic,
 			Cstat:          resp.CStat,
@@ -45,6 +46,7 @@ func (repo *defaultNf3eSituacaoService) GetNf3eSituacao(consSitNF3e dtos.ConsSit
 		if err != nil {
 			return dtos.RetConsSitNF3e{
 				Versao:         configs.Get().VersaoLeiaute,
+				Xmlns:          configs.Get().Xmlns,
 				TpAmb:          configs.Get().TpAmb,
 				VerAplic:       configs.Get().VerAplic,
 				Cstat:          "999",
@@ -57,6 +59,7 @@ func (repo *defaultNf3eSituacaoService) GetNf3eSituacao(consSitNF3e dtos.ConsSit
 		}
 		return dtos.RetConsSitNF3e{
 			Versao:         configs.Get().VersaoLeiaute,
+			Xmlns:          configs.Get().Xmlns,
 			TpAmb:          nf3e.Tpamb,
 			VerAplic:       configs.Get().VerAplic,
 			Cstat:          nf3e.Cstat,

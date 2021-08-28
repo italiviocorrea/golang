@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"encoding/json"
+	"encoding/xml"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/utils"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/services"
+	"github.com/rs/zerolog/log"
 	"github.com/rsocket/rsocket-go/payload"
-	"log"
 )
 
 type Nf3eSituacaoHandler interface {
@@ -22,9 +25,24 @@ func NewRSocketHandler(situacaoService services.Nf3eSituacaoService) Nf3eSituaca
 func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error) {
 
 	// Decodificar o Payload da mensagem
-	conSitNF3e := JsonUnmarshal(msg.DataUTF8())
+	//conSitNF3e := JsonUnmarshal(msg.DataUTF8())
+	conSitNF3e, err := XmlUnmarshall(msg.DataUTF8())
 
-	return services.Nf3eSituacaoService.GetNf3eSituacao(conSitNF3e)
+	if err != nil {
+		return dtos.RetConsSitNF3e{
+			Versao:         configs.Get().VersaoLeiaute,
+			Xmlns:          configs.Get().Xmlns,
+			TpAmb:          configs.Get().TpAmb,
+			VerAplic:       configs.Get().VerAplic,
+			Cstat:          "999",
+			Xmotivo:        "Rejeição: Erro não catalogado",
+			Cuf:            configs.Get().CUF,
+			Protnf3e:       "",
+			Proceventonf3e: nil,
+		}, nil
+	} else {
+		return services.Nf3eSituacaoService.GetNf3eSituacao(conSitNF3e)
+	}
 }
 
 /*
@@ -38,10 +56,37 @@ func JsonUnmarshal(payload string) dtos.ConsSitNF3e {
 	err := json.Unmarshal([]byte(payload), &conSitNF3e)
 
 	if err != nil {
-		log.Println("Erro ao pegar ao o payload")
+		log.Err(err).
+			Str("service", "api-nf3e-situacao").
+			Str("component", "rsocket_handler").
+			Msgf("Error convert JSON payload (%s)", payload)
 	}
 
-	log.Println(conSitNF3e)
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("module", "rsocket_handler").
+		Msg(utils.JsonMarshal(conSitNF3e))
 
 	return conSitNF3e
+}
+
+func XmlUnmarshall(payload string) (dtos.ConsSitNF3e, error) {
+
+	var conSitNF3e dtos.ConsSitNF3e
+
+	err := xml.Unmarshal([]byte(payload), &conSitNF3e)
+	if err != nil {
+		log.Err(err).
+			Str("service", "api-nf3e-situacao").
+			Str("component", "rsocket_handler").
+			Msgf("Error convert XML payload (%s)", payload)
+		return conSitNF3e, err
+	}
+
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("module", "rsocket_handler").
+		Msg(utils.JsonMarshal(conSitNF3e))
+
+	return conSitNF3e, nil
 }

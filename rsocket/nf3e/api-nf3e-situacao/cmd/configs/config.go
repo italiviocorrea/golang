@@ -1,9 +1,8 @@
 package configs
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs/logs"
 	"github.com/kelseyhightower/envconfig"
-	"log"
+	"github.com/rs/zerolog/log"
 	"os"
 	"sync"
 )
@@ -17,6 +16,7 @@ type (
 		NSiteAutoriz  int
 		VerAplic      string
 		VersaoLeiaute string
+		Xmlns         string
 		// ApiServer Config
 		Server string
 		Port   int
@@ -49,20 +49,26 @@ func init() {
 func load() appConfig {
 	var envVarsPrefix = defaultPrefixEnvVars()
 
-	log.Println("Inicializa variaveis de ambiente, caso nao exista")
 	setVarEnvs(envVarsPrefix)
 
-	log.Println("Carregando as configuracoes da aplicacao.")
+	//log.Println("Carregando as configuracoes da aplicacao.")
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("component", "config").
+		Msg("Ler as configuracões a partir das variáveis de ambiente.")
+
 	config = appConfig{}
 
 	err := envconfig.Process(envVarsPrefix+"", &config)
 
 	if err != nil {
-		log.Fatalf("[load]: %s\n", err)
-	}
+		//log.Fatalf("[load]: %s\n", err)
+		log.Fatal().Err(err).
+			Str("service", "api-nf3e-situacao").
+			Str("component", "config").
+			Msg("Erro ao carregar as variáveis de ambiente.")
 
-	log.Println("Configurando nivel de log...")
-	logs.SetLogLevel(logs.Level(config.LogLevel))
+	}
 
 	return config
 }
@@ -81,6 +87,11 @@ func Get() appConfig {
 }
 
 func setVarEnvs(envVarsPrefix string) {
+
+	log.Info().
+		Str("service", "api-nf3e-situacao").
+		Str("component", "config").
+		Msg("Inicializa variaveis de ambiente, caso nao exista")
 
 	if os.Getenv(envVarsPrefix+"_SERVER") == "" {
 		os.Setenv(envVarsPrefix+"_SERVER", "localhost")
@@ -132,6 +143,10 @@ func setVarEnvs(envVarsPrefix string) {
 
 	if os.Getenv(envVarsPrefix+"_NSITEAUTORIZ") == "" {
 		os.Setenv(envVarsPrefix+"_NSITEAUTORIZ", "0")
+	}
+
+	if os.Getenv(envVarsPrefix+"_XMLNS") == "" {
+		os.Setenv(envVarsPrefix+"_XMLNS", "http://www.portalfiscal.inf.br/nf3e")
 	}
 
 }

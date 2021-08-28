@@ -3,7 +3,7 @@ package nf3e_qry
 import (
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs/db"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/entities"
-	"log"
+	"github.com/rs/zerolog/log"
 )
 
 type nf3eSituacaoRepositoryCassandra struct {
@@ -24,7 +24,10 @@ func (n *nf3eSituacaoRepositoryCassandra) FindByID(chnf3e string) (entities.Nf3e
 		Scan(&nf3e.Chnf3e, &nf3e.Versao, &nf3e.Tpamb, &nf3e.Cstat, &nf3e.Xmotivo, &nf3e.Cuf, &nf3e.Protnf3e, &nf3e.Proceventonf3e)
 
 	if err != nil {
-		log.Printf("Error reading rows: " + err.Error())
+		log.Err(err).
+			Str("service", "api-nf3e-situacao").
+			Str("component", "Nf3eSituacaoRepositoryCassandra").
+			Msgf("Erro ao pesquisar chave de acesso (%s)", chnf3e)
 		return nf3e, err
 	}
 	return nf3e, nil
