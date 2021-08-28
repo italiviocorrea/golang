@@ -11,10 +11,12 @@ import (
 type (
 	appConfig struct {
 		// API Config
-		LogLevel     int
-		TpAmb        string
-		CUF          string
-		NSiteAutoriz int
+		LogLevel      int
+		TpAmb         string
+		CUF           string
+		NSiteAutoriz  int
+		VerAplic      string
+		VersaoLeiaute string
 		// ApiServer Config
 		Server string
 		Port   int
@@ -118,6 +120,14 @@ func setVarEnvs(envVarsPrefix string) {
 
 	if os.Getenv(envVarsPrefix+"_CUF") == "" {
 		os.Setenv(envVarsPrefix+"_CUF", "50")
+	}
+
+	if os.Getenv(envVarsPrefix+"_VERAPLIC") == "" {
+		os.Setenv(envVarsPrefix+"_VERAPLIC", "v2021.01a")
+	}
+
+	if os.Getenv(envVarsPrefix+"_VERSAOLEIAUTE") == "" {
+		os.Setenv(envVarsPrefix+"_VERSAOLEIAUTE", "1.00")
 	}
 
 	if os.Getenv(envVarsPrefix+"_NSITEAUTORIZ") == "" {

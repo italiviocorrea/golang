@@ -24,8 +24,6 @@ func NewCassandraClient() ClientDB {
 
 	hosts := strings.Split(configs.Get().DBHost, ",")
 
-	log.Println(hosts)
-
 	cluster := gocql.NewCluster(hosts...)
 
 	cluster.Timeout = 12 * time.Second

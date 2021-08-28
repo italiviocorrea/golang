@@ -17,6 +17,7 @@ func NewNf3eSituacaoRepositoryCassandra(DB db.ClientDB) Nf3eSituacaoRepositoryIn
 }
 
 func (n *nf3eSituacaoRepositoryCassandra) FindByID(chnf3e string) (entities.Nf3eSituacao, error) {
+
 	var nf3e entities.Nf3eSituacao
 
 	err := n.DB.DB().Query("select chnf3e,versao,tpamb,cstat,xmotivo,cuf,protnf3e,proceventonf3e FROM nf3e_situacao where chnf3e = ?", chnf3e).
