@@ -1,16 +1,16 @@
 package conssitnf3e
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/rules/interfaces"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/ports"
 )
 
 type rnI02Rej226 struct {
 	ConsSitNF3e dtos.ConsSitNF3e
 }
 
-func NewRnI02Rej226(consSitNF3e dtos.ConsSitNF3e) interfaces.Supplier {
+func NewRnI02Rej226(consSitNF3e dtos.ConsSitNF3e) ports.Supplier {
 	return &rnI02Rej226{ConsSitNF3e: consSitNF3e}
 }
 

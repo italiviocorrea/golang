@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs"
 	"github.com/rs/zerolog/log"
 	"github.com/yugabyte/gocql"
 	"strings"

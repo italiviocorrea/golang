@@ -1,10 +1,10 @@
 package conssitnf3e
 
 import (
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/utils"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/vos"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/rules/interfaces"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/utils"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/ports"
 	"github.com/rs/zerolog/log"
 )
 
@@ -12,7 +12,7 @@ type regrasSupervisor struct {
 	ConsSitNF3e dtos.ConsSitNF3e
 }
 
-func NewRegrasSupervisor(consSitNF3e dtos.ConsSitNF3e) interfaces.Supervisor {
+func NewRegrasSupervisor(consSitNF3e dtos.ConsSitNF3e) ports.Supervisor {
 	return &regrasSupervisor{ConsSitNF3e: consSitNF3e}
 }
 

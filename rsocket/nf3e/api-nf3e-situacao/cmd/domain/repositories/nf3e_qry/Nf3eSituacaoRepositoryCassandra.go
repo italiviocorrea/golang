@@ -1,8 +1,9 @@
 package nf3e_qry
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs/db"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs/db"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/ports"
 	"github.com/rs/zerolog/log"
 )
 
@@ -10,7 +11,7 @@ type nf3eSituacaoRepositoryCassandra struct {
 	DB db.ClientDB
 }
 
-func NewNf3eSituacaoRepositoryCassandra(DB db.ClientDB) Nf3eSituacaoRepositoryInterface {
+func NewNf3eSituacaoRepositoryCassandra(DB db.ClientDB) ports.Nf3eSituacaoRepositoryInterface {
 	return &nf3eSituacaoRepositoryCassandra{
 		DB: DB,
 	}

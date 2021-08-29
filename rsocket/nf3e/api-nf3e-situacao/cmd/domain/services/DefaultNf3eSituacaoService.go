@@ -1,11 +1,11 @@
 package services
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/utils"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/repositories/nf3e_qry"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/rules/conssitnf3e"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/utils"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/ports"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/services/rules/conssitnf3e"
 )
 
 /*
@@ -13,10 +13,10 @@ import (
 	Observe que aqui o Nf3eSituacaoRepository é adicionado como dependência
 */
 type defaultNf3eSituacaoService struct {
-	Nf3eSituacaoRepository nf3e_qry.Nf3eSituacaoRepositoryInterface
+	Nf3eSituacaoRepository ports.Nf3eSituacaoRepositoryInterface
 }
 
-func NewNf3eSituacaoService(nf3eSituacaoRepository nf3e_qry.Nf3eSituacaoRepositoryInterface) Nf3eSituacaoService {
+func NewNf3eSituacaoService(nf3eSituacaoRepository ports.Nf3eSituacaoRepositoryInterface) ports.Nf3eSituacaoService {
 	return &defaultNf3eSituacaoService{Nf3eSituacaoRepository: nf3eSituacaoRepository}
 }
 

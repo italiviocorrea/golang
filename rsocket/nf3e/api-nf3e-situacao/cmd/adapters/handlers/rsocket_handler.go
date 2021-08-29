@@ -3,10 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"encoding/xml"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/utils"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/models/dtos"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/utils"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/services"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/domain/ports"
 	"github.com/rs/zerolog/log"
 	"github.com/rsocket/rsocket-go/payload"
 )
@@ -15,10 +15,10 @@ type Nf3eSituacaoHandler interface {
 	GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error)
 }
 type nf3eSituacaoHandler struct {
-	Nf3eSituacaoService services.Nf3eSituacaoService
+	Nf3eSituacaoService ports.Nf3eSituacaoService
 }
 
-func NewRSocketHandler(situacaoService services.Nf3eSituacaoService) Nf3eSituacaoHandler {
+func NewRSocketHandler(situacaoService ports.Nf3eSituacaoService) Nf3eSituacaoHandler {
 	return &nf3eSituacaoHandler{Nf3eSituacaoService: situacaoService}
 }
 
