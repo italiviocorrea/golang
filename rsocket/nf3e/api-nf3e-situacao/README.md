@@ -3,6 +3,10 @@
 Consulta a NF3e através de uma chave informada, no banco de dados do YugabyteDB utilizando a API CQL.
 O protocolo de comunicação utilizado é rsocket.
 
+### Arquitetura
+
+![Processo principal](./docs/arquitetura_hexagonal_api_nf3e_consulta_situacao.png)
+
 ### ⚙️ Descrição do serviço
 
 - **Serviço:** api-nf3e-consulta-situacao
