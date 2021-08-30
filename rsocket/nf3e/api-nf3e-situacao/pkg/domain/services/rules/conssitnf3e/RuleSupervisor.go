@@ -8,15 +8,15 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type regrasSupervisor struct {
+type ruleSupervisor struct {
 	ConsSitNF3e entities.ConsSitNF3e
 }
 
-func NewRegrasSupervisor(consSitNF3e entities.ConsSitNF3e) ports.SupervisorPort {
-	return &regrasSupervisor{ConsSitNF3e: consSitNF3e}
+func NewRegrasSupervisor(consSitNF3e entities.ConsSitNF3e) ports.RuleSupervisorPort {
+	return &ruleSupervisor{ConsSitNF3e: consSitNF3e}
 }
 
-func (r *regrasSupervisor) Validate() []entities.ResultadoProcessamento {
+func (r *ruleSupervisor) Validate() []entities.ResultadoProcessamento {
 	var validationResponses []entities.ResultadoProcessamento
 
 	// decodificar a chave de acesso
@@ -26,7 +26,7 @@ func (r *regrasSupervisor) Validate() []entities.ResultadoProcessamento {
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("module", "RegrasSupervisor").
+		Str("module", "conssitnf3e.RuleSupervisor").
 		Str("chNF3e", r.ConsSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(r))
 
@@ -40,27 +40,27 @@ func (r *regrasSupervisor) Validate() []entities.ResultadoProcessamento {
 	// Executar as regras de forma concorrente usando GO rotinas
 	go func() {
 		defer close(ch252)
-		rn := rnI01Rej252{ConsSitNF3e: r.ConsSitNF3e}
+		rn := rnI01Rej252Rule{ConsSitNF3e: r.ConsSitNF3e}
 		ch252 <- rn.Validate()
 	}()
 	go func() {
 		defer close(ch226)
-		rn := rnI02Rej226{ConsSitNF3e: r.ConsSitNF3e}
+		rn := rnI02Rej226Rule{ConsSitNF3e: r.ConsSitNF3e}
 		ch226 <- rn.Validate()
 	}()
 	go func() {
 		defer close(ch236)
-		rn := rnI04Rej236{ConsSitNF3e: r.ConsSitNF3e}
+		rn := rnI04Rej236Rule{ConsSitNF3e: r.ConsSitNF3e}
 		ch236 <- rn.Validate()
 	}()
 	go func() {
 		defer close(ch478)
-		rn := rnI03Rej478{ConsSitNF3e: r.ConsSitNF3e}
+		rn := rnI03Rej478Rule{ConsSitNF3e: r.ConsSitNF3e}
 		ch478 <- rn.Validate()
 	}()
 	go func() {
 		defer close(ch482)
-		rn := rnI05Rej482{ConsSitNF3e: r.ConsSitNF3e}
+		rn := rnI05Rej482Rule{ConsSitNF3e: r.ConsSitNF3e}
 		ch482 <- rn.Validate()
 	}()
 
@@ -74,7 +74,7 @@ func (r *regrasSupervisor) Validate() []entities.ResultadoProcessamento {
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("component", "RegrasSupervisor").
+		Str("component", "conssitnf3e.RuleSupervisor").
 		Str("chNF3e", r.ConsSitNF3e.ChNF3e).
 		Msgf("{ResultadoProcessamento:%s}", utils.JsonMarshal(validationResponses))
 

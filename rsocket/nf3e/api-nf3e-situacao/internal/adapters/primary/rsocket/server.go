@@ -29,7 +29,7 @@ func Server(clientDB db.ClientDB) {
 		OnStart(func() {
 			log.Info().
 				Str("service", "api-nf3e-situacao").
-				Str("component", "rsocket_server").
+				Str("component", "rsocket.server").
 				Str("host", host).
 				Str("port", strconv.Itoa(port)).
 				Msg("Servidor RSocket Iniciado com sucesso!")
@@ -45,7 +45,7 @@ func Server(clientDB db.ClientDB) {
 		log.Fatal().
 			Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket_server").
+			Str("component", "rsocket.server").
 			Msg("Erro Fatal no servidor RSocket")
 		panic(err)
 	}
@@ -65,7 +65,7 @@ func responder(clientDB db.ClientDB) rsocket.RSocket {
 			if err != nil {
 				log.Err(err).
 					Str("service", "api-nf3e-situacao").
-					Str("component", "rsocket_server").
+					Str("component", "rsocket.server").
 					Msgf("Erro ao pesquisar chave de acesso (%s)", msg)
 
 				return mono.Just(payload.NewString(utils.JsonMarshal(dtos.RetConsSitNF3e{

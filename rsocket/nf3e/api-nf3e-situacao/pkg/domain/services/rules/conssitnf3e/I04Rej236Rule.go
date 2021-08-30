@@ -8,15 +8,15 @@ import (
 	"time"
 )
 
-type rnI04Rej236 struct {
+type rnI04Rej236Rule struct {
 	ConsSitNF3e entities.ConsSitNF3e
 }
 
-func NewRnI04Rej236(consSitNF3e entities.ConsSitNF3e) ports.SupplierPort {
-	return &rnI02Rej226{ConsSitNF3e: consSitNF3e}
+func NewRnI04Rej236(consSitNF3e entities.ConsSitNF3e) ports.RulePort {
+	return &rnI02Rej226Rule{ConsSitNF3e: consSitNF3e}
 }
 
-func (e *rnI04Rej236) Validate() entities.ResultadoProcessamento {
+func (e *rnI04Rej236Rule) Validate() entities.ResultadoProcessamento {
 	var resp = entities.ResultadoProcessamento{
 		CStat:       "100",
 		XMotivo:     "Ok",

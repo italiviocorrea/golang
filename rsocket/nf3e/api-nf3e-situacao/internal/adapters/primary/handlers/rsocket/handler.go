@@ -6,11 +6,11 @@ import (
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/dtos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 	"github.com/rs/zerolog/log"
 	"github.com/rsocket/rsocket-go/payload"
+	"gopkg.in/jeevatkm/go-model.v1"
 )
 
 type Nf3eSituacaoHandler interface {
@@ -43,14 +43,17 @@ func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.
 			Proceventonf3e: nil,
 		}, nil
 	} else {
-		return services.Nf3eSituacaoService.GetNf3eSituacao(entities.ConsSitNF3e{
-			Versao:       conSitNF3eDTO.Versao,
-			TpAmb:        conSitNF3eDTO.TpAmb,
-			XServ:        conSitNF3eDTO.XServ,
-			ChNF3e:       conSitNF3eDTO.ChNF3e,
-			ChNF3eDecode: vos.ChaveAcesso{},
-		})
+		return services.Nf3eSituacaoService.GetNf3eSituacao(mapper(conSitNF3eDTO))
 	}
+}
+
+/**
+Copia os dados do DTO para a entidade
+*/
+func mapper(conSitNF3eDTO dtos.ConsSitNF3eDTO) entities.ConsSitNF3e {
+	consSitNF3e := entities.ConsSitNF3e{}
+	model.Copy(&consSitNF3e, conSitNF3eDTO)
+	return consSitNF3e
 }
 
 /*
@@ -66,13 +69,13 @@ func JsonUnmarshal(payload string) dtos.ConsSitNF3eDTO {
 	if err != nil {
 		log.Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket_handler").
+			Str("component", "rsocket.handler").
 			Msgf("Error convert JSON payload (%s)", payload)
 	}
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("module", "rsocket_handler").
+		Str("module", "rsocket.handler").
 		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 
@@ -87,14 +90,14 @@ func XmlUnmarshall(payload string) (dtos.ConsSitNF3eDTO, error) {
 	if err != nil {
 		log.Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket_handler").
+			Str("component", "rsocket.handler").
 			Msgf("Error convert XML payload (%s)", payload)
 		return conSitNF3e, err
 	}
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("module", "rsocket_handler").
+		Str("module", "rsocket.handler").
 		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 

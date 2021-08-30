@@ -3,9 +3,9 @@ package services
 import (
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/dtos"
-	dtos2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
-	ports2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/services/usecases/conssitnf3e"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/services/rules/conssitnf3e"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 )
 
@@ -14,17 +14,17 @@ import (
 	Observe que aqui o Nf3eSituacaoRepository é adicionado como dependência
 */
 type defaultNf3eSituacaoService struct {
-	Nf3eSituacaoRepository ports2.Nf3eSituacaoRepositoryPort
+	Nf3eSituacaoRepository ports.Nf3eSituacaoRepositoryPort
 }
 
-func NewNf3eSituacaoService(nf3eSituacaoRepository ports2.Nf3eSituacaoRepositoryPort) ports2.Nf3eSituacaoServicePort {
+func NewNf3eSituacaoService(nf3eSituacaoRepository ports.Nf3eSituacaoRepositoryPort) ports.Nf3eSituacaoServicePort {
 	return &defaultNf3eSituacaoService{Nf3eSituacaoRepository: nf3eSituacaoRepository}
 }
 
 /*
 	Implementar todas as validações
 */
-func (repo *defaultNf3eSituacaoService) GetNf3eSituacao(consSitNF3e dtos2.ConsSitNF3e) (dtos.RetConsSitNF3e, error) {
+func (repo *defaultNf3eSituacaoService) GetNf3eSituacao(consSitNF3e entities.ConsSitNF3e) (dtos.RetConsSitNF3e, error) {
 	//consSitNF3e.Validar()
 	regrasSupervisor := conssitnf3e.NewRegrasSupervisor(consSitNF3e)
 	resps := regrasSupervisor.Validate()
