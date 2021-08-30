@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/configs/db"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/cmd/adapters/endpoints"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/rsocket"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/secondary/db"
 )
 
 func main() {
@@ -12,6 +12,6 @@ func main() {
 	defer cassadraDB.DB().Close()
 
 	// Inicia o servidor rsocket
-	endpoints.Server(cassadraDB)
+	rsocket.Server(cassadraDB)
 
 }
