@@ -1,7 +1,7 @@
 package conssitnf3e
 
 import (
-	dtos2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"strconv"
@@ -9,15 +9,15 @@ import (
 )
 
 type rnI04Rej236 struct {
-	ConsSitNF3e dtos2.ConsSitNF3e
+	ConsSitNF3e entities.ConsSitNF3e
 }
 
-func NewRnI04Rej236(consSitNF3e dtos2.ConsSitNF3e) ports.Supplier {
+func NewRnI04Rej236(consSitNF3e entities.ConsSitNF3e) ports.SupplierPort {
 	return &rnI02Rej226{ConsSitNF3e: consSitNF3e}
 }
 
-func (e *rnI04Rej236) Validate() dtos2.ResultadoProcessamento {
-	var resp = dtos2.ResultadoProcessamento{
+func (e *rnI04Rej236) Validate() entities.ResultadoProcessamento {
+	var resp = entities.ResultadoProcessamento{
 		CStat:       "100",
 		XMotivo:     "Ok",
 		Complemento: "",

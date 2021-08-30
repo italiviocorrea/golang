@@ -11,7 +11,7 @@ type nf3eSituacaoRepositoryCassandra struct {
 	DB db.ClientDB
 }
 
-func NewNf3eSituacaoRepositoryCassandra(DB db.ClientDB) ports.Nf3eSituacaoRepositoryInterface {
+func NewNf3eSituacaoRepositoryCassandra(DB db.ClientDB) ports.Nf3eSituacaoRepositoryPort {
 	return &nf3eSituacaoRepositoryCassandra{
 		DB: DB,
 	}
@@ -29,7 +29,7 @@ func (n *nf3eSituacaoRepositoryCassandra) FindByID(chnf3e string) (entities.Nf3e
 			Str("service", "api-nf3e-situacao").
 			Str("component", "Nf3eSituacaoRepositoryCassandra").
 			Str("chNF3e", chnf3e).
-			Msg("Erro ao pesquisar a chave de acesso ")
+			Msg("Chave de acesso não localizada")
 		return nf3e, err
 	}
 	return nf3e, nil

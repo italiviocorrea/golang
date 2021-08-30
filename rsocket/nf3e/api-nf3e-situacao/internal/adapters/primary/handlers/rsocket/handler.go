@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
-	dtos2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 	"github.com/rs/zerolog/log"
@@ -12,24 +14,24 @@ import (
 )
 
 type Nf3eSituacaoHandler interface {
-	GetNf3eSituacao(msg payload.Payload) (dtos2.RetConsSitNF3e, error)
+	GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error)
 }
 type nf3eSituacaoHandler struct {
-	Nf3eSituacaoService ports.Nf3eSituacaoService
+	Nf3eSituacaoService ports.Nf3eSituacaoServicePort
 }
 
-func NewRSocketHandler(situacaoService ports.Nf3eSituacaoService) Nf3eSituacaoHandler {
+func NewRSocketHandler(situacaoService ports.Nf3eSituacaoServicePort) Nf3eSituacaoHandler {
 	return &nf3eSituacaoHandler{Nf3eSituacaoService: situacaoService}
 }
 
-func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos2.RetConsSitNF3e, error) {
+func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error) {
 
 	// Decodificar o Payload da mensagem
 	//conSitNF3e := JsonUnmarshal(msg.DataUTF8())
-	conSitNF3e, err := XmlUnmarshall(msg.DataUTF8())
+	conSitNF3eDTO, err := XmlUnmarshall(msg.DataUTF8())
 
 	if err != nil {
-		return dtos2.RetConsSitNF3e{
+		return dtos.RetConsSitNF3e{
 			Versao:         configs.Get().VersaoLeiaute,
 			Xmlns:          configs.Get().Xmlns,
 			TpAmb:          configs.Get().TpAmb,
@@ -41,16 +43,22 @@ func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos2
 			Proceventonf3e: nil,
 		}, nil
 	} else {
-		return services.Nf3eSituacaoService.GetNf3eSituacao(conSitNF3e)
+		return services.Nf3eSituacaoService.GetNf3eSituacao(entities.ConsSitNF3e{
+			Versao:       conSitNF3eDTO.Versao,
+			TpAmb:        conSitNF3eDTO.TpAmb,
+			XServ:        conSitNF3eDTO.XServ,
+			ChNF3e:       conSitNF3eDTO.ChNF3e,
+			ChNF3eDecode: vos.ChaveAcesso{},
+		})
 	}
 }
 
 /*
 	Converte a string json do payload em Classe
 */
-func JsonUnmarshal(payload string) dtos2.ConsSitNF3e {
+func JsonUnmarshal(payload string) dtos.ConsSitNF3eDTO {
 
-	var conSitNF3e dtos2.ConsSitNF3e
+	var conSitNF3e dtos.ConsSitNF3eDTO
 
 	// Decodifica a entrada JSON para a entidade municipio
 	err := json.Unmarshal([]byte(payload), &conSitNF3e)
@@ -71,9 +79,9 @@ func JsonUnmarshal(payload string) dtos2.ConsSitNF3e {
 	return conSitNF3e
 }
 
-func XmlUnmarshall(payload string) (dtos2.ConsSitNF3e, error) {
+func XmlUnmarshall(payload string) (dtos.ConsSitNF3eDTO, error) {
 
-	var conSitNF3e dtos2.ConsSitNF3e
+	var conSitNF3e dtos.ConsSitNF3eDTO
 
 	err := xml.Unmarshal([]byte(payload), &conSitNF3e)
 	if err != nil {

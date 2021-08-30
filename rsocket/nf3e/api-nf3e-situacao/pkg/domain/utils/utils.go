@@ -2,23 +2,23 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
 	"github.com/rs/zerolog/log"
 )
 
-type Chan chan dtos.ResultadoProcessamento
+type Chan chan entities.ResultadoProcessamento
 
-func Reduce(in Chan) dtos.ResultadoProcessamento {
+func Reduce(in Chan) entities.ResultadoProcessamento {
 	resp := <-in
 	return resp
 }
 
-func Count(in []dtos.ResultadoProcessamento) int {
+func Count(in []entities.ResultadoProcessamento) int {
 	return len(in)
 }
 
-func Take(in []dtos.ResultadoProcessamento, nmax int) []dtos.ResultadoProcessamento {
-	var out []dtos.ResultadoProcessamento
+func Take(in []entities.ResultadoProcessamento, nmax int) []entities.ResultadoProcessamento {
+	var out []entities.ResultadoProcessamento
 	index := 0
 	for _, s := range in {
 		index++
@@ -29,8 +29,8 @@ func Take(in []dtos.ResultadoProcessamento, nmax int) []dtos.ResultadoProcessame
 	return out
 }
 
-func FilterRejects(p []dtos.ResultadoProcessamento) []dtos.ResultadoProcessamento {
-	var out []dtos.ResultadoProcessamento
+func FilterRejects(p []entities.ResultadoProcessamento) []entities.ResultadoProcessamento {
+	var out []entities.ResultadoProcessamento
 	for _, resp := range p {
 		if resp.CStat != "100" {
 			out = append(out, resp)
@@ -39,7 +39,7 @@ func FilterRejects(p []dtos.ResultadoProcessamento) []dtos.ResultadoProcessament
 	return out
 }
 
-func IsRejects(resps []dtos.ResultadoProcessamento) bool {
+func IsRejects(resps []entities.ResultadoProcessamento) bool {
 
 	rejects := FilterRejects(resps)
 	rejectsCount := Count(rejects)

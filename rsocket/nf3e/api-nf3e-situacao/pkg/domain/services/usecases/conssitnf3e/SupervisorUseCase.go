@@ -1,7 +1,7 @@
 package conssitnf3e
 
 import (
-	dtos2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
@@ -9,15 +9,15 @@ import (
 )
 
 type regrasSupervisor struct {
-	ConsSitNF3e dtos2.ConsSitNF3e
+	ConsSitNF3e entities.ConsSitNF3e
 }
 
-func NewRegrasSupervisor(consSitNF3e dtos2.ConsSitNF3e) ports.Supervisor {
+func NewRegrasSupervisor(consSitNF3e entities.ConsSitNF3e) ports.SupervisorPort {
 	return &regrasSupervisor{ConsSitNF3e: consSitNF3e}
 }
 
-func (r *regrasSupervisor) Validate() []dtos2.ResultadoProcessamento {
-	var validationResponses []dtos2.ResultadoProcessamento
+func (r *regrasSupervisor) Validate() []entities.ResultadoProcessamento {
+	var validationResponses []entities.ResultadoProcessamento
 
 	// decodificar a chave de acesso
 	chave := vos.ChaveAcesso{}
@@ -31,11 +31,11 @@ func (r *regrasSupervisor) Validate() []dtos2.ResultadoProcessamento {
 		Msg(utils.JsonMarshal(r))
 
 	// Criar os canais para receber as respostas
-	ch252 := make(chan dtos2.ResultadoProcessamento)
-	ch226 := make(chan dtos2.ResultadoProcessamento)
-	ch478 := make(chan dtos2.ResultadoProcessamento)
-	ch236 := make(chan dtos2.ResultadoProcessamento)
-	ch482 := make(chan dtos2.ResultadoProcessamento)
+	ch252 := make(chan entities.ResultadoProcessamento)
+	ch226 := make(chan entities.ResultadoProcessamento)
+	ch478 := make(chan entities.ResultadoProcessamento)
+	ch236 := make(chan entities.ResultadoProcessamento)
+	ch482 := make(chan entities.ResultadoProcessamento)
 
 	// Executar as regras de forma concorrente usando GO rotinas
 	go func() {

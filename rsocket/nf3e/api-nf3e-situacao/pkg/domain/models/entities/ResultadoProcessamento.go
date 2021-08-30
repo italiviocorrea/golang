@@ -1,4 +1,4 @@
-package dtos
+package entities
 
 type ResultadoProcessamento struct {
 	CStat       string
