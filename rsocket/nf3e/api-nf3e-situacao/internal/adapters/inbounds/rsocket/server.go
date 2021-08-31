@@ -6,11 +6,11 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/dtos"
-	rsocket2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/handlers/rsocket"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/secondary/db"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/secondary/repositories/nf3e_qry"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/services"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/dtos"
+	rsocket2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/handlers/rsocket"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/db"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/repositories/nf3e_qry"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/usescases"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 	"github.com/rs/zerolog/log"
 	"github.com/rsocket/rsocket-go"
@@ -57,7 +57,7 @@ func responder(clientDB db.ClientDB) rsocket.RSocket {
 		rsocket.RequestResponse(func(msg payload.Payload) mono.Mono {
 
 			repo := nf3e_qry.NewNf3eSituacaoRepositoryCassandra(clientDB)
-			serv := services.NewNf3eSituacaoService(repo)
+			serv := usescases.NewNf3eSituacaoUseCase(repo)
 			handler := rsocket2.NewRSocketHandler(serv)
 
 			nf3e, err := handler.GetNf3eSituacao(msg)

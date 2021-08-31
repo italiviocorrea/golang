@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/primary/dtos"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 	"github.com/rs/zerolog/log"
@@ -17,10 +17,10 @@ type Nf3eSituacaoHandler interface {
 	GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error)
 }
 type nf3eSituacaoHandler struct {
-	Nf3eSituacaoService ports.Nf3eSituacaoServicePort
+	Nf3eSituacaoService ports.Nf3eSituacaoUseCasePort
 }
 
-func NewRSocketHandler(situacaoService ports.Nf3eSituacaoServicePort) Nf3eSituacaoHandler {
+func NewRSocketHandler(situacaoService ports.Nf3eSituacaoUseCasePort) Nf3eSituacaoHandler {
 	return &nf3eSituacaoHandler{Nf3eSituacaoService: situacaoService}
 }
 
@@ -43,17 +43,34 @@ func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.
 			Proceventonf3e: nil,
 		}, nil
 	} else {
-		return services.Nf3eSituacaoService.GetNf3eSituacao(mapper(conSitNF3eDTO))
+		nf3e, _ := services.Nf3eSituacaoService.GetNf3eSituacao(mapperFromDTO(conSitNF3eDTO))
+
+		retConsSitNF3e := mapperToDTO(nf3e)
+
+		return retConsSitNF3e, nil
 	}
 }
 
 /**
 Copia os dados do DTO para a entidade
 */
-func mapper(conSitNF3eDTO dtos.ConsSitNF3eDTO) entities.ConsSitNF3e {
+func mapperFromDTO(conSitNF3eDTO dtos.ConsSitNF3eDTO) entities.ConsSitNF3e {
 	consSitNF3e := entities.ConsSitNF3e{}
 	model.Copy(&consSitNF3e, conSitNF3eDTO)
 	return consSitNF3e
+}
+
+func mapperToDTO(nf3e entities.Nf3eSituacao) dtos.RetConsSitNF3e {
+
+	retConsSitNF3e := dtos.RetConsSitNF3e{}
+
+	model.Copy(&retConsSitNF3e, nf3e)
+
+	// configura os campos : verAplic e Xmlns com valores default
+	retConsSitNF3e.Xmlns = configs.Get().Xmlns
+	retConsSitNF3e.VerAplic = configs.Get().VerAplic
+
+	return retConsSitNF3e
 }
 
 /*

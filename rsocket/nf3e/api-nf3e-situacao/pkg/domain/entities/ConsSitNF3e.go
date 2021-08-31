@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities/vos"
 )
 
 type ConsSitNF3e struct {

@@ -1,23 +1,23 @@
 package conssitnf3e
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/vos"
+	entities2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"strconv"
 	"time"
 )
 
-type rnI04Rej236Rule struct {
-	ConsSitNF3e entities.ConsSitNF3e
+type ruleI04Rej236 struct {
+	ConsSitNF3e entities2.ConsSitNF3e
 }
 
-func NewRnI04Rej236(consSitNF3e entities.ConsSitNF3e) ports.RulePort {
-	return &rnI02Rej226Rule{ConsSitNF3e: consSitNF3e}
+func NewRuleI04Rej236(consSitNF3e entities2.ConsSitNF3e) ports.RulePort {
+	return &ruleI02Rej226{ConsSitNF3e: consSitNF3e}
 }
 
-func (e *rnI04Rej236Rule) Validate() entities.ResultadoProcessamento {
-	var resp = entities.ResultadoProcessamento{
+func (e *ruleI04Rej236) Validate() entities2.ResultadoProcessamento {
+	var resp = entities2.ResultadoProcessamento{
 		CStat:       "100",
 		XMotivo:     "Ok",
 		Complemento: "",

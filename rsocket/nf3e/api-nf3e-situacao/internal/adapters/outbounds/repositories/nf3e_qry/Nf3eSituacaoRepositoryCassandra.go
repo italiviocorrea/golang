@@ -1,8 +1,8 @@
 package nf3e_qry
 
 import (
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/secondary/db"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/models/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/db"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/rs/zerolog/log"
 )
@@ -22,7 +22,7 @@ func (n *nf3eSituacaoRepositoryCassandra) FindByID(chnf3e string) (entities.Nf3e
 	var nf3e entities.Nf3eSituacao
 
 	err := n.DB.DB().Query("select chnf3e,versao,tpamb,cstat,xmotivo,cuf,protnf3e,proceventonf3e FROM nf3e_situacao where chnf3e = ?", chnf3e).
-		Scan(&nf3e.Chnf3e, &nf3e.Versao, &nf3e.Tpamb, &nf3e.Cstat, &nf3e.Xmotivo, &nf3e.Cuf, &nf3e.Protnf3e, &nf3e.Proceventonf3e)
+		Scan(&nf3e.Chnf3e, &nf3e.Versao, &nf3e.TpAmb, &nf3e.Cstat, &nf3e.Xmotivo, &nf3e.Cuf, &nf3e.Protnf3e, &nf3e.Proceventonf3e)
 
 	if err != nil {
 		log.Err(err).

@@ -3,7 +3,7 @@ package entities
 type Nf3eSituacao struct {
 	Chnf3e         string
 	Versao         string
-	Tpamb          string
+	TpAmb          string
 	Cstat          string
 	Xmotivo        string
 	Cuf            string
