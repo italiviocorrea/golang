@@ -17,11 +17,11 @@ type Nf3eSituacaoHandler interface {
 	GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error)
 }
 type nf3eSituacaoHandler struct {
-	Nf3eSituacaoService ports.Nf3eSituacaoUseCasePort
+	Nf3eSituacaoUseCase ports.Nf3eSituacaoUseCasePort
 }
 
 func NewRSocketHandler(situacaoService ports.Nf3eSituacaoUseCasePort) Nf3eSituacaoHandler {
-	return &nf3eSituacaoHandler{Nf3eSituacaoService: situacaoService}
+	return &nf3eSituacaoHandler{Nf3eSituacaoUseCase: situacaoService}
 }
 
 func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.RetConsSitNF3e, error) {
@@ -43,7 +43,7 @@ func (services *nf3eSituacaoHandler) GetNf3eSituacao(msg payload.Payload) (dtos.
 			Proceventonf3e: nil,
 		}, nil
 	} else {
-		nf3e, _ := services.Nf3eSituacaoService.GetNf3eSituacao(mapperFromDTO(conSitNF3eDTO))
+		nf3e, _ := services.Nf3eSituacaoUseCase.GetNf3eSituacao(mapperFromDTO(conSitNF3eDTO))
 
 		retConsSitNF3e := mapperToDTO(nf3e)
 

@@ -2,25 +2,25 @@ package conssitnf3e
 
 import (
 	"fmt"
-	entities2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"strconv"
 	"time"
 )
 
 type ruleI03Rej478 struct {
-	ConsSitNF3e entities2.ConsSitNF3e
+	ConsSitNF3e entities.ConsSitNF3e
 }
 
-func NewRuleI03Rej478(consSitNF3e entities2.ConsSitNF3e) ports.RulePort {
+func NewRuleI03Rej478(consSitNF3e entities.ConsSitNF3e) ports.RulePort {
 	return &ruleI02Rej226{ConsSitNF3e: consSitNF3e}
 }
 
-func (e *ruleI03Rej478) Validate() entities2.ResultadoProcessamento {
-	var resp = entities2.ResultadoProcessamento{
+func (e *ruleI03Rej478) Validate() entities.ResultadoProcessamento {
+	var resp = entities.ResultadoProcessamento{
 		CStat:       "100",
 		XMotivo:     "Ok",
-		Complemento: "",
+		Complemento: "ruleI03Rej478",
 	}
 
 	anoMesChave, _ := strconv.Atoi("20" + e.ConsSitNF3e.ChNF3eDecode.Aamm)

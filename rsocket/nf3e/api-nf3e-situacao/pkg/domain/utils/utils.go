@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
-	"github.com/rs/zerolog/log"
 )
 
 type Chan chan entities.ResultadoProcessamento
@@ -29,6 +28,17 @@ func Take(in []entities.ResultadoProcessamento, nmax int) []entities.ResultadoPr
 	return out
 }
 
+func TakeChan(in chan entities.ResultadoProcessamento, size int) []entities.ResultadoProcessamento {
+	var out []entities.ResultadoProcessamento
+	remaining := size
+	for remaining > 0 {
+		result := <-in
+		remaining -= 1
+		out = append(out, result)
+	}
+	return out
+}
+
 func FilterRejects(p []entities.ResultadoProcessamento) []entities.ResultadoProcessamento {
 	var out []entities.ResultadoProcessamento
 	for _, resp := range p {
@@ -43,11 +53,6 @@ func IsRejects(resps []entities.ResultadoProcessamento) bool {
 
 	rejects := FilterRejects(resps)
 	rejectsCount := Count(rejects)
-
-	log.Info().
-		Str("service", "api-nf3e-situacao").
-		Str("module", "utils").
-		Msgf("{Rejeicoes:%s}\n", JsonMarshal(rejects))
 
 	if rejectsCount > 0 {
 		return true
