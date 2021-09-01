@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/commons"
-	rsocket2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/handlers/rsocket"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/handlers/rsockets"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/db"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/repositories/nf3e_qry"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/usescases"
@@ -26,7 +26,7 @@ func Server(clientDB db.ClientDB) {
 		OnStart(func() {
 			log.Info().
 				Str("service", "api-nf3e-situacao").
-				Str("component", "rsocket.server").
+				Str("component", "rsockets.server").
 				Str("host", host).
 				Str("port", strconv.Itoa(port)).
 				Msg("Servidor RSocket Iniciado com sucesso!")
@@ -42,7 +42,7 @@ func Server(clientDB db.ClientDB) {
 		log.Fatal().
 			Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket.server").
+			Str("component", "rsockets.server").
 			Msg("Erro Fatal no servidor RSocket")
 		panic(err)
 	}
@@ -55,14 +55,14 @@ func responder(clientDB db.ClientDB) rsocket.RSocket {
 
 			repo := nf3e_qry.NewNf3eSituacaoRepositoryCassandra(clientDB)
 			serv := usescases.NewNf3eSituacaoUseCase(repo)
-			handler := rsocket2.NewRSocketHandler(serv)
+			handler := rsockets.NewRSocketHandler(serv)
 
 			nf3e, err := handler.GetNf3eSituacao(msg)
 
 			if err != nil {
 				log.Err(err).
 					Str("service", "api-nf3e-situacao").
-					Str("component", "rsocket.server").
+					Str("component", "rsockets.server").
 					Msgf("Erro ao pesquisar chave de acesso (%s)", msg)
 
 				return mono.Just(payload.NewString(
@@ -70,7 +70,6 @@ func responder(clientDB db.ClientDB) rsocket.RSocket {
 					time.Now().String()))
 			}
 
-			//j, _ := JSONMarshal(nf3e)
 			j, _ := commons.XmlMarshal(nf3e)
 
 			return mono.Just(payload.New(j, []byte(time.Now().String())))

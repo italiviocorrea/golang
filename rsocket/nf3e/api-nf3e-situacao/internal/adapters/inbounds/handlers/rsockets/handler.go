@@ -1,4 +1,4 @@
-package rsocket
+package rsockets
 
 import (
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/commons"

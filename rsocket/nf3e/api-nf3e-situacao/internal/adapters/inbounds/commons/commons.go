@@ -65,13 +65,13 @@ func JsonUnmarshal(payload string) dtos.ConsSitNF3eDTO {
 	if err != nil {
 		log.Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket.handler").
+			Str("component", "rsockets.handler").
 			Msgf("Error convert JSON payload (%s)", payload)
 	}
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("module", "rsocket.handler").
+		Str("module", "rsockets.handler").
 		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 
@@ -86,14 +86,14 @@ func XmlUnmarshall(payload string) (dtos.ConsSitNF3eDTO, error) {
 	if err != nil {
 		log.Err(err).
 			Str("service", "api-nf3e-situacao").
-			Str("component", "rsocket.handler").
+			Str("component", "rsockets.handler").
 			Msgf("Error convert XML payload (%s)", payload)
 		return conSitNF3e, err
 	}
 
 	log.Info().
 		Str("service", "api-nf3e-situacao").
-		Str("module", "rsocket.handler").
+		Str("module", "rsockets.handler").
 		Str("chNF3e", conSitNF3e.ChNF3e).
 		Msg(utils.JsonMarshal(conSitNF3e))
 

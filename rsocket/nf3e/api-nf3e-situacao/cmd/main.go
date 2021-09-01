@@ -11,7 +11,7 @@ func main() {
 	cassadraDB := db.NewCassandraClient()
 	defer cassadraDB.DB().Close()
 
-	// Inicia o servidor rsocket
+	// Inicia o servidor rsockets
 	rsocket.Server(cassadraDB)
 
 }
