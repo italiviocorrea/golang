@@ -1,12 +1,9 @@
 package rsocket
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"encoding/xml"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/dtos"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/commons"
 	rsocket2 "github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/inbounds/handlers/rsocket"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/db"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/internal/adapters/outbounds/repositories/nf3e_qry"
@@ -68,41 +65,15 @@ func responder(clientDB db.ClientDB) rsocket.RSocket {
 					Str("component", "rsocket.server").
 					Msgf("Erro ao pesquisar chave de acesso (%s)", msg)
 
-				return mono.Just(payload.NewString(utils.JsonMarshal(dtos.RetConsSitNF3e{
-					Versao:         configs.Get().VersaoLeiaute,
-					Xmlns:          configs.Get().Xmlns,
-					TpAmb:          configs.Get().TpAmb,
-					VerAplic:       configs.Get().VerAplic,
-					Cstat:          "999",
-					Xmotivo:        "Rejeição: Erro não catalogado",
-					Cuf:            configs.Get().CUF,
-					Protnf3e:       "",
-					Proceventonf3e: nil,
-				}), time.Now().String()))
+				return mono.Just(payload.NewString(
+					utils.JsonMarshal(commons.RetConsSitNF3eRejeitada("999", "Rejeição: Erro não catalogado")),
+					time.Now().String()))
 			}
 
 			//j, _ := JSONMarshal(nf3e)
-			j, _ := XmlMarshal(nf3e)
+			j, _ := commons.XmlMarshal(nf3e)
 
 			return mono.Just(payload.New(j, []byte(time.Now().String())))
 		}),
 	)
-}
-
-func JSONMarshal(t interface{}) ([]byte, error) {
-	buffer := &bytes.Buffer{}
-	encoder := json.NewEncoder(buffer)
-	encoder.SetEscapeHTML(false)
-	err := encoder.Encode(t)
-	return buffer.Bytes(), err
-}
-
-func XmlMarshal(t interface{}) ([]byte, error) {
-
-	buffer := &bytes.Buffer{}
-	enc := xml.NewEncoder(buffer)
-	enc.Indent("  ", "    ")
-	err := enc.Encode(t)
-	return buffer.Bytes(), err
-
 }

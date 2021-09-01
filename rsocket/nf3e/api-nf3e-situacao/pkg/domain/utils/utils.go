@@ -2,6 +2,7 @@ package utils
 
 import (
 	"encoding/json"
+	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/configs"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
 )
 
@@ -64,4 +65,16 @@ func IsRejects(resps []entities.ResultadoProcessamento) bool {
 func JsonMarshal(v interface{}) string {
 	e, _ := json.Marshal(v)
 	return string(e)
+}
+
+func Nf3eSituacaoRejeitada(cStat string, xMotivo string) entities.Nf3eSituacao {
+	return entities.Nf3eSituacao{
+		Versao:         configs.Get().VersaoLeiaute,
+		TpAmb:          configs.Get().TpAmb,
+		Cstat:          cStat,
+		Xmotivo:        xMotivo,
+		Cuf:            configs.Get().CUF,
+		Protnf3e:       "",
+		Proceventonf3e: nil,
+	}
 }
