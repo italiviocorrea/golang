@@ -25,8 +25,15 @@ func NewCassandraClient() ClientDB {
 
 	cluster := gocql.NewCluster(hosts...)
 
+	cluster.Authenticator = gocql.PasswordAuthenticator{
+		Username: configs.Get().DBUser,
+		Password: configs.Get().DBPwd,
+	}
+
 	cluster.Timeout = 12 * time.Second
 	cluster.Keyspace = configs.Get().Database
+	//cluster.PoolConfig.HostSelectionPolicy = TokenAwareHostPolicy(RoundRobinHostPolicy())
+	//cluster.ReconnectInterval = 1 * time.Second
 
 	db, err = cluster.CreateSession()
 

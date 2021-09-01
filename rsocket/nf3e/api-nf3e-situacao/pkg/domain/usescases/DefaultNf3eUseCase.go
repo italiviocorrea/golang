@@ -33,7 +33,7 @@ func (repo *defaultNf3eSituacaoUseCase) GetNf3eSituacao(consSitNF3e entities.Con
 		Str("service", "api-nf3e-situacao").
 		Str("module", "DefaultNf3eUseCase").
 		Str("chNF3e", consSitNF3e.ChNF3e).
-		Msgf("{Todas Respostas:%s}\n", utils.JsonMarshal(reps))
+		Msgf("{Todas Respostas:%s}", utils.JsonMarshal(reps))
 
 	if utils.IsRejects(reps) {
 		// Caso haja rejeições pegar a primeira
@@ -53,6 +53,7 @@ func (repo *defaultNf3eSituacaoUseCase) GetNf3eSituacao(consSitNF3e entities.Con
 func nf3eSituacaoRejeitada(cStat string, xMotivo string) entities.Nf3eSituacao {
 	return entities.Nf3eSituacao{
 		Versao:         configs.Get().VersaoLeiaute,
+		TpAmb:          configs.Get().TpAmb,
 		Cstat:          cStat,
 		Xmotivo:        xMotivo,
 		Cuf:            configs.Get().CUF,
