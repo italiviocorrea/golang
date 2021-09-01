@@ -16,7 +16,6 @@ func NewRuleSupervisor(consSitNF3e entities.ConsSitNF3e) ports.RuleSupervisorPor
 }
 
 func (r *ruleSupervisor) Validate() []entities.ResultadoProcessamento {
-	var validationResponses []entities.ResultadoProcessamento
 
 	// decodificar a chave de acesso
 	chave := vos.ChaveAcesso{}
@@ -50,8 +49,6 @@ func (r *ruleSupervisor) Validate() []entities.ResultadoProcessamento {
 		chRsp <- rn.Validate()
 	}()
 
-	// pegar todas as respostas que estão no canal, e atribui ao array de resultado processamento
-	validationResponses = utils.TakeChan(chRsp, qtRules)
-
-	return validationResponses
+	// retorna todas as respostas que estão no canal.
+	return utils.TakeChan(chRsp, qtRules)
 }
