@@ -9,11 +9,11 @@ import (
 )
 
 type ruleI03Rej478 struct {
-	ConsSitNF3e entities.ConsSitNF3e
+	ChaveAcesso entities.ChaveAcesso
 }
 
-func NewRuleI03Rej478(consSitNF3e entities.ConsSitNF3e) ports.RulePort {
-	return &ruleI02Rej226{ConsSitNF3e: consSitNF3e}
+func NewRuleI03Rej478(chaveAcesso entities.ChaveAcesso) ports.RulePort {
+	return &ruleI02Rej226{ChaveAcesso: chaveAcesso}
 }
 
 func (e *ruleI03Rej478) Validate() entities.ResultadoProcessamento {
@@ -23,7 +23,7 @@ func (e *ruleI03Rej478) Validate() entities.ResultadoProcessamento {
 		Complemento: "ruleI03Rej478",
 	}
 
-	anoMesChave, _ := strconv.Atoi("20" + e.ConsSitNF3e.ChNF3eDecode.Aamm)
+	anoMesChave, _ := strconv.Atoi("20" + e.ChaveAcesso.Aamm)
 	anoMes6MesesAntes, _ := strconv.Atoi(getAnoMes6MesesAtras())
 
 	fmt.Printf("%d - %d", anoMesChave, anoMes6MesesAntes)

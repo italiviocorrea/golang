@@ -7,11 +7,11 @@ import (
 )
 
 type ruleI02Rej226 struct {
-	ConsSitNF3e entities.ConsSitNF3e
+	ChaveAcesso entities.ChaveAcesso
 }
 
-func NewRuleI02Rej226(consSitNF3e entities.ConsSitNF3e) ports.RulePort {
-	return &ruleI02Rej226{ConsSitNF3e: consSitNF3e}
+func NewRuleI02Rej226(chaveAcesso entities.ChaveAcesso) ports.RulePort {
+	return &ruleI02Rej226{ChaveAcesso: chaveAcesso}
 }
 
 func (r *ruleI02Rej226) Validate() entities.ResultadoProcessamento {
@@ -21,7 +21,7 @@ func (r *ruleI02Rej226) Validate() entities.ResultadoProcessamento {
 		Complemento: "ruleI02Rej226",
 	}
 
-	if r.ConsSitNF3e.ChNF3eDecode.Cuf != configs.Get().CUF {
+	if r.ChaveAcesso.Cuf != configs.Get().CUF {
 		resp.CStat = "226"
 		resp.XMotivo = "Rejeição: Código da UF do Emitente diverge da UF autorizadora"
 	}

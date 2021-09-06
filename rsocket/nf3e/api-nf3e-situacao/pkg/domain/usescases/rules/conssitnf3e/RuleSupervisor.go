@@ -2,7 +2,6 @@ package conssitnf3e
 
 import (
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities"
-	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/entities/vos"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/ports"
 	"github.com/italiviocorrea/golang/rsocket/nf3e/api-nf3e-situacao/pkg/domain/utils"
 )
@@ -18,9 +17,8 @@ func NewRuleSupervisor(consSitNF3e entities.ConsSitNF3e) ports.RuleSupervisorPor
 func (r *ruleSupervisor) Validate() []entities.ResultadoProcessamento {
 
 	// decodificar a chave de acesso
-	chave := vos.ChaveAcesso{}
+	chave := entities.ChaveAcesso{}
 	chave.Decode(r.ConsSitNF3e.ChNF3e)
-	r.ConsSitNF3e.ChNF3eDecode = chave
 
 	// Criar os canais para receber as respostas
 	qtRules := 5                                                 // quantidade rules a serem executadas de forma concorrente
@@ -33,19 +31,19 @@ func (r *ruleSupervisor) Validate() []entities.ResultadoProcessamento {
 		chRsp <- rn.Validate()
 	}()
 	go func() {
-		rn := ruleI02Rej226{ConsSitNF3e: r.ConsSitNF3e}
+		rn := ruleI02Rej226{ChaveAcesso: chave}
 		chRsp <- rn.Validate()
 	}()
 	go func() {
-		rn := ruleI04Rej236{ConsSitNF3e: r.ConsSitNF3e}
+		rn := ruleI03Rej478{ChaveAcesso: chave}
 		chRsp <- rn.Validate()
 	}()
 	go func() {
-		rn := ruleI03Rej478{ConsSitNF3e: r.ConsSitNF3e}
+		rn := ruleI04Rej236{ChaveAcesso: chave}
 		chRsp <- rn.Validate()
 	}()
 	go func() {
-		rn := ruleI05Rej482{ConsSitNF3e: r.ConsSitNF3e}
+		rn := ruleI05Rej482{ChaveAcesso: chave}
 		chRsp <- rn.Validate()
 	}()
 

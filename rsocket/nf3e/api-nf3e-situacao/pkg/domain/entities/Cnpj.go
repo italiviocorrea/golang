@@ -1,4 +1,4 @@
-package vos
+package entities
 
 import (
 	"strconv"
