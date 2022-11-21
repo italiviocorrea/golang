@@ -1,0 +1,863 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "API-SDT",
+    "description" : "API - Soap DF-e Teste (SDT)",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080/api/v1"
+  }, {
+    "url" : "http://sdt.ms.gov.br/api/v1"
+  }, {
+    "url" : "http://hom.sdt.ms.gov.br/api/v1"
+  } ],
+  "tags" : [ {
+    "name" : "apm",
+    "description" : "Monitorar a saúde dos serviços da API"
+  }, {
+    "name" : "admin",
+    "description" : "Gerenciar a criação/manutenção dos metadados dos projetos no SDT"
+  }, {
+    "name" : "dfe",
+    "description" : "Gerar e enviar de DF-es para os webservices"
+  } ],
+  "paths" : {
+    "/healthy" : {
+      "get" : {
+        "tags" : [ "apm" ],
+        "summary" : "Verifica a saúde dos serviço da API",
+        "description" : "Verifica a saúde dos serviços",
+        "operationId" : "healthy",
+        "responses" : {
+          "200" : {
+            "description" : "retorna mensagem de saúde da API",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "properties" : {
+                    "data" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projeto" : {
+      "post" : {
+        "tags" : [ "admin" ],
+        "summary" : "Criar um novo projeto no banco de dados do SDT",
+        "description" : "Criar um novo projeto no banco de dados do SDT",
+        "operationId" : "criarProjeto",
+        "requestBody" : {
+          "description" : "Criar um novo projeto no banco de dados do SDT",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/projeto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/projeto"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Entrada inválida"
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "admin" ],
+        "summary" : "Busca todos os projetos cadastrados no banco de dados do SDT",
+        "description" : "Busca lista de projetos cadastrados",
+        "operationId" : "buscarTodosProjetos",
+        "responses" : {
+          "200" : {
+            "description" : "retorna lista de todos os projetos encontrados",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/projeto"
+                  },
+                  "example" : [ {
+                    "nome" : "NF3e",
+                    "descricao" : "Projeto da Nota Fiscal de Energia Elétrica - NF3e",
+                    "modelo" : 66,
+                    "versoes" : [ {
+                      "versao" : "1.00",
+                      "contexto" : "ws",
+                      "servicos" : [ {
+                        "nome" : "NF3eRecepcao",
+                        "nome_wsdl" : "nf3erecepcao_v1.00.wsdl",
+                        "assincrono" : true,
+                        "metodos" : [ {
+                          "nome" : "nf3eRecepcaoLote",
+                          "compactar" : true,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "enviNF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eRecepcao"
+                        } ]
+                      }, {
+                        "nome" : "NF3eRetRecepcao",
+                        "nome_wsdl" : "nf3eretrecepcao_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nf3eRetRecepcao",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consReciNF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eRetRecepcao"
+                        } ]
+                      }, {
+                        "nome" : "NF3eRecepcaoSinc",
+                        "nome_wsdl" : "nf3erecepcaosinc_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nf3eRecepcao",
+                          "compactar" : true,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "NF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eRecepcaoSinc"
+                        } ]
+                      }, {
+                        "nome" : "NF3eStatusServico",
+                        "nome_wsdl" : "nf3estatusservico_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nf3eStatusServicoNF",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consStatServNF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eStatusServico"
+                        } ]
+                      }, {
+                        "nome" : "NF3eConsulta",
+                        "nome_wsdl" : "nf3econsulta_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nf3eConsultaNF",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consSitNF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eConsulta"
+                        } ]
+                      }, {
+                        "nome" : "NF3eRecepcaoEvento",
+                        "nome_wsdl" : "nf3erecepcaoevento_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nf3eRecepcaoEvento",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "eventoNF3e_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NF3eRecepcaoEvento"
+                        } ],
+                        "eventos" : [ {
+                          "nome" : "Cancelamento",
+                          "esquema" : "evCancNF3e_v1.00.xsd"
+                        }, {
+                          "nome" : "Substituicao",
+                          "esquema" : "evSubNF3e_v1.00.xsd"
+                        } ]
+                      } ],
+                      "casosTestes" : [ {
+                        "nome" : "Gerar e enviar Lote de NF3e perfeito",
+                        "pipeline" : "template base"
+                      }, {
+                        "nome" : "Gerar e enviar Lote de NF3e rejeicao 252",
+                        "pipeline" : "template_rej_252"
+                      } ]
+                    } ],
+                    "ambientes" : [ {
+                      "id" : 1,
+                      "nome" : "PRODUCAO",
+                      "uri" : "https://nf3e.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 2,
+                      "nome" : "HOMOLOGACAO",
+                      "uri" : "https://hom.nf3e.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 3,
+                      "nome" : "DESENVOLVIMENTO",
+                      "uri" : "https://des.nf3e.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 4,
+                      "nome" : "LOCAL",
+                      "uri" : "https://localhost:8443"
+                    }, {
+                      "id" : 5,
+                      "nome" : "QA",
+                      "uri" : "https://qa.nf3e.sefaz.ms.gov.br"
+                    } ]
+                  }, {
+                    "nome" : "NFCom",
+                    "descricao" : "Projeto da Nota Fiscal de Telecomunicação - NFCom",
+                    "modelo" : 62,
+                    "versoes" : [ {
+                      "versao" : "1.00",
+                      "contexto" : "ws",
+                      "servicos" : [ {
+                        "nome" : "NFComRecepcao",
+                        "nome_wsdl" : "nfcomrecepcao_v1.00.wsdl",
+                        "assincrono" : true,
+                        "metodos" : [ {
+                          "nome" : "nfcomRecepcaoLote",
+                          "compactar" : true,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "enviNFCom_v1.00.xsd",
+                          "descricao" : "Esquema inicial para envio de lotes de NFCom"
+                        } ]
+                      }, {
+                        "nome" : "NFComRetRecepcao",
+                        "nome_wsdl" : "nfcomretrecepcao_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nfcomRetRecepcao",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consReciNFCom_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NFComRetRecepcao"
+                        } ]
+                      }, {
+                        "nome" : "NFComRecepcaoSinc",
+                        "nome_wsdl" : "nfcomrecepcaosinc_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nfcomRecepcao",
+                          "compactar" : true,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "NFCom_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NFComRecepcaoSinc"
+                        } ]
+                      }, {
+                        "nome" : "NFComStatusServico",
+                        "nome_wsdl" : "nfcomstatusservico_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nfcomStatusServicoNF",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consStatServNFCom_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NFComStatusServico"
+                        } ]
+                      }, {
+                        "nome" : "NFComConsulta",
+                        "nome_wsdl" : "nfcomconsulta_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nfcomConsultaNF",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "consSitNCom_v1.00.xsd",
+                          "descricao" : "Esquema inicial do serviço NFComConsulta"
+                        } ]
+                      }, {
+                        "nome" : "NFComRecepcaoEvento",
+                        "nome_wsdl" : "nfcomrecepcaoevento_v1.00.wsdl",
+                        "assincrono" : false,
+                        "metodos" : [ {
+                          "nome" : "nfComRecepcaoEvento",
+                          "compactar" : false,
+                          "envelope_template" : " "
+                        } ],
+                        "esquemas" : [ {
+                          "nome" : "eventoNFCom_v1.00.xsd",
+                          "descricao" : "Esquema base para todos os tipos de eventos"
+                        } ],
+                        "eventos" : [ {
+                          "nome" : "Cancelamento",
+                          "esquema" : "evCancNFCom_v1.00.xsd"
+                        }, {
+                          "nome" : "Substituicao",
+                          "esquema" : "evSubNFCom_v1.00.xsd"
+                        } ]
+                      } ],
+                      "casosTestes" : [ {
+                        "nome" : "Gerar e enviar Lote de NFCom perfeito",
+                        "pipeline" : "template base"
+                      }, {
+                        "nome" : "Gerar e enviar Lote de NFCom rejeicao 252",
+                        "pipeline" : "template_rej_252"
+                      } ]
+                    } ],
+                    "ambientes" : [ {
+                      "id" : 1,
+                      "nome" : "PRODUCAO",
+                      "uri" : "https://nfcom.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 2,
+                      "nome" : "HOMOLOGACAO",
+                      "uri" : "https://hom.nfcom.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 3,
+                      "nome" : "DESENVOLVIMENTO",
+                      "uri" : "https://des.nfcom.sefaz.ms.gov.br"
+                    }, {
+                      "id" : 4,
+                      "nome" : "LOCAL",
+                      "uri" : "https://localhost:8443"
+                    }, {
+                      "id" : 5,
+                      "nome" : "QA",
+                      "uri" : "https://qa.nfcom.sefaz.ms.gov.br"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "Não encontrado nenhum projeto cadastrado!"
+          },
+          "500" : {
+            "description" : "Erro inesperado no servidor, tente novamente."
+          }
+        }
+      }
+    },
+    "/projeto/{nome}" : {
+      "put" : {
+        "tags" : [ "admin" ],
+        "summary" : "Atualizar um projeto existente, no banco de dados do SDT",
+        "description" : "Atualizar um projeto existente por Id",
+        "operationId" : "atualizarProjeto",
+        "parameters" : [ {
+          "name" : "nome",
+          "in" : "path",
+          "description" : "Nome do projeto para atualizar",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Atualizar um projeto no banco de dados SDT",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/projeto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/projeto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalido ID informado"
+          },
+          "404" : {
+            "description" : "Projeto não encontrado"
+          },
+          "405" : {
+            "description" : "Erro na validação"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "admin" ],
+        "summary" : "Exclui um projeto do banco de dados do SDT",
+        "operationId" : "deleteProjeto",
+        "parameters" : [ {
+          "name" : "nome",
+          "in" : "path",
+          "description" : "Nome do projeto para excluir",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Inválido Nome informado"
+          },
+          "404" : {
+            "description" : "Não foi encontrado o projeto com o ID informado"
+          }
+        }
+      },
+      "get" : {
+        "tags" : [ "admin" ],
+        "summary" : "Buscar um projeto pelo Nome informado, no banco de dados do SDT.",
+        "description" : "Buscar o projeto pelo Nome informado",
+        "parameters" : [ {
+          "name" : "nome",
+          "in" : "path",
+          "description" : "Nome do projeto a ser pesquisado",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "retorna os dados do projeto",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/projeto"
+                },
+                "example" : {
+                  "nome" : "NF3e",
+                  "descricao" : "Projeto da Nota Fiscal de Energia Elétrica - NF3e",
+                  "modelo" : 66,
+                  "versoes" : [ {
+                    "versao" : "1.00",
+                    "contexto" : "ws",
+                    "servicos" : [ {
+                      "nome" : "NF3eRecepcao",
+                      "nome_wsdl" : "nf3erecepcao_v1.00.wsdl",
+                      "assincrono" : true,
+                      "metodos" : [ {
+                        "nome" : "nf3eRecepcaoLote",
+                        "compactar" : true,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "enviNF3e_v1.00.xsd",
+                        "descricao" : "Esquema inicial do serviço NF3eRecepcao"
+                      } ]
+                    }, {
+                      "nome" : "NF3eRetRecepcao",
+                      "nome_wsdl" : "nf3eretrecepcao_v1.00.wsdl",
+                      "assincrono" : false,
+                      "metodos" : [ {
+                        "nome" : "nf3eRetRecepcao",
+                        "compactar" : false,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "consReciNF3e_v1.00.xsd",
+                        "descricao" : "Esquema inicial do serviço NF3eRetRecepcao"
+                      } ]
+                    }, {
+                      "nome" : "NF3eRecepcaoSinc",
+                      "nome_wsdl" : "nf3erecepcaosinc_v1.00.wsdl",
+                      "assincrono" : false,
+                      "metodos" : [ {
+                        "nome" : "nf3eRecepcao",
+                        "compactar" : true,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "NF3e_v1.00.xsd",
+                        "descricao" : "Esquema inicial do serviço NF3eRecepcaoSinc"
+                      } ]
+                    }, {
+                      "nome" : "NF3eStatusServico",
+                      "nome_wsdl" : "nf3estatusservico_v1.00.wsdl",
+                      "assincrono" : false,
+                      "metodos" : [ {
+                        "nome" : "nf3eStatusServicoNF",
+                        "compactar" : false,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "NF3e_v1.00.xsd",
+                        "descricao" : "Esquema inicial do serviço NF3eStatusServico"
+                      } ]
+                    }, {
+                      "nome" : "NF3eConsulta",
+                      "nome_wsdl" : "nf3econsulta_v1.00.wsdl",
+                      "assincrono" : false,
+                      "metodos" : [ {
+                        "nome" : "nf3eConsultaNF",
+                        "compactar" : false,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "consSitNF3e_v1.00.xsd",
+                        "descricao" : "Esquema inicial do serviço NF3eConsulta"
+                      } ]
+                    }, {
+                      "nome" : "NF3eRecepcaoEvento",
+                      "nome_wsdl" : "nf3erecepcaoevento_v1.00.wsdl",
+                      "assincrono" : false,
+                      "metodos" : [ {
+                        "nome" : "nf3eRecepcaoEvento",
+                        "compactar" : false,
+                        "envelope_template" : " "
+                      } ],
+                      "esquemas" : [ {
+                        "nome" : "eventoNF3e_v1.00.xsd",
+                        "descricao" : "Esquema base para todos os tipos de eventos"
+                      } ],
+                      "eventos" : [ {
+                        "nome" : "Cancelamento",
+                        "esquema" : "evCancNF3e_v1.00.xsd"
+                      }, {
+                        "nome" : "Substituicao",
+                        "esquema" : "evSubNF3e_v1.00.xsd"
+                      } ]
+                    } ],
+                    "casosTestes" : [ {
+                      "nome" : "Gerar e enviar Lote de NF3e perfeito",
+                      "pipeline" : "template base"
+                    }, {
+                      "nome" : "Gerar e enviar Lote de NF3e rejeicao 252",
+                      "pipeline" : "template_rej_252"
+                    } ]
+                  } ],
+                  "ambientes" : [ {
+                    "id" : 1,
+                    "nome" : "PRODUCAO",
+                    "uri" : "https://nf3e.sefaz.ms.gov.br"
+                  }, {
+                    "id" : 2,
+                    "nome" : "HOMOLOGACAO",
+                    "uri" : "https://hom.nf3e.sefaz.ms.gov.br"
+                  }, {
+                    "id" : 3,
+                    "nome" : "DESENVOLVIMENTO",
+                    "uri" : "https://des.nf3e.sefaz.ms.gov.br"
+                  }, {
+                    "id" : 4,
+                    "nome" : "LOCAL",
+                    "uri" : "https://localhost:8443"
+                  }, {
+                    "id" : 5,
+                    "nome" : "QA",
+                    "uri" : "https://qa.nf3e.sefaz.ms.gov.br"
+                  } ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "Não encontrado nenhum projeto do o ID informado!"
+          },
+          "500" : {
+            "description" : "Erro inesperado no servidor, tente novamente."
+          }
+        }
+      }
+    },
+    "/dfes" : {
+      "post" : {
+        "tags" : [ "dfe" ],
+        "summary" : "Criar DF-e(s) e enviar para os webservices",
+        "operationId" : "criarEnviarDFe",
+        "requestBody" : {
+          "description" : "Cria e envia o documento XML e envia para o webservice",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/requestTeste"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "default" : {
+            "description" : "Operação realizada com sucesso"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "requestTagValue" : {
+        "type" : "object",
+        "properties" : {
+          "nome" : {
+            "type" : "string"
+          },
+          "pai" : {
+            "type" : "string"
+          },
+          "ocorrencias" : {
+            "type" : "integer"
+          },
+          "pattern" : {
+            "type" : "string"
+          },
+          "tipo" : {
+            "type" : "string",
+            "enum" : [ "ROOT", "PAI", "REGEX", "RANGE_NUMBER", "RANGE_CARACTERE", "RANGE_ALFANUMERICO", "RANDON_PARAMETER", "DATE", "FIX_NUMBER_SIZE", "FIXED" ]
+          }
+        }
+      },
+      "requestTeste" : {
+        "type" : "object",
+        "description" : "Informações sobre o DF-e a ser gerado e enviado para o webservice",
+        "properties" : {
+          "template" : {
+            "type" : "string",
+            "description" : "Nome do template a ser utilizado para gerar XML"
+          },
+          "compactar" : {
+            "type" : "boolean",
+            "description" : "se é necessário compactar o XML a ser enviado para o webservice",
+            "default" : true
+          },
+          "quantidade" : {
+            "type" : "integer",
+            "description" : "Quantidade de XML a ser gerado",
+            "default" : 1
+          },
+          "lote" : {
+            "type" : "integer",
+            "description" : "Quantidade de lote a ser gerado",
+            "default" : 1
+          },
+          "assincrono" : {
+            "type" : "boolean",
+            "description" : "Se o serviço é assincrono",
+            "default" : false
+          },
+          "validarSchema" : {
+            "type" : "boolean",
+            "description" : "Se é para validar o schema para cada XML gerado",
+            "default" : false
+          },
+          "qrcodeCustomized" : {
+            "type" : "boolean",
+            "description" : "Se o qrcode é personalizado",
+            "default" : false
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/requestTagValue"
+            }
+          }
+        }
+      },
+      "ambiente" : {
+        "type" : "object",
+        "description" : "Tipo de ambiente",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "description" : "Código de identificação do ambiente",
+            "example" : 1,
+            "maximum" : 5,
+            "minimum" : 1
+          },
+          "nome" : {
+            "type" : "string",
+            "description" : "nome do ambiente",
+            "example" : "produção",
+            "maxLength" : 20,
+            "minLength" : 3
+          },
+          "uri" : {
+            "type" : "string",
+            "description" : "URI do ambiente",
+            "example" : "https://nf3e.sefaz.ms.gov.br"
+          }
+        }
+      },
+      "metodo" : {
+        "type" : "object",
+        "description" : "Método disponibilizado pelo serviço web",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do método"
+          },
+          "compactar" : {
+            "type" : "boolean",
+            "description" : "Se a mensagem deve estar compactada com GZIP"
+          },
+          "envelope_template" : {
+            "type" : "string",
+            "description" : "Template do envelope para o XML. Exemplo NF3eDadosMsg"
+          }
+        }
+      },
+      "servico" : {
+        "type" : "object",
+        "description" : "Serviço web",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do serviço web"
+          },
+          "nome_wsdl" : {
+            "type" : "string",
+            "description" : "Nome do WSDL do serviço web"
+          },
+          "assincrono" : {
+            "type" : "boolean",
+            "description" : "Se o serviço é assincrono",
+            "default" : false
+          },
+          "metodos" : {
+            "type" : "array",
+            "description" : "Lista de métodos do serviço web",
+            "items" : {
+              "$ref" : "#/components/schemas/metodo"
+            }
+          },
+          "esquemas" : {
+            "type" : "array",
+            "description" : "Schemas XML do serviço",
+            "items" : {
+              "$ref" : "#/components/schemas/esquema"
+            }
+          },
+          "eventos" : {
+            "type" : "array",
+            "description" : "Nomes dos eventos permitidos no serviço.",
+            "items" : {
+              "$ref" : "#/components/schemas/evento"
+            }
+          }
+        }
+      },
+      "evento" : {
+        "type" : "object",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do evento"
+          },
+          "esquema" : {
+            "type" : "string",
+            "description" : "Nome do esquema XSD do evento"
+          }
+        }
+      },
+      "esquema" : {
+        "type" : "object",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do esquema XML"
+          },
+          "descricao" : {
+            "type" : "string",
+            "description" : "Descrição sobre o esquema XSD"
+          }
+        }
+      },
+      "casoTeste" : {
+        "type" : "object",
+        "properties" : {
+          "nome" : {
+            "type" : "string",
+            "description" : "nome do caso de teste"
+          },
+          "pipeline" : {
+            "type" : "string",
+            "description" : "Sequencia ou passos a serem executados"
+          }
+        }
+      },
+      "versao" : {
+        "type" : "object",
+        "description" : "Versão do serviço web",
+        "properties" : {
+          "versao" : {
+            "type" : "string",
+            "description" : "Código da versão do serviço web"
+          },
+          "contexto" : {
+            "type" : "string",
+            "description" : "Nome do contexto web dos webservices"
+          },
+          "servicos" : {
+            "type" : "array",
+            "description" : "Lista de Serviços webs disponíveis na versão do DF-e",
+            "items" : {
+              "$ref" : "#/components/schemas/servico"
+            }
+          },
+          "casosTestes" : {
+            "type" : "array",
+            "description" : "Lista de casos de testes para os serviços webs",
+            "items" : {
+              "$ref" : "#/components/schemas/casoTeste"
+            }
+          }
+        }
+      },
+      "projeto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "nome" : {
+            "type" : "string",
+            "description" : "Nome do projeto DF-e",
+            "example" : "NF3e"
+          },
+          "modelo" : {
+            "type" : "integer",
+            "description" : "Modelo do DF-e",
+            "example" : 62
+          },
+          "descricao" : {
+            "type" : "string",
+            "description" : "Descrição do projeto DF-e"
+          },
+          "versoes" : {
+            "type" : "array",
+            "description" : "Versões do DF-e",
+            "items" : {
+              "$ref" : "#/components/schemas/versao"
+            }
+          },
+          "ambientes" : {
+            "type" : "array",
+            "description" : "Lista de ambientes de autorização do DF-e",
+            "items" : {
+              "$ref" : "#/components/schemas/ambiente"
+            }
+          }
+        }
+      }
+    }
+  }
+}
