@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    networks:
+      - mongodb
+    volumes:
+      - ~/srv/mongodb/sdt/data/db1:/data/mongodb
+      - ~/srv/mongodb/sdt/data/db1/configdb:/data/configdb
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sdt_user
+      MONGO_INITDB_ROOT_PASSWORD: senha123
+      MONGO_INITDB_DATABASE: sdt_db
+  mongoexpress:
+    image: mongo-express
+    restart: always
+    container_name: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: sdt_user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: senha123
+      ME_CONFIG_MONGODB_SERVER: mongodb
+#      VCAP_APP_HOST: '0:0:0:0'
+    depends_on:
+      - mongodb
+    links:
+      - mongodb:mongodb
+    networks:
+      - mongodb
+
+networks:
+  mongodb:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.33.0.0/16
+
