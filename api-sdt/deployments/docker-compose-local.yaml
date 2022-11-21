@@ -34,8 +34,10 @@ services:
       - mongodb
   apisdt:
     image: apisdt:local
-#    build:
-#      context: ../build/deploy
+    build:
+      context: ../.
+      dockerfile: ../api-sdt/build/deploy/Dockerfile
+    restart: always
     ports:
       - "8080:8080"
     networks:
