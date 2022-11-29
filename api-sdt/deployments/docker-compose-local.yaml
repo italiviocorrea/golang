@@ -33,7 +33,7 @@ services:
     networks:
       - mongodb
   apisdt:
-    image: apisdt:local
+    image: apisdt-go:local
     build:
       context: ../.
       dockerfile: ../api-sdt/build/deploy/Dockerfile

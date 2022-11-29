@@ -8,21 +8,20 @@ RUN go mod download
 # copiar o codigo fonte
 COPY . .
 
-RUN CGO_ENABLED=0 go build -o apisdt ./cmd/apisdt/main.go
+# Construir o executável
+RUN CGO_ENABLED=0 go build -installsuffix 'static' -o apisdt ./cmd/apisdt/main.go
 
-FROM alpine:3.16
+FROM gcr.io/distroless/static AS final
 MAINTAINER Italivio Correa <italiviocorrea@gmail.com>
+USER nonroot:nonroot
 
-RUN apk add --no-cache ca-certificates
+COPY --from=builder --chown=nonroot:nonroot /work/apisdt /app/apisdt
 
-WORKDIR /bin
-COPY --from=builder /work/apisdt /bin/apisdt
-ADD ./api/swaggerui /bin/api/swaggerui
-COPY app-prd.env /bin/app.env
+WORKDIR /app
 
-# COPY ./app.env ./app.env
-# variaveis de ambiente com valores default
+ADD ./api/swaggerui /app/api/swaggerui
+COPY app-prd.env /app/app.env
 
 EXPOSE 8080
 
-CMD /bin/apisdt
+ENTRYPOINT ["/app/apisdt"]
