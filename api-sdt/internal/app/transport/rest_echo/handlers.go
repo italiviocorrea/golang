@@ -1,4 +1,4 @@
-package rest
+package rest_echo
 
 import (
 	"api-sdt/internal/domain/dtos"

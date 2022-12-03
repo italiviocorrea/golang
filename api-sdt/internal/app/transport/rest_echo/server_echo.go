@@ -1,4 +1,4 @@
-package rest
+package rest_echo
 
 import (
 	"api-sdt/internal/app/config"
@@ -47,11 +47,11 @@ func (a App) ConfigureRoutes() {
 	apiV1 := a.server.Group("/api/v1")
 	apiV1.Static("/swagger", "api/swaggerui")
 	apiV1.GET("/healthy", a.HealthCheck)
-	apiV1.GET("/projeto", a.FindAll)
-	apiV1.POST("/projeto", a.Create)
-	apiV1.GET("/projeto/:nome", a.FindByName)
-	apiV1.PUT("/projeto/:nome", a.Update)
-	apiV1.DELETE("/projeto/:nome", a.Delete)
+	apiV1.GET("/projetos", a.FindAll)
+	apiV1.POST("/projetos", a.Create)
+	apiV1.GET("/projetos/:nome", a.FindByName)
+	apiV1.PUT("/projetos/:nome", a.Update)
+	apiV1.DELETE("/projetos/:nome", a.Delete)
 
 }
 

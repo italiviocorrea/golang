@@ -54,20 +54,20 @@ func (p ProjetoUseCase) FindByName(nome string) (*entities.Projeto, *dtos.Error)
 
 	projetExist, err := p.projetoRepository.FindByName(nome)
 
+	if projetExist == nil {
+		return nil, &dtos.Error{
+			Message: "Projeto não encontrado no banco de dados",
+			Code:    404,
+			Name:    "PROJETO_NOT_FOUD",
+		}
+	}
+
 	if err != nil {
 		return nil, &dtos.Error{
 			Message: "Não foi possível pesquisar no banco de dados",
 			Code:    500,
 			Name:    "SERVER_ERROR",
 			Error:   err,
-		}
-	}
-
-	if projetExist == nil {
-		return nil, &dtos.Error{
-			Message: "Projeto não encontrado no banco de dados",
-			Code:    404,
-			Name:    "PROJETO_NOT_FOUD",
 		}
 	}
 

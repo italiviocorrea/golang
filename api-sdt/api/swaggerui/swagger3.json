@@ -47,7 +47,7 @@
         }
       }
     },
-    "/projeto" : {
+    "/projetos" : {
       "post" : {
         "tags" : [ "admin" ],
         "summary" : "Criar um novo projeto no banco de dados do SDT",
@@ -353,7 +353,7 @@
         }
       }
     },
-    "/projeto/{nome}" : {
+    "/projetos/{nome}" : {
       "put" : {
         "tags" : [ "admin" ],
         "summary" : "Atualizar um projeto existente, no banco de dados do SDT",

@@ -3,7 +3,7 @@ package app
 import (
 	"api-sdt/internal/app/config"
 	"api-sdt/internal/app/database/mongodb"
-	"api-sdt/internal/app/transport/rest"
+	"api-sdt/internal/app/transport/rest_fb"
 	"github.com/labstack/gommon/log"
 )
 
@@ -19,7 +19,7 @@ func Run() {
 	defer dbc.Disconnect()
 
 	// inicia o servidor
-	app := rest.New(cfg, dbc.Client)
+	app := rest_fb.New(cfg, dbc.Client)
 	app.Start()
 
 }
