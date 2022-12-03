@@ -1,4 +1,4 @@
-# Golang RESTful eb API with MongoDB  
+# Golang RESTful Web API with MongoDB  
 
 Este exemplo mostra uma API Restfull CRUD, utilizando como banco de dados o MongoDB.
 
