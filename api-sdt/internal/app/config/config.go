@@ -6,13 +6,14 @@ import (
 )
 
 type Settings struct {
-	DbHost  string `mapstrucute:"DBHOST"`
-	DbPwd   string `mapstrucute:"DBPWD"`
-	DbUser  string `mapstrucute:"DBUSER"`
-	DbName  string `mapstrucute:"DBNAME"`
-	Env     string `mapstrucute:"ENV"`
-	SrvHost string `mapstrucute:"SRVHOST"`
-	SrvPort string `mapstrucute:"SRVPORT"`
+	DbHost         string `mapstrucute:"DBHOST"`
+	DbPwd          string `mapstrucute:"DBPWD"`
+	DbUser         string `mapstrucute:"DBUSER"`
+	DbName         string `mapstrucute:"DBNAME"`
+	Env            string `mapstrucute:"ENV"`
+	SrvHost        string `mapstrucute:"SRVHOST"`
+	SrvPort        string `mapstrucute:"SRVPORT"`
+	JaegerEndpoint string `mapstrucute:"JAEGERENDPOINT"`
 }
 
 func New() *Settings {

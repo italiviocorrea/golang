@@ -9,13 +9,13 @@ RUN go mod download
 COPY . .
 
 # Construir o executável
-RUN CGO_ENABLED=0 go build -installsuffix 'static' -o apisdt ./cmd/apisdt/main.go
+RUN CGO_ENABLED=0 go build -installsuffix 'static' -o apisdt_fiber ./cmd/apisdt_fiber/main.go
 
 FROM gcr.io/distroless/static AS final
 MAINTAINER Italivio Correa <italiviocorrea@gmail.com>
 USER nonroot:nonroot
 
-COPY --from=builder --chown=nonroot:nonroot /work/apisdt /app/apisdt
+COPY --from=builder --chown=nonroot:nonroot /work/apisdt_fiber /app/apisdt
 
 WORKDIR /app
 

@@ -41,7 +41,18 @@ services:
       - mongodb:mongodb
     networks:
       - mongodb
-
+  apisdt:
+    image: apisdt-echo-go:local
+    build:
+      context: ../.
+      dockerfile: ../api-sdt/build/deploy/Dockerfile.echo
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - mongodb
+    depends_on:
+      - mongodb
 networks:
   mongodb:
     driver: bridge

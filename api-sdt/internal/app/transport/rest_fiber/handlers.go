@@ -1,15 +1,19 @@
-package rest_fb
+package rest_fiber
 
 import (
 	"api-sdt/internal/domain/dtos"
 	"api-sdt/internal/domain/entities"
 	"github.com/gofiber/fiber/v2"
-	"github.com/labstack/gommon/log"
+	//"go.opentelemetry.io/otel"
+
+	//"go.opentelemetry.io/otel/attribute"
 	"net/http"
 )
 
 func (a App) HealthCheck(c *fiber.Ctx) error {
-	log.Info("HealthCheck")
+	_, span := a.tracer.Start(c.UserContext(), "healthHandler")
+	defer span.End()
+
 	return c.Status(http.StatusOK).
 		JSON(map[string]interface{}{
 			"health": "ok",
@@ -18,6 +22,8 @@ func (a App) HealthCheck(c *fiber.Ctx) error {
 }
 
 func (a *App) FindAll(c *fiber.Ctx) error {
+	_, span := a.tracer.Start(c.UserContext(), "FindAllHandler")
+	defer span.End()
 
 	data, err := a.projetoSvc.FindAll()
 
@@ -25,6 +31,8 @@ func (a *App) FindAll(c *fiber.Ctx) error {
 }
 
 func (a *App) FindByName(c *fiber.Ctx) error {
+	_, span := a.tracer.Start(c.UserContext(), "FindByNameHandler")
+	defer span.End()
 
 	nome := c.Params("nome")
 	if nome == "" {
@@ -40,6 +48,8 @@ func (a *App) FindByName(c *fiber.Ctx) error {
 }
 
 func (a *App) Create(c *fiber.Ctx) error {
+	_, span := a.tracer.Start(c.UserContext(), "CreateHandler")
+	defer span.End()
 
 	var objRequest entities.Projeto
 
@@ -58,6 +68,8 @@ func (a *App) Create(c *fiber.Ctx) error {
 }
 
 func (a *App) Update(c *fiber.Ctx) error {
+	_, span := a.tracer.Start(c.UserContext(), "UpdateHandler")
+	defer span.End()
 
 	nome := c.Params("nome")
 
@@ -84,6 +96,8 @@ func (a *App) Update(c *fiber.Ctx) error {
 }
 
 func (a *App) Delete(c *fiber.Ctx) error {
+	_, span := a.tracer.Start(c.UserContext(), "DeleteHandler")
+	defer span.End()
 
 	nome := c.Params("nome")
 

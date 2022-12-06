@@ -1,0 +1,27 @@
+FROM golang:1-alpine3.16 as builder
+WORKDIR /work
+
+# download dos modulos em camada separada para permitir cache para o docker build
+COPY ./go.mod ./go.sum ./
+RUN go mod download
+
+# copiar o codigo fonte
+COPY . .
+
+# Construir o executável
+RUN CGO_ENABLED=0 go build -installsuffix 'static' -o apisdt_echo ./cmd/apisdt_echo/main.go
+
+FROM gcr.io/distroless/static AS final
+MAINTAINER Italivio Correa <italiviocorrea@gmail.com>
+USER nonroot:nonroot
+
+COPY --from=builder --chown=nonroot:nonroot /work/apisdt_echo /app/apisdt
+
+WORKDIR /app
+
+ADD ./api/swaggerui /app/api/swaggerui
+COPY app-prd.env /app/app.env
+
+EXPOSE 8080
+
+ENTRYPOINT ["/app/apisdt"]

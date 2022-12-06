@@ -1,6 +1,14 @@
 version: '3.7'
 
 services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.22.0
+    container_name: jaeger
+    ports:
+      - 16686:16686
+      - 14268:14268
+    networks:
+      - mongodb
   mongodb:
     image: mongo
     container_name: mongodb
@@ -33,10 +41,10 @@ services:
     networks:
       - mongodb
   apisdt:
-    image: apisdt-go:local
+    image: apisdt-fiber-go:local
     build:
       context: ../.
-      dockerfile: ../api-sdt/build/deploy/Dockerfile
+      dockerfile: ../api-sdt/build/deploy/Dockerfile.fiber
     restart: always
     ports:
       - "8080:8080"
