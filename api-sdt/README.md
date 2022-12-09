@@ -30,10 +30,6 @@ Também foi adicionado suporte a observalidade utilizando OpenTelemetry.
 ```bash
  docker-compose -f deployments/docker-compose-echo-local.yaml up -d --build
 ```
-E para finalizar você pode utilizar este comando
-```bash
- docker-compose -f deployments/docker-compose-echo-local.yaml down
-```
 
 ou
 
@@ -41,9 +37,31 @@ ou
 ```bash
  docker-compose -f deployments/docker-compose-fiber-local.yaml up -d --build
 ```
-E para finalizar você pode utilizar este comando
+
+Após a executar a aplicação echo ou fiber, você poderá acessar o swagger-ui, jaeger-ui e também o mongo-express.
+
+Para acessar a swagger-ui digite no seu browser preferido :
+```http request
+ http://localhost:8080/api/v1/swagger/index.html
+```
+
+Para acessar a jaeger-ui digite no seu browser preferido :
+```http request
+ http://localhost:16686/
+```
+
+Para acessar a mongo-express digite no seu browser preferido :
+```http request
+ http://localhost:8081/
+```
+
+#### E para finalizar você pode utilizar a aplicação fiber use o comando abaixo
 ```bash
  docker-compose -f deployments/docker-compose-fiber-local.yaml down
 ```
+ou
 
-
+#### E para finalizar você pode utilizar a aplicação echo use o comando abaixo
+```bash
+ docker-compose -f deployments/docker-compose-echo-local.yaml down
+```
