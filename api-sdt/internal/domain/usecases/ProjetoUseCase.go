@@ -2,9 +2,11 @@ package usecases
 
 import (
 	"api-sdt/internal/app/config"
+	"api-sdt/internal/app/trace"
 	"api-sdt/internal/domain/dtos"
 	"api-sdt/internal/domain/entities"
 	"api-sdt/internal/domain/ports"
+	"context"
 	"github.com/labstack/gommon/log"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
@@ -21,9 +23,12 @@ func New(cfg *config.Settings, projetoRepository ports.ProjetoRepositoryPort) po
 	}
 }
 
-func (p ProjetoUseCase) Create(projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
+func (p ProjetoUseCase) Create(ctx context.Context, projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
 
-	projetExist, err := p.projetoRepository.FindByName(projeto.Nome)
+	_, span := trace.NewSpan(ctx, "UseCase.Create")
+	defer span.End()
+
+	projetExist, err := p.projetoRepository.FindByName(ctx, projeto.Nome)
 
 	if projetExist != nil {
 		return nil, &dtos.Error{
@@ -37,7 +42,7 @@ func (p ProjetoUseCase) Create(projeto *entities.Projeto) (*entities.Projeto, *d
 	log.Info("Gravando o projeto no banco de dados")
 
 	projeto.ID = primitive.NewObjectID()
-	_, err = p.projetoRepository.Create(projeto)
+	_, err = p.projetoRepository.Create(ctx, projeto)
 
 	if err != nil {
 		return nil, &dtos.Error{
@@ -50,9 +55,12 @@ func (p ProjetoUseCase) Create(projeto *entities.Projeto) (*entities.Projeto, *d
 	return projeto, nil
 }
 
-func (p ProjetoUseCase) FindByName(nome string) (*entities.Projeto, *dtos.Error) {
+func (p ProjetoUseCase) FindByName(ctx context.Context, nome string) (*entities.Projeto, *dtos.Error) {
 
-	projetExist, err := p.projetoRepository.FindByName(nome)
+	_, span := trace.NewSpan(ctx, "UseCase.FindByName")
+	defer span.End()
+
+	projetExist, err := p.projetoRepository.FindByName(ctx, nome)
 
 	if projetExist == nil {
 		return nil, &dtos.Error{
@@ -75,9 +83,12 @@ func (p ProjetoUseCase) FindByName(nome string) (*entities.Projeto, *dtos.Error)
 
 }
 
-func (p ProjetoUseCase) FindAll() ([]*entities.Projeto, *dtos.Error) {
+func (p ProjetoUseCase) FindAll(ctx context.Context) ([]*entities.Projeto, *dtos.Error) {
 
-	projetos, err := p.projetoRepository.FindAll()
+	_, span := trace.NewSpan(ctx, "UseCase.FindAll")
+	defer span.End()
+
+	projetos, err := p.projetoRepository.FindAll(ctx)
 
 	if err != nil {
 		return nil, &dtos.Error{
@@ -99,8 +110,11 @@ func (p ProjetoUseCase) FindAll() ([]*entities.Projeto, *dtos.Error) {
 	return projetos, nil
 }
 
-func (p ProjetoUseCase) Update(nome string, projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
-	projetoUpdate, err := p.projetoRepository.Update(nome, projeto)
+func (p ProjetoUseCase) Update(ctx context.Context, nome string, projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
+	_, span := trace.NewSpan(ctx, "UseCase.Update")
+	defer span.End()
+
+	projetoUpdate, err := p.projetoRepository.Update(ctx, nome, projeto)
 
 	if err != nil {
 		return nil, &dtos.Error{
@@ -114,9 +128,11 @@ func (p ProjetoUseCase) Update(nome string, projeto *entities.Projeto) (*entitie
 	return projetoUpdate, nil
 }
 
-func (p ProjetoUseCase) Delete(nome string) *dtos.Error {
+func (p ProjetoUseCase) Delete(ctx context.Context, nome string) *dtos.Error {
+	_, span := trace.NewSpan(ctx, "UseCase.Delete")
+	defer span.End()
 
-	_, err1 := p.FindByName(nome)
+	_, err1 := p.FindByName(ctx, nome)
 
 	if err1 != nil {
 		return &dtos.Error{
@@ -127,7 +143,7 @@ func (p ProjetoUseCase) Delete(nome string) *dtos.Error {
 		}
 	}
 
-	err := p.projetoRepository.Delete(nome)
+	err := p.projetoRepository.Delete(ctx, nome)
 
 	if err != nil {
 		return &dtos.Error{

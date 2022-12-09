@@ -1,6 +1,7 @@
 package rest_echo
 
 import (
+	"api-sdt/internal/app/trace"
 	"api-sdt/internal/domain/dtos"
 	"api-sdt/internal/domain/entities"
 	"github.com/labstack/echo/v4"
@@ -9,13 +10,17 @@ import (
 )
 
 func (a App) HealthCheck(c echo.Context) error {
-	log.Info("HealthCheck")
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.HealthCheck")
+	defer span.End()
+
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"data": "O servidor está funcionando",
 	})
 }
 
 func (a App) Create(c echo.Context) error {
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.Create")
+	defer span.End()
 
 	var objRequest entities.Projeto
 
@@ -37,7 +42,7 @@ func (a App) Create(c echo.Context) error {
 		})
 	}
 
-	data, err := a.projetoSvc.Create(&objRequest)
+	data, err := a.projetoSvc.Create(c.Request().Context(), &objRequest)
 
 	if err != nil {
 		return c.JSON(err.Code, err)
@@ -48,6 +53,8 @@ func (a App) Create(c echo.Context) error {
 }
 
 func (a App) Update(c echo.Context) error {
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.Update")
+	defer span.End()
 
 	nome := c.Param("nome")
 
@@ -76,7 +83,7 @@ func (a App) Update(c echo.Context) error {
 			Name:    "REQ_INVALID",
 		})
 	}
-	data, err := a.projetoSvc.Update(nome, &prjRequest)
+	data, err := a.projetoSvc.Update(c.Request().Context(), nome, &prjRequest)
 	if err != nil {
 		return c.JSON(http.StatusNotAcceptable, &dtos.Error{
 			Message: err.Error.Error(),
@@ -88,6 +95,8 @@ func (a App) Update(c echo.Context) error {
 }
 
 func (a App) FindByName(c echo.Context) error {
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.FindByName")
+	defer span.End()
 
 	nome := c.Param("nome")
 
@@ -99,7 +108,7 @@ func (a App) FindByName(c echo.Context) error {
 		})
 	}
 
-	data, err := a.projetoSvc.FindByName(nome)
+	data, err := a.projetoSvc.FindByName(c.Request().Context(), nome)
 
 	if err != nil {
 		return c.JSON(http.StatusNotFound, &dtos.Error{
@@ -113,8 +122,10 @@ func (a App) FindByName(c echo.Context) error {
 }
 
 func (a App) FindAll(c echo.Context) error {
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.FindAll")
+	defer span.End()
 
-	data, err := a.projetoSvc.FindAll()
+	data, err := a.projetoSvc.FindAll(c.Request().Context())
 
 	if err != nil {
 		return c.JSON(http.StatusNotFound, &dtos.Error{
@@ -129,6 +140,8 @@ func (a App) FindAll(c echo.Context) error {
 }
 
 func (a App) Delete(c echo.Context) error {
+	_, span := trace.NewSpan(c.Request().Context(), "Endpoint.Delete")
+	defer span.End()
 
 	nome := c.Param("nome")
 
@@ -140,7 +153,7 @@ func (a App) Delete(c echo.Context) error {
 		})
 	}
 
-	err := a.projetoSvc.Delete(nome)
+	err := a.projetoSvc.Delete(c.Request().Context(), nome)
 
 	if err != nil {
 		return c.JSON(err.Code, &dtos.Error{

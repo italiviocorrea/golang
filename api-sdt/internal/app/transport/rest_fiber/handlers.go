@@ -1,17 +1,15 @@
 package rest_fiber
 
 import (
+	"api-sdt/internal/app/trace"
 	"api-sdt/internal/domain/dtos"
 	"api-sdt/internal/domain/entities"
 	"github.com/gofiber/fiber/v2"
-	//"go.opentelemetry.io/otel"
-
-	//"go.opentelemetry.io/otel/attribute"
 	"net/http"
 )
 
 func (a App) HealthCheck(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "healthHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.HealthCheck")
 	defer span.End()
 
 	return c.Status(http.StatusOK).
@@ -22,16 +20,16 @@ func (a App) HealthCheck(c *fiber.Ctx) error {
 }
 
 func (a *App) FindAll(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "FindAllHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.FindAll")
 	defer span.End()
 
-	data, err := a.projetoSvc.FindAll()
+	data, err := a.projetoSvc.FindAll(c.UserContext())
 
 	return response(data, http.StatusOK, err, c)
 }
 
 func (a *App) FindByName(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "FindByNameHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.FindByName")
 	defer span.End()
 
 	nome := c.Params("nome")
@@ -43,12 +41,12 @@ func (a *App) FindByName(c *fiber.Ctx) error {
 			c)
 	}
 
-	data, err := a.projetoSvc.FindByName(nome)
+	data, err := a.projetoSvc.FindByName(c.UserContext(), nome)
 	return response(data, http.StatusOK, err, c)
 }
 
 func (a *App) Create(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "CreateHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Create")
 	defer span.End()
 
 	var objRequest entities.Projeto
@@ -61,14 +59,14 @@ func (a *App) Create(c *fiber.Ctx) error {
 			c)
 	}
 
-	data, err := a.projetoSvc.Create(&objRequest)
+	data, err := a.projetoSvc.Create(c.UserContext(), &objRequest)
 
 	return response(data, http.StatusOK, err, c)
 
 }
 
 func (a *App) Update(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "UpdateHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Update")
 	defer span.End()
 
 	nome := c.Params("nome")
@@ -90,13 +88,13 @@ func (a *App) Update(c *fiber.Ctx) error {
 			c)
 	}
 
-	data, err := a.projetoSvc.Update(nome, &prjRequest)
+	data, err := a.projetoSvc.Update(c.UserContext(), nome, &prjRequest)
 
 	return response(data, http.StatusOK, err, c)
 }
 
 func (a *App) Delete(c *fiber.Ctx) error {
-	_, span := a.tracer.Start(c.UserContext(), "DeleteHandler")
+	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Delete")
 	defer span.End()
 
 	nome := c.Params("nome")
@@ -109,7 +107,7 @@ func (a *App) Delete(c *fiber.Ctx) error {
 			c)
 	}
 
-	err := a.projetoSvc.Delete(nome)
+	err := a.projetoSvc.Delete(c.UserContext(), nome)
 
 	return response(nil, http.StatusNoContent, err, c)
 }

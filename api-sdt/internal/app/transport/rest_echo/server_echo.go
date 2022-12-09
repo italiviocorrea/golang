@@ -8,8 +8,8 @@ import (
 	"api-sdt/internal/domain/usecases/validators"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/labstack/gommon/log"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/labstack/echo/otelecho"
 )
 
 type App struct {
@@ -24,6 +24,7 @@ func New(cfg *config.Settings, client *mongo.Client) *App {
 	server.Validator = validators.InitCustomValidator()
 
 	server.Use(middleware.Recover())
+	server.Use(otelecho.Middleware("API-SDT"))
 	server.Use(middleware.Logger())
 	server.Use(middleware.RequestID())
 	server.Use(middleware.CORS())
@@ -42,7 +43,6 @@ func New(cfg *config.Settings, client *mongo.Client) *App {
 }
 
 func (a App) ConfigureRoutes() {
-	log.Info("Configurando Rotas")
 
 	apiV1 := a.server.Group("/api/v1")
 	apiV1.Static("/swagger", "api/swaggerui")
