@@ -5,7 +5,7 @@ import (
 	"github.com/go-playground/locales/pt_BR"
 	ut "github.com/go-playground/universal-translator"
 	validator "gopkg.in/go-playground/validator.v9"
-	en_translations "gopkg.in/go-playground/validator.v9/translations/en"
+	pt_translations "gopkg.in/go-playground/validator.v9/translations/pt_BR"
 )
 
 var (
@@ -40,7 +40,7 @@ func InitCustomValidator() *CustomValidator {
 	trans, _ := uni.GetTranslator("pt_BR")
 
 	validate := validator.New()
-	en_translations.RegisterDefaultTranslations(validate, trans)
+	pt_translations.RegisterDefaultTranslations(validate, trans)
 	validate.RegisterTranslation("required", trans, func(ut ut.Translator) error {
 		return ut.Add("required", "Por favor, insira o valor {0}", true)
 	}, func(ut ut.Translator, fe validator.FieldError) string {
