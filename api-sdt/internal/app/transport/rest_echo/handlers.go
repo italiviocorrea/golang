@@ -14,7 +14,8 @@ func (a App) HealthCheck(c echo.Context) error {
 	defer span.End()
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "O servidor está funcionando",
+		"health": "ok",
+		"status": http.StatusOK,
 	})
 }
 
