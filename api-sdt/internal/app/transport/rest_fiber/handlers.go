@@ -4,9 +4,12 @@ import (
 	"api-sdt/internal/app/trace"
 	"api-sdt/internal/domain/dtos"
 	"api-sdt/internal/domain/entities"
+	"api-sdt/internal/domain/usecases/validators"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
 )
+
+var validate = validators.InitCustomValidator()
 
 func (a App) HealthCheck(c *fiber.Ctx) error {
 	_, span := trace.NewSpan(c.UserContext(), "Endpoint.HealthCheck")
@@ -59,6 +62,14 @@ func (a *App) Create(c *fiber.Ctx) error {
 			c)
 	}
 
+	if err := validate.Validate(&objRequest); err != nil {
+		return response(objRequest, http.StatusBadRequest,
+			&dtos.Error{
+				Message: err.Error(),
+				Code:    http.StatusBadRequest},
+			c)
+	}
+
 	data, err := a.projetoSvc.Create(c.UserContext(), &objRequest)
 
 	return response(data, http.StatusOK, err, c)
@@ -81,6 +92,14 @@ func (a *App) Update(c *fiber.Ctx) error {
 
 	var prjRequest entities.Projeto
 	if err := c.BodyParser(&prjRequest); err != nil {
+		return response(prjRequest, http.StatusBadRequest,
+			&dtos.Error{
+				Message: err.Error(),
+				Code:    http.StatusBadRequest},
+			c)
+	}
+
+	if err := validate.Validate(&prjRequest); err != nil {
 		return response(prjRequest, http.StatusBadRequest,
 			&dtos.Error{
 				Message: err.Error(),

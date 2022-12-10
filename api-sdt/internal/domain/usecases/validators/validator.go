@@ -18,7 +18,7 @@ type CustomValidator struct {
 	Trans     ut.Translator
 }
 
-//Validate is func test valid object
+// Validate is func test valid object
 func (cv *CustomValidator) Validate(i interface{}) error {
 
 	err := cv.Validator.Struct(i)
@@ -33,10 +33,10 @@ func (cv *CustomValidator) Validate(i interface{}) error {
 	return nil
 }
 
-//InitCustomValidator is func init CustomValid
+// InitCustomValidator is func init CustomValid
 func InitCustomValidator() *CustomValidator {
-	en := pt_BR.New()
-	uni = ut.New(en, en)
+	pt := pt_BR.New()
+	uni = ut.New(pt, pt)
 	trans, _ := uni.GetTranslator("pt_BR")
 
 	validate := validator.New()
