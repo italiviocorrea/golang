@@ -88,9 +88,7 @@ func (p ProjetoRepository) FindAll(ctx context.Context) ([]*entities.Projeto, er
 	return prjFounds, nil
 }
 
-/*
-*
- */
+// Substitui o projeto com os dados informado
 func (p ProjetoRepository) Update(ctx context.Context, nome string, projeto *entities.Projeto) (*entities.Projeto, error) {
 	_, span := trace.NewSpan(ctx, "ProjetoRepository.Update")
 	defer span.End()

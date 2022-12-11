@@ -25,7 +25,7 @@ func New(cfg *config.Settings, projetoRepository ports.ProjetoRepositoryPort) po
 
 func (p ProjetoUseCase) Create(ctx context.Context, projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
 
-	_, span := trace.NewSpan(ctx, "UseCase.Create")
+	_, span := trace.NewSpan(ctx, "ProjetoUseCase.Create")
 	defer span.End()
 
 	projetExist, err := p.projetoRepository.FindByName(ctx, projeto.Nome)
@@ -57,7 +57,7 @@ func (p ProjetoUseCase) Create(ctx context.Context, projeto *entities.Projeto) (
 
 func (p ProjetoUseCase) FindByName(ctx context.Context, nome string) (*entities.Projeto, *dtos.Error) {
 
-	_, span := trace.NewSpan(ctx, "UseCase.FindByName")
+	_, span := trace.NewSpan(ctx, "ProjetoUseCase.FindByName")
 	defer span.End()
 
 	projetExist, err := p.projetoRepository.FindByName(ctx, nome)
@@ -85,7 +85,7 @@ func (p ProjetoUseCase) FindByName(ctx context.Context, nome string) (*entities.
 
 func (p ProjetoUseCase) FindAll(ctx context.Context) ([]*entities.Projeto, *dtos.Error) {
 
-	_, span := trace.NewSpan(ctx, "UseCase.FindAll")
+	_, span := trace.NewSpan(ctx, "ProjetoUseCase.FindAll")
 	defer span.End()
 
 	projetos, err := p.projetoRepository.FindAll(ctx)
@@ -111,7 +111,7 @@ func (p ProjetoUseCase) FindAll(ctx context.Context) ([]*entities.Projeto, *dtos
 }
 
 func (p ProjetoUseCase) Update(ctx context.Context, nome string, projeto *entities.Projeto) (*entities.Projeto, *dtos.Error) {
-	_, span := trace.NewSpan(ctx, "UseCase.Update")
+	_, span := trace.NewSpan(ctx, "ProjetoUseCase.Update")
 	defer span.End()
 
 	projetoUpdate, err := p.projetoRepository.Update(ctx, nome, projeto)
@@ -129,7 +129,7 @@ func (p ProjetoUseCase) Update(ctx context.Context, nome string, projeto *entiti
 }
 
 func (p ProjetoUseCase) Delete(ctx context.Context, nome string) *dtos.Error {
-	_, span := trace.NewSpan(ctx, "UseCase.Delete")
+	_, span := trace.NewSpan(ctx, "ProjetoUseCase.Delete")
 	defer span.End()
 
 	_, err1 := p.FindByName(ctx, nome)

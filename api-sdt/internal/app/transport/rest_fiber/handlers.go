@@ -12,7 +12,7 @@ import (
 var validate = validators.InitCustomValidator()
 
 func (a App) HealthCheck(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.HealthCheck")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.HealthCheck")
 	defer span.End()
 
 	return c.Status(http.StatusOK).
@@ -23,21 +23,21 @@ func (a App) HealthCheck(c *fiber.Ctx) error {
 }
 
 func (a *App) FindAll(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.FindAll")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.FindAll")
 	defer span.End()
 
 	data, err := a.projetoSvc.FindAll(c.UserContext())
 
-	return response(data, http.StatusOK, err, c)
+	return Response(data, http.StatusOK, err, c)
 }
 
 func (a *App) FindByName(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.FindByName")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.FindByName")
 	defer span.End()
 
 	nome := c.Params("nome")
 	if nome == "" {
-		return response(nil, http.StatusBadRequest,
+		return Response(nil, http.StatusBadRequest,
 			&dtos.Error{
 				Message: "O nome do projeto a ser pesquisado, não foi informado!",
 				Code:    http.StatusBadRequest},
@@ -45,17 +45,17 @@ func (a *App) FindByName(c *fiber.Ctx) error {
 	}
 
 	data, err := a.projetoSvc.FindByName(c.UserContext(), nome)
-	return response(data, http.StatusOK, err, c)
+	return Response(data, http.StatusOK, err, c)
 }
 
 func (a *App) Create(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Create")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.Create")
 	defer span.End()
 
 	var objRequest entities.Projeto
 
 	if err := c.BodyParser(&objRequest); err != nil {
-		return response(objRequest, http.StatusBadRequest,
+		return Response(objRequest, http.StatusBadRequest,
 			&dtos.Error{
 				Message: err.Error(),
 				Code:    http.StatusBadRequest},
@@ -63,7 +63,7 @@ func (a *App) Create(c *fiber.Ctx) error {
 	}
 
 	if err := validate.Validate(&objRequest); err != nil {
-		return response(objRequest, http.StatusBadRequest,
+		return Response(objRequest, http.StatusBadRequest,
 			&dtos.Error{
 				Message: err.Error(),
 				Code:    http.StatusBadRequest},
@@ -72,18 +72,18 @@ func (a *App) Create(c *fiber.Ctx) error {
 
 	data, err := a.projetoSvc.Create(c.UserContext(), &objRequest)
 
-	return response(data, http.StatusOK, err, c)
+	return Response(data, http.StatusOK, err, c)
 
 }
 
 func (a *App) Update(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Update")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.Update")
 	defer span.End()
 
 	nome := c.Params("nome")
 
 	if nome == "" {
-		return response(nil, http.StatusBadRequest,
+		return Response(nil, http.StatusBadRequest,
 			&dtos.Error{
 				Message: "O nome do projeto a ser atualizado, não foi informado!",
 				Code:    http.StatusBadRequest},
@@ -92,7 +92,7 @@ func (a *App) Update(c *fiber.Ctx) error {
 
 	var prjRequest entities.Projeto
 	if err := c.BodyParser(&prjRequest); err != nil {
-		return response(prjRequest, http.StatusBadRequest,
+		return Response(prjRequest, http.StatusBadRequest,
 			&dtos.Error{
 				Message: err.Error(),
 				Code:    http.StatusBadRequest},
@@ -100,7 +100,7 @@ func (a *App) Update(c *fiber.Ctx) error {
 	}
 
 	if err := validate.Validate(&prjRequest); err != nil {
-		return response(prjRequest, http.StatusBadRequest,
+		return Response(prjRequest, http.StatusBadRequest,
 			&dtos.Error{
 				Message: err.Error(),
 				Code:    http.StatusBadRequest},
@@ -109,17 +109,17 @@ func (a *App) Update(c *fiber.Ctx) error {
 
 	data, err := a.projetoSvc.Update(c.UserContext(), nome, &prjRequest)
 
-	return response(data, http.StatusOK, err, c)
+	return Response(data, http.StatusOK, err, c)
 }
 
 func (a *App) Delete(c *fiber.Ctx) error {
-	_, span := trace.NewSpan(c.UserContext(), "Endpoint.Delete")
+	_, span := trace.NewSpan(c.UserContext(), "ProjetoEndpoint.Delete")
 	defer span.End()
 
 	nome := c.Params("nome")
 
 	if nome == "" {
-		return response(nil, http.StatusBadRequest,
+		return Response(nil, http.StatusBadRequest,
 			&dtos.Error{
 				Message: "O nome do projeto a ser excluído, não foi informado!",
 				Code:    http.StatusBadRequest},
@@ -128,10 +128,10 @@ func (a *App) Delete(c *fiber.Ctx) error {
 
 	err := a.projetoSvc.Delete(c.UserContext(), nome)
 
-	return response(nil, http.StatusNoContent, err, c)
+	return Response(nil, http.StatusNoContent, err, c)
 }
 
-func response(data interface{}, httpStatus int, err *dtos.Error, c *fiber.Ctx) error {
+func Response(data interface{}, httpStatus int, err *dtos.Error, c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(err.Code).JSON(map[string]string{
 			"error": err.Message,
