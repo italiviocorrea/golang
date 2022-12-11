@@ -18,9 +18,6 @@
   }, {
     "name" : "admin",
     "description" : "Gerenciar a criação/manutenção dos metadados dos projetos no SDT"
-  }, {
-    "name" : "dfe",
-    "description" : "Gerar e enviar de DF-es para os webservices"
   } ],
   "paths" : {
     "/healthy" : {
@@ -187,13 +184,6 @@
                           "nome" : "Substituicao",
                           "esquema" : "evSubNF3e_v1.00.xsd"
                         } ]
-                      } ],
-                      "casosTestes" : [ {
-                        "nome" : "Gerar e enviar Lote de NF3e perfeito",
-                        "pipeline" : "template base"
-                      }, {
-                        "nome" : "Gerar e enviar Lote de NF3e rejeicao 252",
-                        "pipeline" : "template_rej_252"
                       } ]
                     } ],
                     "ambientes" : [ {
@@ -309,13 +299,6 @@
                           "nome" : "Substituicao",
                           "esquema" : "evSubNFCom_v1.00.xsd"
                         } ]
-                      } ],
-                      "casosTestes" : [ {
-                        "nome" : "Gerar e enviar Lote de NFCom perfeito",
-                        "pipeline" : "template base"
-                      }, {
-                        "nome" : "Gerar e enviar Lote de NFCom rejeicao 252",
-                        "pipeline" : "template_rej_252"
                       } ]
                     } ],
                     "ambientes" : [ {
@@ -536,13 +519,6 @@
                         "nome" : "Substituicao",
                         "esquema" : "evSubNF3e_v1.00.xsd"
                       } ]
-                    } ],
-                    "casosTestes" : [ {
-                      "nome" : "Gerar e enviar Lote de NF3e perfeito",
-                      "pipeline" : "template base"
-                    }, {
-                      "nome" : "Gerar e enviar Lote de NF3e rejeicao 252",
-                      "pipeline" : "template_rej_252"
                     } ]
                   } ],
                   "ambientes" : [ {
@@ -575,28 +551,6 @@
           },
           "500" : {
             "description" : "Erro inesperado no servidor, tente novamente."
-          }
-        }
-      }
-    },
-    "/dfes" : {
-      "post" : {
-        "tags" : [ "dfe" ],
-        "summary" : "Criar DF-e(s) e enviar para os webservices",
-        "operationId" : "criarEnviarDFe",
-        "requestBody" : {
-          "description" : "Cria e envia o documento XML e envia para o webservice",
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/requestTeste"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "default" : {
-            "description" : "Operação realizada com sucesso"
           }
         }
       }
