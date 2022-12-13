@@ -26,7 +26,12 @@ func New(cfg *config.Settings, client *mongo.Client) *App {
 	server := fiber.New()
 	server.Use(otelfiber.Middleware("API-SDT"))
 	server.Use(logger.New())
-	server.Use(cors.New())
+	server.Use(cors.New(cors.Config{
+		AllowHeaders:     "Origin,Content-Type,Accept,Content-Length,Accept-Language,Accept-Encoding,Connection,Access-Control-Allow-Origin",
+		AllowOrigins:     "*",
+		AllowCredentials: true,
+		AllowMethods:     "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
+	}))
 
 	// injeta o repositorio
 	projetoRepository := mongodb.NewRepository(cfg, client)

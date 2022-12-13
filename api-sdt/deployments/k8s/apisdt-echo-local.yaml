@@ -1,0 +1,44 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: apisdt-echo-go-service
+spec:
+  selector:
+    app: apisdt-echo-go-service
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apisdt-echo-go-service
+spec:
+  selector:
+    matchLabels:
+      app: apisdt-echo-go-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apisdt-echo-go-service
+    spec:
+      containers:
+        - name: apisdt-echo-go-service
+          image: apisdt-echo-go:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database
+            - name: DBHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url

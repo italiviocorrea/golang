@@ -1,0 +1,44 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: apisdt-fiber-go-service
+spec:
+  selector:
+    app: apisdt-fiber-go-service
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apisdt-fiber-go-service
+spec:
+  selector:
+    matchLabels:
+      app: apisdt-fiber-go-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: apisdt-fiber-go-service
+    spec:
+      containers:
+        - name: apisdt-fiber-go-service
+          image: apisdt-fiber-go:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database
+            - name: DBHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
