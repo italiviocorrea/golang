@@ -41,7 +41,7 @@ minikube start
 - Agora vamos liberar a porta 8080 para o localhost
 
 ```shell
-  kubectl port-forward svc/apisdt-echo-go-service 8080:8080
+  kubectl port-forward svc/apisdt-fiber-go-service 8080:8080
 ```
 
 - Utilize o seu browse favorito para acessar a aplicação
