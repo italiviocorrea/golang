@@ -3,7 +3,7 @@ module github.com/italiviocorrea/golang/mycorch.io/cube
 go 1.16
 
 require (
-	github.com/containerd/containerd v1.5.16 // indirect
+	github.com/containerd/containerd v1.5.18 // indirect
 	github.com/docker/docker v20.10.7+incompatible
 	github.com/docker/go-connections v0.4.0
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
